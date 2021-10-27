@@ -1,0 +1,21 @@
+{
+  "name": "jeece-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "data:import": "node back-end/seederScript.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EliottElek/jeece-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EliottElek/jeece-test/issues"
+  },
+  "homepage": "https://github.com/EliottElek/jeece-test#readme"
+}
