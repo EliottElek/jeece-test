@@ -1,27 +1,35 @@
 import React from "react";
-import { Button, Grid, Paper, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import "./style.css";
+import { Link } from "react-router-dom";
 
 const styles = {
+  gridItem: {
+    padding: 12,
+  },
   item: {
     width: "100%",
     height: "100%",
     margin: "auto",
-    borderRadius: "inherit",
     display: "grid",
-    gridTemplateRows: "60% 20% 20%",
+    borderRadius: "5px",
+    gridTemplateRows: "80% 20%",
   },
   itemImage: {
+    borderTopLeftRadius: "5px",
+    borderTopRightRadius: "5px",
     height: "auto",
     maxHeight: "100%",
     width: "100%",
-    objectFit: "contain",
+    objectFit: "cover",
     margin: "auto",
   },
   itemInfos: {
     padding: "6px",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   itemActions: {
     display: "flex",
@@ -36,7 +44,7 @@ const styles = {
 const BookItem = ({ bookItem }) => {
   return (
     <Grid
-      style = {{ padding:12}}
+      style={styles.gridItem}
       key={bookItem.id}
       item
       xs={12}
@@ -44,42 +52,30 @@ const BookItem = ({ bookItem }) => {
       md={4}
       lg={3}
     >
-      <Paper sx={{ width: "100%", height: "300px" }}>
-        <div style={styles.item}>
+      <div style={styles.item} className="item">
+        <Link to={`/produit/${bookItem._id}`} key={bookItem.id}>
           <img
             style={styles.itemImage}
             src={bookItem.mediaUrl}
             alt={bookItem.id}
           />
-          <div style={styles.itemInfos}>
-            <div>
-              <Typography variant="h6">{bookItem.title}</Typography>
-              <Typography variant="body1">{bookItem.author}</Typography>
-            </div>
-            <div>
-              <Typography variant="h5">{bookItem.price}€</Typography>
-            </div>
+        </Link>
+        <div style={styles.itemInfos}>
+          <div>
+            <Typography align="center" variant="h6">
+              {bookItem.title}
+            </Typography>
+            <Typography align="center" variant="body1">
+              {bookItem.author}
+            </Typography>
           </div>
-          <div style={styles.itemActions}>
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              sx={styles.button}
-            >
-              + ma liste
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              color="secondary"
-              sx={styles.button}
-            >
-              + panier
-            </Button>
+          <div>
+            <Typography align="center" color="#f83e49" variant="body1">
+              {bookItem.price}€
+            </Typography>
           </div>
         </div>
-      </Paper>
+      </div>
     </Grid>
   );
 };

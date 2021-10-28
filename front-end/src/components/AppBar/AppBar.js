@@ -7,13 +7,15 @@ import {
   Typography,
   Drawer,
   MenuItem,
+  Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ShoppingCart, AccountCircle } from "@mui/icons-material";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import logo from "../../images/logo.png";
-const PrimarySearchAppBar = ({ totalItems }) => {
+
+const PrimarySearchAppBar = ({ books, totalItems }) => {
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,
@@ -24,11 +26,17 @@ const PrimarySearchAppBar = ({ totalItems }) => {
     { label: "Boutique", path: "/", class: classes.links },
     { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
   ];
+  const linksMobile = [
+    { label: "Boutique", path: "/", class: classes.links },
+    { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
+    { label: "Mon compte", path: "/compte", class: classes.links },
+    { label: "Mon Panier", path: "/panier", class: classes.links },
+  ];
   const { mobileView, drawerOpen } = state;
 
   useEffect(() => {
     const setResponsiveness = () => {
-      return window.innerWidth < 600
+      return window.innerWidth < 750
         ? setState((prevState) => ({ ...prevState, mobileView: true }))
         : setState((prevState) => ({ ...prevState, mobileView: false }));
     };
@@ -55,32 +63,13 @@ const PrimarySearchAppBar = ({ totalItems }) => {
           className={classes.title}
           color="inherit"
         >
-        <img src={logo} style={{ height: "50px", width: "auto" }} alt="logo" />
+          <img
+            src={logo}
+            style={{ height: "50px", width: "auto" }}
+            alt="logo"
+          />
         </Typography>
-        <div className={classes.button}>
-          <IconButton
-            component={Link}
-            to="/connexion"
-            aria-label="logIn"
-            color="inherit"
-          >
-            <Badge color="secondary">
-              <AccountCircle />
-            </Badge>
-          </IconButton>
-        </div>
-        <div className={classes.buttonMobile}>
-          <IconButton
-            component={Link}
-            to="/panier"
-            aria-label="Show cart items"
-            color="inherit"
-          >
-            <Badge badgeContent={totalItems} color="secondary">
-              <ShoppingCart />
-            </Badge>
-          </IconButton>
-        </div>
+        <div className={classes.grow}></div>
         <IconButton
           {...{
             edge: "start",
@@ -99,7 +88,11 @@ const PrimarySearchAppBar = ({ totalItems }) => {
             onClose: handleDrawerClose,
           }}
         >
-          {getDrawerChoices(links, classes.mobileLinks, handleDrawerClose)}
+          {getDrawerChoices(
+            linksMobile,
+            classes.mobileLinks,
+            handleDrawerClose
+          )}
         </Drawer>
       </Toolbar>
     );
@@ -133,20 +126,8 @@ const PrimarySearchAppBar = ({ totalItems }) => {
       >
         <img src={logo} style={{ height: "50px", width: "auto" }} alt="logo" />
       </Typography>
-      <div className={classes.grow} />
+      <div className={classes.grow}>{/* <SearchBar books = {books}/> */}</div>
       {getDrawerChoices(links, classes.desktopLinks)}
-      <div className={classes.button}>
-        <IconButton
-          component={Link}
-          to="/connexion"
-          aria-label="logIn"
-          color="inherit"
-        >
-          <Badge color="secondary">
-            <AccountCircle />
-          </Badge>
-        </IconButton>
-      </div>
       <div className={classes.button}>
         <IconButton
           component={Link}
@@ -155,7 +136,19 @@ const PrimarySearchAppBar = ({ totalItems }) => {
           color="inherit"
         >
           <Badge badgeContent={totalItems} color="secondary">
-            <ShoppingCart />
+            <ShoppingBasketIcon sx={{color:"#bdbdbd"}}/>
+          </Badge>
+        </IconButton>
+      </div>
+      <div className={classes.button}>
+        <IconButton
+          component={Link}
+          to="/compte"
+          aria-label="logIn"
+          color="inherit"
+        >
+          <Badge color="secondary">
+            <Avatar />
           </Badge>
         </IconButton>
       </div>

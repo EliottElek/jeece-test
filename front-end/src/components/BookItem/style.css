@@ -1,0 +1,9 @@
+.item {
+  border: solid 0.15px #ececec;
+  transition: 0.2s ease-in;
+  cursor: pointer;
+}
+.item:hover {
+  border: solid 0.15px #c2c2c2;
+  transition: 0.2s ease-out;
+}

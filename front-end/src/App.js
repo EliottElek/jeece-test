@@ -5,6 +5,9 @@ import axios from "axios";
 import AppBar from "./components/AppBar/AppBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import BookList from "./components/BookList/BookList";
+import Product from "./components/Product/Product";
+import Profile from "./components/Profile/Profile";
+import SignUp from "./components/SignUp/SignUp";
 const styles = {
   root: {
     padding: 0,
@@ -25,6 +28,7 @@ let theme = createTheme({
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,17 +48,27 @@ function App() {
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
         <Router>
-          <AppBar />
+          <AppBar books={products} />
           <Switch>
             <Route exact path="/">
               <BookList bookList={products} />
+            </Route>
+            <Route exact path="/register">
+              <SignUp user={user} setUser={setUser} />
             </Route>
             <Route exact path="/wishlist">
               <h1>ma liste d'envies</h1>
             </Route>
             <Route exact path="/compte">
-              <h1>mon compte</h1>
+              <Profile setUser={setUser} user={user} />
             </Route>
+            <Route
+              exact
+              path="/produit/:id"
+              render={(props) => (
+                <Product id={props.match.params.id} key={props.location.key} />
+              )}
+            />
           </Switch>
         </Router>
       </ThemeProvider>
