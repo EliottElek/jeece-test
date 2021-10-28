@@ -190,7 +190,7 @@ const SignUp = ({ user, setUser }) => {
           console.log(res);
           if (res.creation) {
             setEmptyEmailMessage(res.message);
-            setUser(res.user);
+            setUser(res.user[0]);
           } else {
             setEmptyEmailMessage(res.message);
             setUser(null);
