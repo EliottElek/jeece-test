@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cart: {
+    type: Array,
+    required: false,
+  },
+  wishlist: {
+    type: Array,
+    required: false,
+  },
 });
 
 const User = mongoose.model("user", userSchema);

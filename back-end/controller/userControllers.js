@@ -61,4 +61,71 @@ const createAccount = async (req, res) => {
     console.error(err);
   }
 };
-module.exports = { getUsers, getUserByEmail, login, createAccount };
+const addToCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const newcart = user.cart;
+      newcart.push(req.body.item);
+      await User.findOneAndUpdate({ _id: user.id }, { cart: newcart });
+      res.json({ add: true, message: "Ajouté au panier avec succès." });
+    }
+  } catch (err) {
+    res.json({ add: false, message: "Impossible d'ajouter au panier." });
+  }
+};
+const getCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else res.json({cart: user.cart });
+  } catch (err) {
+    console.error(err);
+  }
+};
+const addToWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const newWishlist = user.wishlist;
+      newWishlist.push(req.body.item);
+      await User.findOneAndUpdate({ _id: user.id }, { wishlist: newWishlist });
+      res.json({ add: true, message: "Ajouté à la liste des souhaits avec succès." });
+    }
+  } catch (err) {
+    res.json({ add: false, message: "Impossible d'ajouter à la liste des souhaits." });
+  }
+};
+const getWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else res.json({wishlist: user.wishlist });
+  } catch (err) {
+    console.error(err);
+  }
+};
+module.exports = {
+  getUsers,
+  getUserByEmail,
+  login,
+  createAccount,
+  addToCart,
+  getCart,
+  addToWishlist,
+  getWishlist
+};

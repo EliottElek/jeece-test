@@ -100,9 +100,10 @@ const styles = {
   },
 };
 
-const Profile = ({ user, setUser }) => {
+const Profile = ({ user, setUser, setCart,setWishlist }) => {
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
-  const [emptyPassMessage, setEmptyPassMessage] = useState("Votre mot de passe");
+  const [emptyPassMessage, setEmptyPassMessage] =
+    useState("Votre mot de passe");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -134,6 +135,8 @@ const Profile = ({ user, setUser }) => {
           if (res.auth) {
             setEmptyEmailMessage("");
             setUser(res.user);
+            setCart(res.user.cart);
+            setWishlist(res.user.wishlist);
           } else {
             setEmptyEmailMessage(res.message);
             setUser(null);
@@ -167,7 +170,11 @@ const Profile = ({ user, setUser }) => {
             />
             <div style={{ height: "30px" }}></div>
             <TextField
-              color={emptyPassMessage === "Votre mot de passe" ? "primary" : "warning"}
+              color={
+                emptyPassMessage === "Votre mot de passe"
+                  ? "primary"
+                  : "warning"
+              }
               fullWidth
               label={emptyPassMessage}
               id="margin-none"
@@ -177,11 +184,7 @@ const Profile = ({ user, setUser }) => {
               placeholder="Votre mot de passe...*"
               type="password"
             />
-            <Typography
-              component={Link}
-              style={styles.link}
-              to={"/"}
-            >
+            <Typography component={Link} style={styles.link} to={"/"}>
               Mot de passe oublié ?
             </Typography>
             <Button

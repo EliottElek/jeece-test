@@ -1,8 +1,10 @@
-import React from "react";
-import { Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import "./style.css";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const styles = {
   gridItem: {
     padding: 12,
@@ -13,7 +15,7 @@ const styles = {
     margin: "auto",
     display: "grid",
     borderRadius: "5px",
-    gridTemplateRows: "80% 20%",
+    gridTemplateRows: "70% 30%",
   },
   itemImage: {
     borderTopLeftRadius: "5px",
@@ -40,8 +42,32 @@ const styles = {
     paddingTop: "0!important",
     height: "35px",
   },
+  heartContainer: {
+    width: "auto",
+    position: "absolute",
+    height: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "5px",
+    background: "whitesmoke",
+  },
 };
-const BookItem = ({ bookItem }) => {
+const BookItem = ({ bookItem, addWish, user }) => {
+  const [like, setLike] = useState(false);
+  const addToWishlist = async () => {
+    try {
+      await axios.post(`http://localhost:5000/users/${user.email}/wishlist`, {
+        user: user,
+        item: bookItem,
+      });
+      addWish(bookItem);
+      setLike(!like);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Grid
       style={styles.gridItem}
@@ -49,10 +75,21 @@ const BookItem = ({ bookItem }) => {
       item
       xs={12}
       sm={6}
-      md={4}
-      lg={3}
+      md={3}
+      lg={2}
     >
       <div style={styles.item} className="item">
+        <Paper style={styles.heartContainer}>
+          {like ? (
+            <IconButton onClick={addToWishlist}>
+              <FavoriteIcon sx={{ color: "red" }} />
+            </IconButton>
+          ) : (
+            <IconButton onClick={addToWishlist}>
+              <FavoriteBorderIcon />
+            </IconButton>
+          )}
+        </Paper>
         <Link to={`/produit/${bookItem._id}`} key={bookItem.id}>
           <img
             style={styles.itemImage}
@@ -62,10 +99,10 @@ const BookItem = ({ bookItem }) => {
         </Link>
         <div style={styles.itemInfos}>
           <div>
-            <Typography align="center" variant="h6">
+            <Typography align="center" variant="h6" style ={{fontSize:"1rem"}}>
               {bookItem.title}
             </Typography>
-            <Typography align="center" variant="body1">
+            <Typography align="center" variant="h6" style ={{fontSize:"0.8rem"}}>
               {bookItem.author}
             </Typography>
           </div>
