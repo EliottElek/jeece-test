@@ -164,7 +164,7 @@ const Product = ({ id, user, addCart, addWish }) => {
           </div>
         </Grid>
       </Grid>
-      <div style ={{height:'60px'}}></div>
+      <div style={{ height: "60px" }}></div>
       <div style={styles.grid2}>
         {user ? (
           <Typography variant="h6">
@@ -191,7 +191,7 @@ const Product = ({ id, user, addCart, addWish }) => {
             style={{ marginLeft: "12px", fontSize: "1.4rem" }}
             variant="body1"
           >
-            {rating}
+            {rating} {rating > 1 ? "étoiles" : "étoile"}
           </Typography>
           <Button
             style={styles.sendRating}
