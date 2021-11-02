@@ -11,7 +11,15 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartItem = ({ cart }) => {
+const CartItem = ({ user, cart, addOrder }) => {
+  const getTotal = () => {
+    let tot = 0;
+    cart.map((item) => {
+      tot += item.price;
+      return tot;
+    });
+    return tot;
+  };
   return (
     <>
       {cart.length === 0 ? (
@@ -104,7 +112,7 @@ const CartItem = ({ cart }) => {
                     align="center"
                   >
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {34}€ TTC
+                      {getTotal()}€ TTC
                     </Typography>
                   </TableCell>
                   <TableCell
@@ -117,21 +125,24 @@ const CartItem = ({ cart }) => {
           </TableContainer>
           <div
             style={{
-              width: "95%",
+              width: "100%",
               maxWidth: "1000px",
               margin: "auto",
               display: "flex",
               justifyContent: "flex-end",
             }}
           >
+            <Button sx={{ marginTop: "23px" }}>Vider mon panier</Button>
+
             <Button
-              sx={{ marginTop: "23px", marginRight: "20px" }}
+              component={Link}
+              to={"order"}
+              sx={{ marginTop: "23px", marginLeft: "20px" }}
               variant="contained"
               color="primary"
             >
               Passer commande
             </Button>
-            <Button sx={{ marginTop: "23px" }}>Vider mon panier</Button>
           </div>
         </>
       )}

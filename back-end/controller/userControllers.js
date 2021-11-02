@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Order = require("../models/Order");
+
 const bcrypt = require("bcrypt");
 const getUsers = async (req, res) => {
   try {
@@ -85,7 +87,7 @@ const getCart = async (req, res) => {
     });
     if (user === null)
       res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
-    else res.json({cart: user.cart });
+    else res.json({ cart: user.cart });
   } catch (err) {
     console.error(err);
   }
@@ -101,10 +103,16 @@ const addToWishlist = async (req, res) => {
       const newWishlist = user.wishlist;
       newWishlist.push(req.body.item);
       await User.findOneAndUpdate({ _id: user.id }, { wishlist: newWishlist });
-      res.json({ add: true, message: "Ajouté à la liste des souhaits avec succès." });
+      res.json({
+        add: true,
+        message: "Ajouté à la liste des souhaits avec succès.",
+      });
     }
   } catch (err) {
-    res.json({ add: false, message: "Impossible d'ajouter à la liste des souhaits." });
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
   }
 };
 const getWishlist = async (req, res) => {
@@ -114,7 +122,24 @@ const getWishlist = async (req, res) => {
     });
     if (user === null)
       res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
-    else res.json({wishlist: user.wishlist });
+    else res.json({ wishlist: user.wishlist });
+  } catch (err) {
+    console.error(err);
+  }
+};
+const getOrders = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const orders = await Order.find({
+        email: req.params.email,
+      });
+      res.json({ orders: orders });
+    }
   } catch (err) {
     console.error(err);
   }
@@ -127,5 +152,6 @@ module.exports = {
   addToCart,
   getCart,
   addToWishlist,
-  getWishlist
+  getWishlist,
+  getOrders,
 };

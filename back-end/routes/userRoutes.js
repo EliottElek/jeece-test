@@ -10,6 +10,7 @@ const {
   getCart,
   addToWishlist,
   getWishlist,
+  getOrders,
 } = require("../controller/userControllers");
 //@desc GET all users from db
 //@route GET /users
@@ -20,6 +21,8 @@ router.post("/:email/cart", addToCart);
 router.get("/:email/cart", getCart);
 router.post("/:email/wishlist", addToWishlist);
 router.get("/:email/wishlist", getWishlist);
+router.get("/:email/orders", getOrders);
+
 //@desc GET a user by id from db
 //@route GET /user/:id
 //@access Public

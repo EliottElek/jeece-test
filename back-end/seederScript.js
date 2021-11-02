@@ -5,6 +5,7 @@ const usersData = require("./data/users");
 const connectDB = require("./config/db");
 const Product = require("./models/Product");
 const User = require("./models/User");
+const Order = require("./models/Order");
 
 connectDB();
 
@@ -13,6 +14,15 @@ const importDataProducts = async () => {
     await Product.deleteMany({});
     await Product.insertMany(productsData);
     console.log("Products imported correctly.");
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+const importOrderProducts = async () => {
+  try {
+    await Order.deleteMany({});
+    console.log("Orders cleared correctly.");
   } catch (err) {
     console.error(err);
     process.exit(1);
@@ -30,5 +40,6 @@ const importDataUsers = async () => {
     process.exit(1);
   }
 };
+importOrderProducts();
 importDataProducts();
 importDataUsers();

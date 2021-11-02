@@ -11,6 +11,8 @@ import SignUp from "./components/SignUp/SignUp";
 import CartList from "./components/CartList/CartList";
 import Wishlist from "./components/Wishlist/Wishlist";
 import Footer from "./components/Footer/Footer";
+import FinishOrder from "./components/FinishOrder/FinishOrder";
+import { getBottomNavigationUtilityClass } from "@mui/material";
 const styles = {
   root: {
     padding: 0,
@@ -32,9 +34,13 @@ let theme = createTheme({
 function App() {
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [wishlist, setWishlist] = useState(null);
 
+  const addOrder = (order) => {
+    setOrders([...orders, order]);
+  };
   const addCart = (item) => {
     setCart([...cart, item]);
   };
@@ -55,6 +61,29 @@ function App() {
     };
     fetchProducts();
   }, [products]);
+
+  const handleAdd = async (tot) => {
+    try {
+      const total = tot;
+      const order = {
+        customer: user,
+        items: cart,
+        total: total,
+        creation: new Date(),
+      };
+      const { data: res } = await axios.post(`http://localhost:5000/orders/`, {
+        order: order,
+      });
+      console.log(res);
+      if (res.creation) {
+        addOrder(res.order[0]);
+      } else {
+        console.log("Impossible de finaliser la commande.");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
@@ -65,7 +94,7 @@ function App() {
               <Home addWish={addToWishlist} user={user} bookList={products} />
             </Route>
             <Route exact path="/panier">
-              <CartList cart={cart} />
+              <CartList user={user} cart={cart} addOrder={addOrder} />
             </Route>
             <Route exact path="/register">
               <SignUp user={user} setUser={setUser} />
@@ -80,6 +109,9 @@ function App() {
                 setWishlist={setWishlist}
                 user={user}
               />
+            </Route>
+            <Route exact path="/order">
+              <FinishOrder cart={cart} user={user} />
             </Route>
             <Route
               exact

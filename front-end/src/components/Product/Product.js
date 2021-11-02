@@ -191,7 +191,7 @@ const Product = ({ id, user, addCart, addWish }) => {
             style={{ marginLeft: "12px", fontSize: "1.4rem" }}
             variant="body1"
           >
-            {rating} {rating > 1 ? "étoiles" : "étoile"}
+            {rating} {rating > 1 && rating ? "étoiles" : "étoile"}
           </Typography>
           <Button
             style={styles.sendRating}
