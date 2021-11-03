@@ -5,7 +5,12 @@ import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 
-export default function DotsMobileStepper({handleNext, handleBack, activeStep}) {
+export default function DotsMobileStepper({
+  handleNext,
+  handleBack,
+  activeStep,
+  disabled,
+}) {
   const theme = useTheme();
 
   return (
@@ -16,7 +21,11 @@ export default function DotsMobileStepper({handleNext, handleBack, activeStep}) 
       activeStep={activeStep}
       sx={{ flexGrow: 1 }}
       nextButton={
-        <Button size="small" onClick={handleNext} disabled={activeStep === 3}>
+        <Button
+          size="small"
+          onClick={handleNext}
+          disabled={activeStep === 3 || disabled}
+        >
           suivant
           {theme.direction === "rtl" ? (
             <KeyboardArrowLeft />

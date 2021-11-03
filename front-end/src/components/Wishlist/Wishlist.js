@@ -11,6 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
 const CartItem = ({ cart }) => {
+  if (!cart) return <h2>Connectez-vous pour accéder à votre liste de souhaits.</h2>;
+
   return (
     <>
       {cart.length === 0 ? (

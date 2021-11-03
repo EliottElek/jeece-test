@@ -11,19 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartItem = ({ user, cart, addOrder }) => {
-  const getTotal = () => {
-    let tot = 0;
-    cart.map((item) => {
-      tot += item.price;
-      return tot;
-    });
-    return tot;
-  };
+const CartItem = ({ cart, total }) => {
+  if (!cart) return <h2>Connectez-vous pour accéder à votre panier.</h2>;
   return (
     <>
-      {cart.length === 0 ? (
-        <h1>Votre panier est vide.</h1>
+      {cart?.length === 0 ? (
+        <h2>Votre panier est vide.</h2>
       ) : (
         <>
           <TableContainer
@@ -112,7 +105,7 @@ const CartItem = ({ user, cart, addOrder }) => {
                     align="center"
                   >
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {getTotal()}€ TTC
+                      {total}€ TTC
                     </Typography>
                   </TableCell>
                   <TableCell

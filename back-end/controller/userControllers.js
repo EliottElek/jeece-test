@@ -73,7 +73,7 @@ const addToCart = async (req, res) => {
     else {
       const newcart = user.cart;
       newcart.push(req.body.item);
-      await User.findOneAndUpdate({ _id: user.id }, { cart: newcart });
+      await User.findOneAndUpdate({ _id: user._id }, { cart: newcart });
       res.json({ add: true, message: "Ajouté au panier avec succès." });
     }
   } catch (err) {

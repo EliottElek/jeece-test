@@ -13,6 +13,7 @@ import Wishlist from "./components/Wishlist/Wishlist";
 import Footer from "./components/Footer/Footer";
 import FinishOrder from "./components/FinishOrder/FinishOrder";
 import { getBottomNavigationUtilityClass } from "@mui/material";
+import ErrorPage from "./components/404/404";
 const styles = {
   root: {
     padding: 0,
@@ -32,6 +33,14 @@ let theme = createTheme({
 });
 
 function App() {
+  const getTotal = () => {
+    let tot = 0;
+    cart?.map((item) => {
+      tot += item.price;
+      return tot;
+    });
+    return tot;
+  };
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState(null);
@@ -46,6 +55,9 @@ function App() {
   };
   const addToWishlist = (item) => {
     setWishlist([...wishlist, item]);
+  };
+  const emptyCart = async () => {
+    setCart([]);
   };
   useEffect(() => {
     const fetchProducts = async () => {
@@ -62,28 +74,6 @@ function App() {
     fetchProducts();
   }, [products]);
 
-  const handleAdd = async (tot) => {
-    try {
-      const total = tot;
-      const order = {
-        customer: user,
-        items: cart,
-        total: total,
-        creation: new Date(),
-      };
-      const { data: res } = await axios.post(`http://localhost:5000/orders/`, {
-        order: order,
-      });
-      console.log(res);
-      if (res.creation) {
-        addOrder(res.order[0]);
-      } else {
-        console.log("Impossible de finaliser la commande.");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
@@ -94,13 +84,21 @@ function App() {
               <Home addWish={addToWishlist} user={user} bookList={products} />
             </Route>
             <Route exact path="/panier">
-              <CartList user={user} cart={cart} addOrder={addOrder} />
+              <CartList
+                user={user}
+                cart={cart}
+                addOrder={addOrder}
+                total={getTotal()}
+              />
             </Route>
             <Route exact path="/register">
               <SignUp user={user} setUser={setUser} />
             </Route>
             <Route exact path="/wishlist">
               <Wishlist cart={wishlist} />
+            </Route>
+            <Route path="/404">
+              <ErrorPage />
             </Route>
             <Route exact path="/compte">
               <Profile
@@ -111,7 +109,13 @@ function App() {
               />
             </Route>
             <Route exact path="/order">
-              <FinishOrder cart={cart} user={user} />
+              <FinishOrder
+                cart={cart}
+                user={user}
+                addOrder={addOrder}
+                tot={getTotal()}
+                emptyCart={emptyCart}
+              />
             </Route>
             <Route
               exact

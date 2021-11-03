@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const User = require("../models/User");
 
 const getOrders = async (req, res) => {
   try {
@@ -19,6 +20,7 @@ const createOrder = async (req, res) => {
     else {
       const order = req.body.order;
       const ord = await Order.insertMany(order);
+      await User.findOneAndUpdate({ _id: user._id }, { cart: [] });
       res.json({
         creation: true,
         message: "Commande passée avec succès.",
