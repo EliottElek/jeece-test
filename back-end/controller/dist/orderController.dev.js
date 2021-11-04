@@ -37,63 +37,47 @@ var getOrders = function getOrders(req, res) {
 };
 
 var createOrder = function createOrder(req, res) {
-  var user, order, ord;
+  var email, order, ord;
   return regeneratorRuntime.async(function createOrder$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
           console.log(req.body);
-          user = req.body.order.customer;
-
-          if (!(user === null)) {
-            _context2.next = 7;
-            break;
-          }
-
-          res.json({
-            creation: false,
-            message: "Utilisateur introuvable."
-          });
-          _context2.next = 14;
-          break;
-
-        case 7:
+          email = req.body.order.email;
           order = req.body.order;
-          _context2.next = 10;
+          _context2.next = 6;
           return regeneratorRuntime.awrap(Order.insertMany(order));
 
-        case 10:
+        case 6:
           ord = _context2.sent;
-          _context2.next = 13;
+          _context2.next = 9;
           return regeneratorRuntime.awrap(User.findOneAndUpdate({
-            _id: user._id
+            email: email
           }, {
             cart: []
           }));
 
-        case 13:
+        case 9:
           res.json({
             creation: true,
             message: "Commande passée avec succès.",
             order: ord
           });
-
-        case 14:
-          _context2.next = 19;
+          _context2.next = 15;
           break;
 
-        case 16:
-          _context2.prev = 16;
+        case 12:
+          _context2.prev = 12;
           _context2.t0 = _context2["catch"](0);
           console.error(_context2.t0);
 
-        case 19:
+        case 15:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 16]]);
+  }, null, null, [[0, 12]]);
 };
 
 module.exports = {

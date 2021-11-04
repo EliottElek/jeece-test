@@ -409,9 +409,7 @@ var getOrders = function getOrders(req, res) {
 
         case 10:
           orders = _context9.sent;
-          res.json({
-            orders: orders
-          });
+          res.json(orders);
 
         case 12:
           _context9.next = 17;

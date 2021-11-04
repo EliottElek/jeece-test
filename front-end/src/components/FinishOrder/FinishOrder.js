@@ -63,11 +63,36 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
   const handleAdd = async () => {
     try {
       const total = tot;
+      const payment = {
+        cardNumber: cardNumber,
+        expireDate: expireDate,
+        crypto: crypto,
+      };
+      const deliveryAddress = {
+        address: address,
+        postal: postal,
+        city: city,
+        country: country,
+      };
+      let facturationAddress = {};
+      if (facturation) {
+        facturationAddress = deliveryAddress;
+      } else {
+        facturationAddress = {
+          address: address2,
+          postal: postal2,
+          city: city2,
+          country: country2,
+        };
+      }
       const order = {
-        customer: user,
+        email: user.email,
         items: cart,
         total: total,
         creation: new Date(),
+        paymentMethod: payment,
+        facturationAddress: facturationAddress,
+        deliveryAddress: deliveryAddress,
       };
       const { data: res } = await axios.post(`http://localhost:5000/orders/`, {
         order: order,
@@ -106,7 +131,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
       >
         <Typography>Votre commande a été passée avec succès.</Typography>
         <Link to="/">Retour à la boutique</Link>
-        <Link to="/compte">Voir l'historique de mes commandes</Link>
+        <Link to="/myorders">Voir l'historique de mes commandes</Link>
       </div>
     );
   return (
@@ -221,6 +246,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                 style={{ width: "60%", margin: "auto", padding: 10 }}
               >
                 <TextField
+                  required
                   value={address2}
                   onChange={(e) => setAddress2(e.target.value)}
                   style={styles.input}
@@ -228,6 +254,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                   placeHolder={"exemple : 12 rue du Pauvre"}
                 />
                 <TextField
+                  required
                   value={postal2}
                   onChange={(e) => setPostal2(e.target.value)}
                   style={styles.input}
@@ -235,6 +262,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                   placeHolder={"exemple : 76019"}
                 />
                 <TextField
+                  required
                   value={city2}
                   onChange={(e) => setCity2(e.target.value)}
                   style={styles.input}
@@ -242,6 +270,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                   placeHolder={"exemple : Rouen"}
                 />
                 <TextField
+                  required
                   value={country2}
                   onChange={(e) => setCountry2(e.target.value)}
                   style={styles.input}
@@ -268,6 +297,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
           <Typography>Renseignez votre moyen de paiement</Typography>
           <FormControl style={{ width: "60%", margin: "auto", padding: 10 }}>
             <TextField
+              required
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
               style={styles.input}
@@ -275,6 +305,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               placeHolder={"exemple : 2132 3212 3212 2312"}
             />
             <TextField
+              required
               value={expireDate}
               onChange={(e) => setExpireDate(e.target.value)}
               style={styles.input}
@@ -282,6 +313,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               placeHolder={"exemple : 29/04/23"}
             />
             <TextField
+              required
               value={crypto}
               onChange={(e) => setCrypto(e.target.value)}
               style={styles.input}

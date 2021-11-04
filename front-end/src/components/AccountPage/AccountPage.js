@@ -3,6 +3,7 @@ import React from "react";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LockIcon from "@mui/icons-material/Lock";
 import RedeemIcon from "@mui/icons-material/Redeem";
+import { Link } from "react-router-dom";
 const styles = {
   root: {
     width: "90%",
@@ -34,7 +35,12 @@ const AccountPage = ({ user }) => {
                 {user.firstname} {user.lastname}
               </Typography>
               <Typography variant="h6">{user.email}</Typography>
-              <Button sx ={{marginTop:"20px"}} size = "small" variant="contained" color="warning">
+              <Button
+                sx={{ marginTop: "20px" }}
+                size="small"
+                variant="contained"
+                color="warning"
+              >
                 Se déconnecter
               </Button>
             </div>
@@ -89,6 +95,8 @@ const AccountPage = ({ user }) => {
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  component={Link}
+                  to="/myorders"
                 >
                   <Typography align="center" variant="h6">
                     Mes commandes

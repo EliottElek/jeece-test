@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
-  customer: {
-    type: Object,
+  email: {
+    type: String,
     required: true,
   },
-  articles: {
+  items: {
     type: Array,
     required: true,
   },
@@ -13,10 +13,22 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  date:{
-      type:Array,
-      required:true,
-  }
+  creation: {
+    type: String,
+    required: true,
+  },
+  deliveryAddress: {
+    type: Object,
+    required: true,
+  },
+  facturationAddress: {
+    type: Object,
+    required: true,
+  },
+  paymentMethod: {
+    type: Object,
+    required: true,
+  },
 });
 
 const Order = mongoose.model("order", productSchema);

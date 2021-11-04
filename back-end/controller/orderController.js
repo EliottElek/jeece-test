@@ -14,19 +14,15 @@ const getOrders = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     console.log(req.body);
-    const user = req.body.order.customer;
-    if (user === null)
-      res.json({ creation: false, message: "Utilisateur introuvable." });
-    else {
-      const order = req.body.order;
-      const ord = await Order.insertMany(order);
-      await User.findOneAndUpdate({ _id: user._id }, { cart: [] });
-      res.json({
-        creation: true,
-        message: "Commande passée avec succès.",
-        order: ord,
-      });
-    }
+    const email = req.body.order.email;
+    const order = req.body.order;
+    const ord = await Order.insertMany(order);
+    await User.findOneAndUpdate({ email: email }, { cart: [] });
+    res.json({
+      creation: true,
+      message: "Commande passée avec succès.",
+      order: ord,
+    });
   } catch (err) {
     console.error(err);
   }

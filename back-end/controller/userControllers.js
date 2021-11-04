@@ -138,7 +138,7 @@ const getOrders = async (req, res) => {
       const orders = await Order.find({
         email: req.params.email,
       });
-      res.json({ orders: orders });
+      res.json(orders);
     }
   } catch (err) {
     console.error(err);

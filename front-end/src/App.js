@@ -12,8 +12,8 @@ import CartList from "./components/CartList/CartList";
 import Wishlist from "./components/Wishlist/Wishlist";
 import Footer from "./components/Footer/Footer";
 import FinishOrder from "./components/FinishOrder/FinishOrder";
-import { getBottomNavigationUtilityClass } from "@mui/material";
 import ErrorPage from "./components/404/404";
+import MyOrders from "./components/MyOrders/MyOrders";
 const styles = {
   root: {
     padding: 0,
@@ -68,7 +68,7 @@ function App() {
         setProducts(prdcts);
       } catch (e) {
         alert("Could not connect to server. Please try again later.");
-        console.error();
+        console.error(e);
       }
     };
     fetchProducts();
@@ -116,6 +116,9 @@ function App() {
                 tot={getTotal()}
                 emptyCart={emptyCart}
               />
+            </Route>
+            <Route exact path="/myorders">
+              <MyOrders user={user} />
             </Route>
             <Route
               exact
