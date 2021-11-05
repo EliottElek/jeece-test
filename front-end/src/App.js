@@ -41,6 +41,14 @@ function App() {
     });
     return tot;
   };
+  const getTotalWishList = () => {
+    let tot = 0;
+    wishlist?.map((item) => {
+      tot += item.price;
+      return tot;
+    });
+    return tot;
+  };
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState(null);
@@ -53,8 +61,50 @@ function App() {
   const addCart = (item) => {
     setCart([...cart, item]);
   };
-  const addToWishlist = (item) => {
-    setWishlist([...wishlist, item]);
+  const addToWishList = async (item) => {
+    try {
+      await axios.post(`http://localhost:5000/users/${user.email}/wishlist`, {
+        user: user,
+        item: item,
+      });
+      setWishlist([...wishlist, item]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const removeFromCart = async (item) => {
+    try {
+      await axios.post(
+        `http://localhost:5000/users/${user.email}/cart/remove`,
+        {
+          email: user.email,
+          item: item,
+        }
+      );
+      var newCart = cart.filter(function (e) {
+        return e._id !== item._id;
+      });
+      setCart(newCart);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const removeFromWishList = async (item) => {
+    try {
+      await axios.post(
+        `http://localhost:5000/users/${user.email}/wishlist/remove`,
+        {
+          email: user.email,
+          item: item,
+        }
+      );
+      var newWishList = wishlist.filter(function (e) {
+        return e._id !== item._id;
+      });
+      setWishlist(newWishList);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const emptyCart = async () => {
     setCart([]);
@@ -81,7 +131,13 @@ function App() {
           <AppBar books={products} cart={cart} wishlist={wishlist} />
           <Switch>
             <Route exact path="/">
-              <Home addWish={addToWishlist} user={user} bookList={products} />
+              <Home
+                addWish={addToWishList}
+                removeFromWishList={removeFromWishList}
+                wishlist = {wishlist}
+                user={user}
+                bookList={products}
+              />
             </Route>
             <Route exact path="/panier">
               <CartList
@@ -89,13 +145,19 @@ function App() {
                 cart={cart}
                 addOrder={addOrder}
                 total={getTotal()}
+                removeFromCart={removeFromCart}
               />
             </Route>
             <Route exact path="/register">
               <SignUp user={user} setUser={setUser} />
             </Route>
             <Route exact path="/wishlist">
-              <Wishlist cart={wishlist} />
+              <Wishlist
+                user={user}
+                cart={wishlist}
+                getTotalWishList={getTotalWishList()}
+                removeFromWishList={removeFromWishList}
+              />
             </Route>
             <Route path="/404">
               <ErrorPage />
@@ -126,7 +188,7 @@ function App() {
               render={(props) => (
                 <Product
                   addCart={addCart}
-                  addWish={addToWishlist}
+                  addToWishlist={addToWishList}
                   user={user}
                   id={props.match.params.id}
                   key={props.location.key}

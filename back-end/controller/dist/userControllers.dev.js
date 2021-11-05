@@ -307,7 +307,7 @@ var addToWishlist = function addToWishlist(req, res) {
           newWishlist.push(req.body.item);
           _context7.next = 12;
           return regeneratorRuntime.awrap(User.findOneAndUpdate({
-            _id: user.id
+            _id: user._id
           }, {
             wishlist: newWishlist
           }));
@@ -338,9 +338,9 @@ var addToWishlist = function addToWishlist(req, res) {
   }, null, null, [[0, 15]]);
 };
 
-var getWishlist = function getWishlist(req, res) {
-  var user;
-  return regeneratorRuntime.async(function getWishlist$(_context8) {
+var removeFromWishlist = function removeFromWishlist(req, res) {
+  var user, item, newWishlist;
+  return regeneratorRuntime.async(function removeFromWishlist$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
@@ -352,31 +352,60 @@ var getWishlist = function getWishlist(req, res) {
 
         case 3:
           user = _context8.sent;
-          if (user === null) res.json({
+
+          if (!(user === null)) {
+            _context8.next = 8;
+            break;
+          }
+
+          res.json({
             auth: false,
             message: "Cet utilisateur n'existe pas."
-          });else res.json({
-            wishlist: user.wishlist
           });
-          _context8.next = 10;
+          _context8.next = 13;
           break;
 
-        case 7:
-          _context8.prev = 7;
-          _context8.t0 = _context8["catch"](0);
-          console.error(_context8.t0);
+        case 8:
+          item = req.body.item;
+          newWishlist = user.wishlist.filter(function (e) {
+            return e._id !== item._id;
+          });
+          _context8.next = 12;
+          return regeneratorRuntime.awrap(User.findOneAndUpdate({
+            _id: user._id
+          }, {
+            wishlist: newWishlist
+          }));
 
-        case 10:
+        case 12:
+          res.json({
+            add: true,
+            message: "Object supprimé de la liste des souhaits avec succès."
+          });
+
+        case 13:
+          _context8.next = 18;
+          break;
+
+        case 15:
+          _context8.prev = 15;
+          _context8.t0 = _context8["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible d'ajouter à la liste des souhaits."
+          });
+
+        case 18:
         case "end":
           return _context8.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 15]]);
 };
 
-var getOrders = function getOrders(req, res) {
-  var user, orders;
-  return regeneratorRuntime.async(function getOrders$(_context9) {
+var removeFromCart = function removeFromCart(req, res) {
+  var user, item, newCart;
+  return regeneratorRuntime.async(function removeFromCart$(_context9) {
     while (1) {
       switch (_context9.prev = _context9.next) {
         case 0:
@@ -398,31 +427,132 @@ var getOrders = function getOrders(req, res) {
             auth: false,
             message: "Cet utilisateur n'existe pas."
           });
-          _context9.next = 12;
+          _context9.next = 13;
           break;
 
         case 8:
-          _context9.next = 10;
+          item = req.body.item;
+          newCart = user.cart.filter(function (e) {
+            return e._id !== item._id;
+          });
+          _context9.next = 12;
+          return regeneratorRuntime.awrap(User.findOneAndUpdate({
+            _id: user._id
+          }, {
+            cart: newCart
+          }));
+
+        case 12:
+          res.json({
+            add: true,
+            message: "Object supprimé du panier avec succès."
+          });
+
+        case 13:
+          _context9.next = 18;
+          break;
+
+        case 15:
+          _context9.prev = 15;
+          _context9.t0 = _context9["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible d'ajouter à la liste des souhaits."
+          });
+
+        case 18:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, null, null, [[0, 15]]);
+};
+
+var getWishlist = function getWishlist(req, res) {
+  var user;
+  return regeneratorRuntime.async(function getWishlist$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          _context10.next = 3;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: req.params.email
+          }));
+
+        case 3:
+          user = _context10.sent;
+          if (user === null) res.json({
+            auth: false,
+            message: "Cet utilisateur n'existe pas."
+          });else res.json({
+            wishlist: user.wishlist
+          });
+          _context10.next = 10;
+          break;
+
+        case 7:
+          _context10.prev = 7;
+          _context10.t0 = _context10["catch"](0);
+          console.error(_context10.t0);
+
+        case 10:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+var getOrders = function getOrders(req, res) {
+  var user, orders;
+  return regeneratorRuntime.async(function getOrders$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.prev = 0;
+          _context11.next = 3;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: req.params.email
+          }));
+
+        case 3:
+          user = _context11.sent;
+
+          if (!(user === null)) {
+            _context11.next = 8;
+            break;
+          }
+
+          res.json({
+            auth: false,
+            message: "Cet utilisateur n'existe pas."
+          });
+          _context11.next = 12;
+          break;
+
+        case 8:
+          _context11.next = 10;
           return regeneratorRuntime.awrap(Order.find({
             email: req.params.email
           }));
 
         case 10:
-          orders = _context9.sent;
+          orders = _context11.sent;
           res.json(orders);
 
         case 12:
-          _context9.next = 17;
+          _context11.next = 17;
           break;
 
         case 14:
-          _context9.prev = 14;
-          _context9.t0 = _context9["catch"](0);
-          console.error(_context9.t0);
+          _context11.prev = 14;
+          _context11.t0 = _context11["catch"](0);
+          console.error(_context11.t0);
 
         case 17:
         case "end":
-          return _context9.stop();
+          return _context11.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -436,6 +566,8 @@ module.exports = {
   addToCart: addToCart,
   getCart: getCart,
   addToWishlist: addToWishlist,
+  removeFromWishlist: removeFromWishlist,
+  removeFromCart: removeFromCart,
   getWishlist: getWishlist,
   getOrders: getOrders
 };

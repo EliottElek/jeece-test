@@ -11,6 +11,8 @@ const {
   addToWishlist,
   getWishlist,
   getOrders,
+  removeFromWishlist,
+  removeFromCart,
 } = require("../controller/userControllers");
 //@desc GET all users from db
 //@route GET /users
@@ -21,6 +23,8 @@ router.post("/:email/cart", addToCart);
 router.get("/:email/cart", getCart);
 router.post("/:email/wishlist", addToWishlist);
 router.get("/:email/wishlist", getWishlist);
+router.post("/:email/wishlist/remove", removeFromWishlist);
+router.post("/:email/cart/remove", removeFromCart);
 router.get("/:email/orders", getOrders);
 
 //@desc GET a user by id from db

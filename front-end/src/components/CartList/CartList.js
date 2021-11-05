@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartItem = ({ cart, total }) => {
+const CartItem = ({ cart, total, removeFromCart }) => {
   if (!cart) return <h2>Connectez-vous pour accéder à votre panier.</h2>;
   return (
     <>
@@ -79,7 +79,7 @@ const CartItem = ({ cart, total }) => {
                       style={{ maxHeight: "100px", padding: 0 }}
                       align="right"
                     >
-                      <IconButton>
+                      <IconButton onClick={() => removeFromCart(row)}>
                         <DeleteForeverIcon />
                       </IconButton>
                     </TableCell>

@@ -4,6 +4,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LockIcon from "@mui/icons-material/Lock";
 import RedeemIcon from "@mui/icons-material/Redeem";
 import { Link } from "react-router-dom";
+import MyOrders from "../MyOrders/MyOrders";
 const styles = {
   root: {
     width: "90%",
@@ -177,7 +178,8 @@ const AccountPage = ({ user }) => {
           </Grid>
         </Grid>
         <div style={{ height: "35px" }} />
-        <Typography variant="h4">Vos 5 dernières commandes</Typography>
+        <Typography variant="h5">Vos 5 dernières commandes</Typography>
+        <MyOrders user={user} profilePage={true} />
       </Paper>
     </div>
   );

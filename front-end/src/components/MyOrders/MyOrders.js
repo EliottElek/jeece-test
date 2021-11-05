@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-const MyOrders = ({ user }) => {
+const MyOrders = ({ user, profilePage }) => {
   const [orders, setOrders] = useState();
 
   useEffect(() => {
@@ -18,13 +18,16 @@ const MyOrders = ({ user }) => {
         const { data: orders } = await axios.get(
           `http://localhost:5000/users/${user?.email}/orders`
         );
-        setOrders(orders);
+        if (profilePage) {
+          const firstFive = orders.slice(0, 5);
+          setOrders(firstFive);
+        } else setOrders(orders);
       } catch (err) {
         console.error(err);
       }
     };
     fetchOrders();
-  }, [orders, user?.email]);
+  }, [orders, profilePage, user?.email]);
   if (!user)
     return (
       <Typography variant="h5" style={{ margin: "20px" }}>
@@ -34,7 +37,7 @@ const MyOrders = ({ user }) => {
     );
   return (
     <div style={{ margin: "20px" }}>
-      <Typography variant="h5">Vos commandes</Typography>
+      {!profilePage && <Typography variant="h5">Vos commandes</Typography>}
       <TableContainer
         sx={{ width: "95%", maxWidth: "1000px", margin: "auto" }}
         component={Paper}
@@ -68,7 +71,9 @@ const MyOrders = ({ user }) => {
                   style={{ maxHeight: "100px", padding: 0 }}
                   align="left"
                 >
-                  {row.items.length} articles
+                  {row.items.length === 1
+                    ? row.items.length + "  article"
+                    : row.items.length + "  articles"}
                 </TableCell>
                 <TableCell
                   style={{ maxHeight: "100px", padding: 0 }}

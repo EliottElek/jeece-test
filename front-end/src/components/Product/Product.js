@@ -42,7 +42,7 @@ const styles = {
   },
 };
 
-const Product = ({ id, user, addCart, addWish }) => {
+const Product = ({ id, user, addCart, addToWishlist }) => {
   const [product, setProduct] = useState();
   const [rating, setRating] = useState();
 
@@ -53,17 +53,6 @@ const Product = ({ id, user, addCart, addWish }) => {
         item: product,
       });
       addCart(product);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const addToWishlist = async () => {
-    try {
-      await axios.post(`http://localhost:5000/users/${user.email}/wishlist`, {
-        user: user,
-        item: product,
-      });
-      addWish(product);
     } catch (err) {
       console.log(err);
     }
@@ -155,7 +144,7 @@ const Product = ({ id, user, addCart, addWish }) => {
             <Button
               style={styles.addWishButton}
               disabled={user ? false : true}
-              onClick={addToWishlist}
+              onClick={() => addToWishlist(product)}
               variant="contained"
               color="secondary"
             >

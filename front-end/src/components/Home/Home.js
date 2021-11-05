@@ -1,10 +1,10 @@
 import React from "react";
 import BookList from "../BookList/BookList";
 
-const Home = ({ bookList, addWish, user }) => {
+const Home = ({ bookList,wishlist, addWish, removeFromWishList, user }) => {
   return (
     <div>
-      <BookList bookList={bookList} addWish={addWish} user={user} />
+      <BookList wishlist={wishlist} removeFromWishList={removeFromWishList} bookList={bookList} addWish={addWish} user={user} />
     </div>
   );
 };

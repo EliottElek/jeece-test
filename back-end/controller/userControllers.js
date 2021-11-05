@@ -102,10 +102,61 @@ const addToWishlist = async (req, res) => {
     else {
       const newWishlist = user.wishlist;
       newWishlist.push(req.body.item);
-      await User.findOneAndUpdate({ _id: user.id }, { wishlist: newWishlist });
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
       res.json({
         add: true,
         message: "Ajouté à la liste des souhaits avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
+  }
+};
+
+const removeFromWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const item = req.body.item;
+      let newWishlist = user.wishlist.filter(function (e) {
+        return e._id !== item._id;
+      });
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
+      res.json({
+        add: true,
+        message: "Object supprimé de la liste des souhaits avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
+  }
+};
+const removeFromCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const item = req.body.item;
+      let newCart = user.cart.filter(function (e) {
+        return e._id !== item._id;
+      });
+      await User.findOneAndUpdate({ _id: user._id }, { cart: newCart });
+      res.json({
+        add: true,
+        message: "Object supprimé du panier avec succès.",
       });
     }
   } catch (err) {
@@ -152,6 +203,8 @@ module.exports = {
   addToCart,
   getCart,
   addToWishlist,
+  removeFromWishlist,
+  removeFromCart,
   getWishlist,
   getOrders,
 };

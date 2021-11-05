@@ -10,8 +10,9 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartItem = ({ cart }) => {
-  if (!cart) return <h2>Connectez-vous pour accéder à votre liste de souhaits.</h2>;
+const CartItem = ({ user, cart, removeFromWishList, getTotalWishList }) => {
+  if (!cart)
+    return <h2>Connectez-vous pour accéder à votre liste de souhaits.</h2>;
 
   return (
     <>
@@ -79,7 +80,7 @@ const CartItem = ({ cart }) => {
                       style={{ maxHeight: "100px", padding: 0 }}
                       align="right"
                     >
-                      <IconButton>
+                      <IconButton onClick={() => removeFromWishList(row)}>
                         <DeleteForeverIcon />
                       </IconButton>
                     </TableCell>
@@ -105,7 +106,7 @@ const CartItem = ({ cart }) => {
                     align="center"
                   >
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {34}€ TTC
+                      {getTotalWishList}€ TTC
                     </Typography>
                   </TableCell>
                   <TableCell

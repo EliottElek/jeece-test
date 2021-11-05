@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import "./style.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const styles = {
@@ -53,21 +52,14 @@ const styles = {
     background: "whitesmoke",
   },
 };
-const BookItem = ({ bookItem, addWish, user }) => {
+const BookItem = ({
+  bookItem,
+  addWish,
+  removeFromWishList,
+  user,
+  wishlist,
+}) => {
   const [like, setLike] = useState(false);
-  const addToWishlist = async () => {
-    try {
-      await axios.post(`http://localhost:5000/users/${user.email}/wishlist`, {
-        user: user,
-        item: bookItem,
-      });
-      addWish(bookItem);
-      setLike(!like);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <Grid
       style={styles.gridItem}
@@ -80,12 +72,23 @@ const BookItem = ({ bookItem, addWish, user }) => {
     >
       <div style={styles.item} className="item">
         <Paper style={styles.heartContainer}>
-          {like ? (
-            <IconButton onClick={addToWishlist}>
+          {like || wishlist?.some((item) => item.title === bookItem.title) ? (
+            <IconButton
+              onClick={() => {
+                removeFromWishList(bookItem);
+                setLike(false);
+              }}
+            >
               <FavoriteIcon sx={{ color: "red" }} />
             </IconButton>
           ) : (
-            <IconButton onClick={addToWishlist}>
+            <IconButton
+              onClick={() => {
+                addWish(bookItem);
+                setLike(true);
+              }}
+              disabled={!user ? true : false}
+            >
               <FavoriteBorderIcon />
             </IconButton>
           )}
@@ -99,10 +102,18 @@ const BookItem = ({ bookItem, addWish, user }) => {
         </Link>
         <div style={styles.itemInfos}>
           <div>
-            <Typography align="center" variant="h6" style ={{fontSize:"1rem"}}>
+            <Typography
+              align="center"
+              variant="h6"
+              style={{ fontSize: "1rem" }}
+            >
               {bookItem.title}
             </Typography>
-            <Typography align="center" variant="h6" style ={{fontSize:"0.8rem"}}>
+            <Typography
+              align="center"
+              variant="h6"
+              style={{ fontSize: "0.8rem" }}
+            >
               {bookItem.author}
             </Typography>
           </div>
