@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartItem = ({ cart, total, removeFromCart }) => {
+const CartList = ({ cart, total, removeFromCart }) => {
   if (!cart) return <h2>Connectez-vous pour accéder à votre panier.</h2>;
   return (
     <>
@@ -143,4 +143,4 @@ const CartItem = ({ cart, total, removeFromCart }) => {
   );
 };
 
-export default CartItem;
+export default CartList;

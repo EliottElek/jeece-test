@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Grid, IconButton, Paper, Typography, Button } from "@mui/material";
 import "./style.css";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -53,6 +53,7 @@ const styles = {
   },
 };
 const BookItem = ({
+  inWish,
   bookItem,
   addWish,
   removeFromWishList,
@@ -72,7 +73,8 @@ const BookItem = ({
     >
       <div style={styles.item} className="item">
         <Paper style={styles.heartContainer}>
-          {like || wishlist?.some((item) => item.title === bookItem.title) ? (
+          {!inWish &&
+          (like || wishlist?.some((item) => item.title === bookItem.title)) ? (
             <IconButton
               onClick={() => {
                 removeFromWishList(bookItem);
@@ -82,15 +84,27 @@ const BookItem = ({
               <FavoriteIcon sx={{ color: "red" }} />
             </IconButton>
           ) : (
-            <IconButton
+            !inWish && (
+              <IconButton
+                onClick={() => {
+                  addWish(bookItem);
+                  setLike(true);
+                }}
+                disabled={!user ? true : false}
+              >
+                <FavoriteBorderIcon />
+              </IconButton>
+            )
+          )}
+          {inWish && (
+            <Button
               onClick={() => {
-                addWish(bookItem);
-                setLike(true);
+                removeFromWishList(bookItem);
+                setLike(false);
               }}
-              disabled={!user ? true : false}
             >
-              <FavoriteBorderIcon />
-            </IconButton>
+              Retier
+            </Button>
           )}
         </Paper>
         <Link to={`/produit/${bookItem._id}`} key={bookItem.id}>

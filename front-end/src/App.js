@@ -14,6 +14,7 @@ import Footer from "./components/Footer/Footer";
 import FinishOrder from "./components/FinishOrder/FinishOrder";
 import ErrorPage from "./components/404/404";
 import MyOrders from "./components/MyOrders/MyOrders";
+import Card from "./components/Card/Card";
 const styles = {
   root: {
     padding: 0,
@@ -134,7 +135,7 @@ function App() {
               <Home
                 addWish={addToWishList}
                 removeFromWishList={removeFromWishList}
-                wishlist = {wishlist}
+                wishlist={wishlist}
                 user={user}
                 bookList={products}
               />
@@ -153,8 +154,9 @@ function App() {
             </Route>
             <Route exact path="/wishlist">
               <Wishlist
+                addWish={addToWishList}
                 user={user}
-                cart={wishlist}
+                wishlist={wishlist}
                 getTotalWishList={getTotalWishList()}
                 removeFromWishList={removeFromWishList}
               />
@@ -181,6 +183,9 @@ function App() {
             </Route>
             <Route exact path="/myorders">
               <MyOrders user={user} />
+            </Route>
+            <Route exact path="/card">
+              <Card />
             </Route>
             <Route
               exact

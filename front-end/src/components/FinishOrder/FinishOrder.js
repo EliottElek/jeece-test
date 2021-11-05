@@ -26,7 +26,11 @@ const styles = {
 };
 const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
   const [finished, setFinished] = useState(false);
+
   const [disabled, setDisabled] = useState(true);
+  const [disabled2, setDisabled2] = useState(true);
+  const [disabled3, setDisabled3] = useState(true);
+
   const [address, setAddress] = useState("");
   const [postal, setPostal] = useState("");
   const [city, setCity] = useState("");
@@ -59,7 +63,22 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
     };
     handleChangeDisabled();
   }, [address, city, country, postal]);
-
+  useEffect(() => {
+    const handleChangeDisabled2 = () => {
+      if (address2 !== "" && postal2 !== "" && city2 !== "" && country2 !== "")
+        setDisabled2(false);
+      else setDisabled2(true);
+    };
+    handleChangeDisabled2();
+  }, [address2, city2, country2, postal2]);
+  useEffect(() => {
+    const handleChangeDisabled3 = () => {
+      if (cardNumber !== "" && expireDate !== "" && crypto !== "")
+        setDisabled3(false);
+      else setDisabled3(true);
+    };
+    handleChangeDisabled3();
+  }, [cardNumber, expireDate, crypto]);
   const handleAdd = async () => {
     try {
       const total = tot;
@@ -284,7 +303,11 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                     paddingTop: "10px",
                   }}
                 ></div>
-                <Button variant="contained" onClick={handleNext}>
+                <Button
+                  disabled={disabled2}
+                  variant="contained"
+                  onClick={handleNext}
+                >
                   Suivant
                 </Button>
               </FormControl>
@@ -327,7 +350,11 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                 paddingTop: "10px",
               }}
             >
-              <Button variant="contained" onClick={handleNext}>
+              <Button
+                disabled={disabled3}
+                variant="contained"
+                onClick={handleNext}
+              >
                 Suivant
               </Button>
             </div>
