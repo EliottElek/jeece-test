@@ -20,4 +20,27 @@ const getProductById = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, getProductById };
+const addRating = async (req, res) => {
+  try {
+    const item = await Product.findOne({
+      _id: req.params.id,
+    });
+    if (item === null)
+      res.json({ auth: false, message: "Cet article n'existe pas." });
+    else {
+      const newRating = item.rating;
+      newRating.push(req.body.rate);
+      await Product.findOneAndUpdate({ _id: item._id }, { rating: newRating });
+      res.json({
+        add: true,
+        message: "Note ajoutée avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter la note.",
+    });
+  }
+};
+module.exports = { getAllProducts, getProductById, addRating };

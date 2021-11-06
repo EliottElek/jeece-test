@@ -29,6 +29,14 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rating: {
+    type: Array,
+    required: false,
+  },
+  comments: {
+    type: Array,
+    required: false,
+  },
 });
 
 const Product = mongoose.model("product", productSchema);
