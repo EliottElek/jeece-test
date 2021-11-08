@@ -39,26 +39,6 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
   },
-  links: {
-    color: "inherit",
-    textDecoration: "none",
-    textTransform: "uppercase",
-    letterSpacing: "-0.05em",
-    fontWeight: "bold",
-    borderRadius: "8px",
-  },
-  custom: {
-    color: "white",
-    textDecoration: "none",
-    textTransform: "uppercase",
-    letterSpacing: "-0.05em",
-    fontWeight: "bold",
-    borderRadius: "8px",
-    backgroundColor: "#95ADF9",
-    "@media (max-width: 900px)": {
-      color: "inherit",
-    },
-  },
   buttonMobile: {
     marginRight: "10px",
   },

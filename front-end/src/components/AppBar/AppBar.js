@@ -124,7 +124,6 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
         <img src={logo} style={{ height: "50px", width: "auto" }} alt="logo" />
       </Typography>
       <div className={classes.grow}>{/* <SearchBar books = {books}/> */}</div>
-      {getDrawerChoices(links, classes.desktopLinks)}
       <MenuItem component={Link} to="/wishlist">
         <Badge badgeContent={wishlist?.length} color="secondary">
           <FavoriteBorderIcon sx={{ color: "#bdbdbd" }} />

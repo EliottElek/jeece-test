@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, CircularProgress } from "@mui/material";
 import BookItem from "../BookItem/BookItem";
 const BookList = ({
   inWish,
@@ -12,13 +12,23 @@ const BookList = ({
   return (
     <>
       {bookList?.length === 0 ? (
-        <Typography>Aucun livre à afficher.</Typography>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress color={"primary"} />
+        </div>
       ) : (
         <Grid
           container
           justifyContent="flex-start"
           spacing={4}
-          sx={{ width: "90%", margin: "auto" }}
+          sx={{ width: "90%", margin: "auto", height:"100%" }}
         >
           {bookList?.map((book) => (
             <BookItem

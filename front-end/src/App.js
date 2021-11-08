@@ -117,13 +117,14 @@ function App() {
           `http://localhost:5000/products`
         );
         setProducts(prdcts);
+        console.log("ftched");
       } catch (e) {
         alert("Could not connect to server. Please try again later.");
         console.error(e);
       }
     };
     fetchProducts();
-  }, [products]);
+  }, []);
 
   return (
     <div style={styles.root}>

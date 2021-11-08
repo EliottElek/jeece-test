@@ -79,8 +79,8 @@ const BookItem = ({
       item
       xs={12}
       sm={6}
-      md={3}
-      lg={2}
+      md={4}
+      lg={3}
     >
       <div style={styles.item} className="item">
         <Paper style={styles.heartContainer} elevation = {0}>

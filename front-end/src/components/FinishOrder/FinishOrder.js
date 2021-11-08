@@ -20,6 +20,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link, Redirect } from "react-router-dom";
 import CreditCard from "../Card/Card";
 import axios from "axios";
+import logo from "../../images/logo.png";
 const styles = {
   input: {
     marginTop: "10px",
@@ -45,8 +46,12 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
 
   const [cardNumber, setCardNumber] = useState("");
   const [expireDate, setExpireDate] = useState("");
-  const [crypto, setCrypto] = useState();
-  const [owner, setOwner] = useState();
+  const [crypto, setCrypto] = useState("");
+  const [owner, setOwner] = useState("");
+
+  const [modifyDeliveryAddress, setModifyDeliveryAddress] = useState(false);
+  const [modifyFacturationAddress, setModifyFacturationAddress] =
+    useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -85,7 +90,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
       else setDisabled3(true);
     };
     handleChangeDisabled3();
-  }, [cardNumber, expireDate, crypto]);
+  }, [cardNumber, expireDate, crypto, owner]);
   const handleAdd = async () => {
     try {
       const total = tot;
@@ -156,6 +161,8 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
           maxWidth: "1000px",
         }}
       >
+        <img alt="bookstore" src={logo} />
+        <Typography variant="h6">Vous remercie.</Typography>
         <Typography>Votre commande a été passée avec succès.</Typography>
         <Link to="/">Retour à la boutique</Link>
         <Link to="/myorders">Voir l'historique de mes commandes</Link>
@@ -263,7 +270,11 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
             )}
           </Paper>
           {facturation && (
-            <Button variant="contained" onClick={handleNext}>
+            <Button
+              style={{ marginTop: "10px" }}
+              variant="contained"
+              onClick={handleNext}
+            >
               Suivant
             </Button>
           )}
@@ -398,16 +409,74 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                     >
                       Adresse de livraison
                     </Typography>
-                    <Typography variant="h6" component="div">
-                      {address}, {postal} {city}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {country}
-                    </Typography>
+                    {!modifyDeliveryAddress ? (
+                      <>
+                        <Typography variant="h6" component="div">
+                          {address}, {postal} {city}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          {country}
+                        </Typography>
+                      </>
+                    ) : (
+                      <FormControl
+                        style={{ width: "60%", margin: "auto", padding: 10 }}
+                      >
+                        <TextField
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          style={styles.input}
+                          label="Adresse"
+                          placeHolder={"exemple : 12 rue du Pauvre"}
+                        />
+                        <TextField
+                          value={postal}
+                          onChange={(e) => setPostal(e.target.value)}
+                          style={styles.input}
+                          label="Code postal"
+                          placeHolder={"exemple : 76019"}
+                        />
+                        <TextField
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          style={styles.input}
+                          label="Ville"
+                          placeHolder={"exemple : Rouen"}
+                        />
+                        <TextField
+                          value={country}
+                          onChange={(e) => setCountry(e.target.value)}
+                          style={styles.input}
+                          label="Pays"
+                          placeHolder={"exemple : France"}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            paddingTop: "10px",
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            onClick={() => setModifyDeliveryAddress(false)}
+                          >
+                            Sauvegarder
+                          </Button>
+                        </div>
+                      </FormControl>
+                    )}
                   </CardContent>
-                  <CardActions>
-                    <Button size="small">Modifier</Button>
-                  </CardActions>
+                  {!modifyDeliveryAddress && (
+                    <CardActions>
+                      <Button
+                        onClick={() => setModifyDeliveryAddress(true)}
+                        size="small"
+                      >
+                        Modifier
+                      </Button>
+                    </CardActions>
+                  )}
                 </React.Fragment>
               </Card>
               <Card sx={{ width: "90%", margin: "10px" }}>
@@ -429,7 +498,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                           {country2}
                         </Typography>
                       </>
-                    ) : (
+                    ) : !modifyFacturationAddress ? (
                       <>
                         <Typography variant="h6" component="div">
                           {address}, {postal} {city}
@@ -438,11 +507,68 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
                           {country}
                         </Typography>
                       </>
+                    ) : (
+                      <FormControl
+                        style={{ width: "60%", margin: "auto", padding: 10 }}
+                      >
+                        <TextField
+                          required
+                          value={address2}
+                          onChange={(e) => setAddress2(e.target.value)}
+                          style={styles.input}
+                          label="Adresse"
+                          placeHolder={"exemple : 12 rue du Pauvre"}
+                        />
+                        <TextField
+                          required
+                          value={postal2}
+                          onChange={(e) => setPostal2(e.target.value)}
+                          style={styles.input}
+                          label="Code postal"
+                          placeHolder={"exemple : 76019"}
+                        />
+                        <TextField
+                          required
+                          value={city2}
+                          onChange={(e) => setCity2(e.target.value)}
+                          style={styles.input}
+                          label="Ville"
+                          placeHolder={"exemple : Rouen"}
+                        />
+                        <TextField
+                          required
+                          value={country2}
+                          onChange={(e) => setCountry2(e.target.value)}
+                          style={styles.input}
+                          label="Pays"
+                          placeHolder={"exemple : France"}
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            paddingTop: "10px",
+                          }}
+                        ></div>
+                        <Button
+                          variant="contained"
+                          onClick={() => setModifyFacturationAddress(false)}
+                        >
+                          Sauvegarder
+                        </Button>
+                      </FormControl>
                     )}
                   </CardContent>
-                  <CardActions>
-                    <Button size="small">Modifier</Button>
-                  </CardActions>
+                  {!modifyFacturationAddress && (
+                    <CardActions>
+                      <Button
+                        onClick={() => setModifyFacturationAddress(true)}
+                        size="small"
+                      >
+                        Modifier
+                      </Button>
+                    </CardActions>
+                  )}
                 </React.Fragment>
               </Card>
             </Grid>
@@ -454,7 +580,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               xl={6}
               style={{ height: "100%", overflowX: "auto" }}
             >
-              <Typography variant='caption'>Moyen de paiement: </Typography>
+              <Typography variant="caption">Moyen de paiement: </Typography>
               <CreditCard
                 crypto={crypto}
                 expireDate={expireDate}
