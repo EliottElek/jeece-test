@@ -177,6 +177,7 @@ const SignUp = ({ user, setUser }) => {
       ) {
         try {
           const usr = {
+            avatarUrl:'https://pbs.twimg.com/media/Emzyu36XEAE5vjh.jpg',
             firstname: firstname,
             lastname: lastname,
             email: email,

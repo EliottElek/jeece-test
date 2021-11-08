@@ -100,7 +100,7 @@ const styles = {
   },
 };
 
-const Profile = ({ user, setUser, setCart,setWishlist }) => {
+const Profile = ({ user, setUser, setCart, setWishlist }) => {
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
   const [emptyPassMessage, setEmptyPassMessage] =
     useState("Votre mot de passe");
@@ -138,8 +138,20 @@ const Profile = ({ user, setUser, setCart,setWishlist }) => {
             setCart(res.user.cart);
             setWishlist(res.user.wishlist);
           } else {
-            setEmptyEmailMessage(res.message);
-            setUser(null);
+            try {
+              const { data: res } = await axios.get(
+                `http://localhost:5000/admins/${email}/${password}`
+              );
+              if (res.auth) {
+                setEmptyEmailMessage("");
+                setUser(res.admin);
+              } else {
+                setEmptyEmailMessage(res.message);
+                setUser(null);
+              }
+            } catch (err) {
+              setUser(null);
+            }
           }
         } catch (err) {
           console.error(err);

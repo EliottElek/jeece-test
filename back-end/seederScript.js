@@ -1,9 +1,10 @@
 require("dotenv").config();
 const productsData = require("./data/products");
-const usersData = require("./data/users");
+const adminsData = require("./data/admins");
 
 const connectDB = require("./config/db");
 const Product = require("./models/Product");
+const Admin = require("./models/Admin");
 const User = require("./models/User");
 const Order = require("./models/Order");
 
@@ -29,11 +30,12 @@ const importOrderProducts = async () => {
   }
 };
 
-const importDataUsers = async () => {
+const importDataAdmins = async () => {
   try {
     await User.deleteMany({});
-    await User.insertMany(usersData);
-    console.log("Users imported correctly.");
+    await Admin.deleteMany({});
+    await Admin.insertMany(adminsData);
+    console.log("Admins imported correctly.");
     process.exit();
   } catch (err) {
     console.error(err);
@@ -42,4 +44,4 @@ const importDataUsers = async () => {
 };
 importOrderProducts();
 importDataProducts();
-importDataUsers();
+importDataAdmins();

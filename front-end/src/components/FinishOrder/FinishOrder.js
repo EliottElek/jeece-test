@@ -18,6 +18,7 @@ import Stepper from "../Stepper/Stepper";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, Redirect } from "react-router-dom";
+import CreditCard from "../Card/Card";
 import axios from "axios";
 const styles = {
   input: {
@@ -45,6 +46,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [expireDate, setExpireDate] = useState("");
   const [crypto, setCrypto] = useState();
+  const [owner, setOwner] = useState();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -73,7 +75,12 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
   }, [address2, city2, country2, postal2]);
   useEffect(() => {
     const handleChangeDisabled3 = () => {
-      if (cardNumber !== "" && expireDate !== "" && crypto !== "")
+      if (
+        cardNumber !== "" &&
+        expireDate !== "" &&
+        crypto !== "" &&
+        owner !== ""
+      )
         setDisabled3(false);
       else setDisabled3(true);
     };
@@ -86,6 +93,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
         cardNumber: cardNumber,
         expireDate: expireDate,
         crypto: crypto,
+        owner: owner,
       };
       const deliveryAddress = {
         address: address,
@@ -332,7 +340,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               value={expireDate}
               onChange={(e) => setExpireDate(e.target.value)}
               style={styles.input}
-              label="Code postal"
+              label="Date d'expiration"
               placeHolder={"exemple : 29/04/23"}
             />
             <TextField
@@ -342,6 +350,14 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               style={styles.input}
               label="Cryptogramme"
               placeHolder={"exemple : 121"}
+            />
+            <TextField
+              required
+              value={owner}
+              onChange={(e) => setOwner(e.target.value)}
+              style={styles.input}
+              label="Titulaire"
+              placeHolder={"exemple : Arnaud Dupont"}
             />
             <div
               style={{
@@ -438,6 +454,13 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
               xl={6}
               style={{ height: "100%", overflowX: "auto" }}
             >
+              <Typography variant='caption'>Moyen de paiement: </Typography>
+              <CreditCard
+                crypto={crypto}
+                expireDate={expireDate}
+                cardNumber={cardNumber}
+                owner={owner}
+              />
               <List
                 height={400}
                 width={360}

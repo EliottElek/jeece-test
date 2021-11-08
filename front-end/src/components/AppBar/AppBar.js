@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import logo from "../../images/logo.png";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-const PrimarySearchAppBar = ({ cart, wishlist, books }) => {
+const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,
@@ -143,7 +143,7 @@ const PrimarySearchAppBar = ({ cart, wishlist, books }) => {
           color="inherit"
         >
           <Badge color="secondary">
-            <Avatar />
+            <Avatar src={user?.avatarUrl}/>
           </Badge>
         </IconButton>
       </div>

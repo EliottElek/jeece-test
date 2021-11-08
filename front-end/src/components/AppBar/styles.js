@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   appBar: {
     boxShadow: "none!important",
     width:'100vw',
-    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+    borderBottom: "1px solid rgba(238, 43, 105, 0.12)",
   },
   title: {
     alignItems: "center",

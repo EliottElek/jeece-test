@@ -43,4 +43,30 @@ const addRating = async (req, res) => {
     });
   }
 };
-module.exports = { getAllProducts, getProductById, addRating };
+const addComment = async (req, res) => {
+  try {
+    const item = await Product.findOne({
+      _id: req.params.id,
+    });
+    if (item === null)
+      res.json({ auth: false, message: "Cet article n'existe pas." });
+    else {
+      const newComments = item.comments;
+      newComments.push(req.body.comment);
+      await Product.findOneAndUpdate(
+        { _id: item._id },
+        { comments: newComments }
+      );
+      res.json({
+        add: true,
+        message: "Commentaire ajouté avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter le commentaire.",
+    });
+  }
+};
+module.exports = { getAllProducts, getProductById, addRating, addComment };

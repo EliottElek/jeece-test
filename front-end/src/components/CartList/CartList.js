@@ -11,12 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
-const CartList = ({ cart, total, removeFromCart }) => {
+const CartList = ({ cart, total, removeFromCart, emptyCart }) => {
   if (!cart) return <h2>Connectez-vous pour accéder à votre panier.</h2>;
   return (
     <>
       {cart?.length === 0 ? (
-        <h2>Votre panier est vide.</h2>
+        <Typography>Votre panier est vide.</Typography>
       ) : (
         <>
           <TableContainer
@@ -125,7 +125,9 @@ const CartList = ({ cart, total, removeFromCart }) => {
               justifyContent: "flex-end",
             }}
           >
-            <Button sx={{ marginTop: "23px" }}>Vider mon panier</Button>
+            <Button onClick={emptyCart} sx={{ marginTop: "23px" }}>
+              Vider mon panier
+            </Button>
 
             <Button
               component={Link}

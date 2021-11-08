@@ -126,17 +126,16 @@ var createAccount = function createAccount(req, res) {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
-          console.log(req.body.user);
-          _context4.next = 4;
+          _context4.next = 3;
           return regeneratorRuntime.awrap(User.findOne({
             email: req.body.user.email
           }));
 
-        case 4:
+        case 3:
           usr = _context4.sent;
 
           if (!(usr !== null)) {
-            _context4.next = 9;
+            _context4.next = 8;
             break;
           }
 
@@ -144,14 +143,14 @@ var createAccount = function createAccount(req, res) {
             creation: false,
             message: "Cet email est déjà pris."
           });
-          _context4.next = 13;
+          _context4.next = 12;
           break;
 
-        case 9:
-          _context4.next = 11;
+        case 8:
+          _context4.next = 10;
           return regeneratorRuntime.awrap(User.insertMany(req.body.user));
 
-        case 11:
+        case 10:
           user = _context4.sent;
           res.json({
             creation: true,
@@ -159,21 +158,21 @@ var createAccount = function createAccount(req, res) {
             user: user
           });
 
-        case 13:
-          _context4.next = 18;
+        case 12:
+          _context4.next = 17;
           break;
 
-        case 15:
-          _context4.prev = 15;
+        case 14:
+          _context4.prev = 14;
           _context4.t0 = _context4["catch"](0);
           console.error(_context4.t0);
 
-        case 18:
+        case 17:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 15]]);
+  }, null, null, [[0, 14]]);
 };
 
 var addToCart = function addToCart(req, res) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
 import axios from "axios";
 import AppBar from "./components/AppBar/AppBar";
@@ -25,10 +25,10 @@ const styles = {
 let theme = createTheme({
   palette: {
     primary: {
-      main: "#004155",
+      main: "#EE2B69",
     },
     secondary: {
-      main: "#edf2ff",
+      main: "#EE2B69",
     },
   },
 });
@@ -129,7 +129,12 @@ function App() {
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
         <Router>
-          <AppBar books={products} cart={cart} wishlist={wishlist} />
+          <AppBar
+            user={user}
+            books={products}
+            cart={cart}
+            wishlist={wishlist}
+          />
           <Switch>
             <Route exact path="/">
               <Home
@@ -147,6 +152,7 @@ function App() {
                 addOrder={addOrder}
                 total={getTotal()}
                 removeFromCart={removeFromCart}
+                emptyCart={emptyCart}
               />
             </Route>
             <Route exact path="/register">

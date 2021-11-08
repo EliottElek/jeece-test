@@ -3,6 +3,7 @@ import { Grid, IconButton, Paper, Typography, Button } from "@mui/material";
 import "./style.css";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import Rating from "../Rating/Rating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const styles = {
   gridItem: {
@@ -61,6 +62,16 @@ const BookItem = ({
   wishlist,
 }) => {
   const [like, setLike] = useState(false);
+  const getMeanRating = () => {
+    if (bookItem?.rating?.length > 0) {
+      var sum = 0;
+      for (let i = 0; i < bookItem?.rating?.length; i++) {
+        sum += parseInt(bookItem?.rating[i]?.value);
+      }
+      const avg = sum / bookItem?.rating?.length;
+      return avg.toFixed(1);
+    } else return 0;
+  };
   return (
     <Grid
       style={styles.gridItem}
@@ -72,7 +83,7 @@ const BookItem = ({
       lg={2}
     >
       <div style={styles.item} className="item">
-        <Paper style={styles.heartContainer}>
+        <Paper style={styles.heartContainer} elevation = {0}>
           {!inWish &&
           (like || wishlist?.some((item) => item.title === bookItem.title)) ? (
             <IconButton
@@ -81,7 +92,7 @@ const BookItem = ({
                 setLike(false);
               }}
             >
-              <FavoriteIcon sx={{ color: "red" }} />
+              <FavoriteIcon sx={{ color: "primary.main" }} />
             </IconButton>
           ) : (
             !inWish && (
@@ -132,10 +143,13 @@ const BookItem = ({
             </Typography>
           </div>
           <div>
-            <Typography align="center" color="#f83e49" variant="body1">
+            <Typography align="center" color="primary" variant="body1">
               {bookItem.price}€
             </Typography>
           </div>
+          {getMeanRating() > 0 && (
+              <Rating name="size-small" size="small" rating={getMeanRating()} />
+          )}
         </div>
       </div>
     </Grid>

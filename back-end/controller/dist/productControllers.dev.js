@@ -129,8 +129,72 @@ var addRating = function addRating(req, res) {
   }, null, null, [[0, 15]]);
 };
 
+var addComment = function addComment(req, res) {
+  var item, newComments;
+  return regeneratorRuntime.async(function addComment$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _context4.next = 3;
+          return regeneratorRuntime.awrap(Product.findOne({
+            _id: req.params.id
+          }));
+
+        case 3:
+          item = _context4.sent;
+
+          if (!(item === null)) {
+            _context4.next = 8;
+            break;
+          }
+
+          res.json({
+            auth: false,
+            message: "Cet article n'existe pas."
+          });
+          _context4.next = 13;
+          break;
+
+        case 8:
+          newComments = item.comments;
+          newComments.push(req.body.comment);
+          _context4.next = 12;
+          return regeneratorRuntime.awrap(Product.findOneAndUpdate({
+            _id: item._id
+          }, {
+            comments: newComments
+          }));
+
+        case 12:
+          res.json({
+            add: true,
+            message: "Commentaire ajouté avec succès."
+          });
+
+        case 13:
+          _context4.next = 18;
+          break;
+
+        case 15:
+          _context4.prev = 15;
+          _context4.t0 = _context4["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible d'ajouter le commentaire."
+          });
+
+        case 18:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[0, 15]]);
+};
+
 module.exports = {
   getAllProducts: getAllProducts,
   getProductById: getProductById,
-  addRating: addRating
+  addRating: addRating,
+  addComment: addComment
 };

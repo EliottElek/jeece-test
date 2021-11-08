@@ -2,7 +2,7 @@
 
 var mongoose = require("mongoose");
 
-var productSchema = new mongoose.Schema({
+var orderSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true
@@ -32,5 +32,5 @@ var productSchema = new mongoose.Schema({
     required: true
   }
 });
-var Order = mongoose.model("order", productSchema);
+var Order = mongoose.model("order", orderSchema);
 module.exports = Order;
