@@ -379,7 +379,7 @@ var removeFromWishlist = function removeFromWishlist(req, res) {
         case 12:
           res.json({
             add: true,
-            message: "Object supprimé de la liste des souhaits avec succès."
+            message: "Objet supprimé de la liste des souhaits avec succès."
           });
 
         case 13:
@@ -444,7 +444,7 @@ var removeFromCart = function removeFromCart(req, res) {
         case 12:
           res.json({
             add: true,
-            message: "Object supprimé du panier avec succès."
+            message: "Objet supprimé du panier avec succès."
           });
 
         case 13:

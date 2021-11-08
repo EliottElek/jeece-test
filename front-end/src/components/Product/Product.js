@@ -51,14 +51,16 @@ const styles = {
     margin: 15,
   },
   textarea: {
+    maxWidth:500,
     minHeight: "40px",
-    minWidth: 400,
+    width: "90%",
     borderRadius: "12px",
     padding: "5px",
     border: "solid 1px gray",
   },
   titleInput: {
-    minWidth: 400,
+    maxWidth:500,
+    width: "90%",
     marginBottom: "8px",
     height: "30px",
     borderRadius: "7px",
@@ -332,7 +334,8 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
                 minRows={3}
                 onChange={(e) => setComment(e.target.value)}
               />
-              <Button
+            </div>
+            <Button
                 style={styles.sendRating}
                 disabled={user && comment && titleComment ? false : true}
                 onClick={addComment}
@@ -343,7 +346,6 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
                 envoyer
                 <SendIcon sx={styles.icon} />
               </Button>
-            </div>
           </>
         ) : (
           <>

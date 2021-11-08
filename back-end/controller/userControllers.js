@@ -130,7 +130,7 @@ const removeFromWishlist = async (req, res) => {
       await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
       res.json({
         add: true,
-        message: "Object supprimé de la liste des souhaits avec succès.",
+        message: "Objet supprimé de la liste des souhaits avec succès.",
       });
     }
   } catch (err) {
@@ -155,7 +155,7 @@ const removeFromCart = async (req, res) => {
       await User.findOneAndUpdate({ _id: user._id }, { cart: newCart });
       res.json({
         add: true,
-        message: "Object supprimé du panier avec succès.",
+        message: "Objet supprimé du panier avec succès.",
       });
     }
   } catch (err) {

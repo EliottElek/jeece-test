@@ -10,8 +10,14 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link } from "react-router-dom";
-const CartList = ({ cart, total, removeFromCart, emptyCart }) => {
+import { Link, Redirect } from "react-router-dom";
+const CartList = ({ user, cart, total, removeFromCart, emptyCart }) => {
+  if (!user || user?.admin)
+    return (
+      <div>
+        <Redirect to="/404" />
+      </div>
+    );
   if (!cart) return <h2>Connectez-vous pour accéder à votre panier.</h2>;
   return (
     <>

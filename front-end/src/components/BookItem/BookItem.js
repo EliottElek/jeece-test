@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "../Rating/Rating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 const styles = {
   gridItem: {
     padding: 12,
@@ -43,6 +44,7 @@ const styles = {
     height: "35px",
   },
   heartContainer: {
+    opacity: 0.8,
     width: "auto",
     position: "absolute",
     height: "auto",
@@ -83,7 +85,7 @@ const BookItem = ({
       lg={3}
     >
       <div style={styles.item} className="item">
-        <Paper style={styles.heartContainer} elevation = {0}>
+        <Paper style={styles.heartContainer} elevation={0}>
           {!inWish &&
           (like || wishlist?.some((item) => item.title === bookItem.title)) ? (
             <IconButton
@@ -92,7 +94,7 @@ const BookItem = ({
                 setLike(false);
               }}
             >
-              <FavoriteIcon sx={{ color: "primary.main" }} />
+              <FavoriteIcon sx={{ color: "primary.main", opacity: 1 }} />
             </IconButton>
           ) : (
             !inWish && (
@@ -148,7 +150,7 @@ const BookItem = ({
             </Typography>
           </div>
           {getMeanRating() > 0 && (
-              <Rating name="size-small" size="small" rating={getMeanRating()} />
+            <Rating name="size-small" size="small" rating={getMeanRating()} />
           )}
         </div>
       </div>

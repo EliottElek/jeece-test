@@ -4,6 +4,7 @@ import { createTheme } from "@mui/material/styles";
 import axios from "axios";
 import AppBar from "./components/AppBar/AppBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { IconButton } from "@mui/material";
 import Home from "./components/Home/Home";
 import Product from "./components/Product/Product";
 import Profile from "./components/Profile/Profile";
@@ -15,6 +16,10 @@ import FinishOrder from "./components/FinishOrder/FinishOrder";
 import ErrorPage from "./components/404/404";
 import MyOrders from "./components/MyOrders/MyOrders";
 import Card from "./components/Card/Card";
+import BookListAdmin from "./components/Admin/BookListAdmin/BookListAdmin";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import CloseIcon from "@mui/icons-material/Close";
 const styles = {
   root: {
     padding: 0,
@@ -55,27 +60,54 @@ function App() {
   const [cart, setCart] = useState(null);
   const [orders, setOrders] = useState([]);
   const [wishlist, setWishlist] = useState(null);
+  const [response, setResponse] = useState(null);
+  const [openSnack, setOpenSnack] = useState(false);
+  const handleCloseSnack = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
+    setOpenSnack(false);
+  };
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseSnack}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   const addOrder = (order) => {
     setOrders([...orders, order]);
   };
   const addCart = (item) => {
     setCart([...cart, item]);
+    setResponse({add:true, message:"Produit ajouté au panier avec succès."});
+      setOpenSnack(true);
   };
   const addToWishList = async (item) => {
     try {
-      await axios.post(`http://localhost:5000/users/${user.email}/wishlist`, {
-        user: user,
-        item: item,
-      });
+      const { data: res } = await axios.post(
+        `http://localhost:5000/users/${user.email}/wishlist`,
+        {
+          user: user,
+          item: item,
+        }
+      );
       setWishlist([...wishlist, item]);
+      setResponse(res);
+      setOpenSnack(true);
     } catch (err) {
       console.log(err);
     }
   };
   const removeFromCart = async (item) => {
     try {
-      await axios.post(
+      const { data: res } = await axios.post(
         `http://localhost:5000/users/${user.email}/cart/remove`,
         {
           email: user.email,
@@ -86,13 +118,15 @@ function App() {
         return e._id !== item._id;
       });
       setCart(newCart);
+      setResponse(res);
+      setOpenSnack(true);
     } catch (err) {
       console.log(err);
     }
   };
   const removeFromWishList = async (item) => {
     try {
-      await axios.post(
+      const { data: res } = await axios.post(
         `http://localhost:5000/users/${user.email}/wishlist/remove`,
         {
           email: user.email,
@@ -103,6 +137,8 @@ function App() {
         return e._id !== item._id;
       });
       setWishlist(newWishList);
+      setResponse(res);
+      setOpenSnack(true);
     } catch (err) {
       console.log(err);
     }
@@ -191,9 +227,15 @@ function App() {
             <Route exact path="/myorders">
               <MyOrders user={user} />
             </Route>
+            <Route exact path="/admin/products">
+              <BookListAdmin user={user} products={products} />
+            </Route>
             <Route exact path="/card">
               <Card />
             </Route>
+            {/* <Route path="*">
+              <ErrorPage />
+            </Route> */}
             <Route
               exact
               path="/produit/:id"
@@ -210,6 +252,24 @@ function App() {
           </Switch>
           <Footer />
         </Router>
+        <Snackbar
+          open={openSnack}
+          autoHideDuration={6000}
+          onClose={handleCloseSnack}
+          action={action}
+        >
+          {response && response?.add ? (
+            <Alert onClose={handleCloseSnack} severity="success">
+              {response.message}
+            </Alert>
+          ) : (
+            response && (
+              <Alert onClose={handleCloseSnack} severity="error">
+                {response.message}
+              </Alert>
+            )
+          )}
+        </Snackbar>
       </ThemeProvider>
     </div>
   );

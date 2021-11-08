@@ -141,7 +141,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
     }
   };
 
-  if (cart === null) {
+  if (cart === null || !user || user?.admin) {
     return (
       <div>
         <Redirect to="/404" />

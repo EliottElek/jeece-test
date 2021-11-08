@@ -22,7 +22,6 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
     drawerOpen: false,
   });
 
-  const links = [{ label: "Boutique", path: "/", class: classes.links }];
   const linksMobile = [
     { label: "Boutique", path: "/", class: classes.links },
     { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
@@ -151,7 +150,7 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
 
   return (
     <div style={{ marginBottom: "80px", zIndex: 2 }}>
-      <AppBar position="fixed" className={classes.appBar} color="inherit">
+      <AppBar position="fixed" sx={{zIndex:34234323}} className={classes.appBar} color="inherit">
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </div>

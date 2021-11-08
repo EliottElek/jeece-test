@@ -6,6 +6,7 @@ const {
   getProductById,
   addRating,
   addComment,
+  modifyProduct,
 } = require("../controller/productControllers");
 //@desc GET all products from db
 //@route GET /procuts
@@ -18,5 +19,6 @@ router.get("/", getAllProducts);
 router.get("/:id", getProductById);
 router.post("/:id/rating", addRating);
 router.post("/:id/comment", addComment);
+router.post("/:id/modify", modifyProduct);
 
 module.exports = router;

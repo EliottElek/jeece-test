@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link,Redirect } from "react-router-dom";
 const MyOrders = ({ user, profilePage }) => {
   const [orders, setOrders] = useState();
 
@@ -28,6 +28,13 @@ const MyOrders = ({ user, profilePage }) => {
     };
     fetchOrders();
   }, [orders, profilePage, user?.email]);
+  if (user?.admin || !user) {
+    return (
+      <div>
+        <Redirect to="/404" />
+      </div>
+    );
+  }
   if (!user)
     return (
       <Typography variant="h5" style={{ margin: "20px" }}>

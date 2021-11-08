@@ -192,9 +192,90 @@ var addComment = function addComment(req, res) {
   }, null, null, [[0, 15]]);
 };
 
+var modifyProduct = function modifyProduct(req, res) {
+  var product, newP;
+  return regeneratorRuntime.async(function modifyProduct$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          _context5.next = 3;
+          return regeneratorRuntime.awrap(Product.findOne({
+            _id: req.params.id
+          }));
+
+        case 3:
+          product = _context5.sent;
+          console.log(product);
+
+          if (!(product === null)) {
+            _context5.next = 9;
+            break;
+          }
+
+          res.json({
+            auth: false,
+            message: "Ce produit n'existe pas."
+          });
+          _context5.next = 21;
+          break;
+
+        case 9:
+          _context5.prev = 9;
+          _context5.next = 12;
+          return regeneratorRuntime.awrap(Product.findOneAndUpdate({
+            _id: req.params.id
+          }, {
+            $set: {
+              author: req.body.author,
+              title: req.body.title,
+              price: req.body.price
+            }
+          }));
+
+        case 12:
+          newP = _context5.sent;
+          console.log(newP);
+          res.json({
+            add: true,
+            message: "Produit modifié avec succès."
+          });
+          _context5.next = 21;
+          break;
+
+        case 17:
+          _context5.prev = 17;
+          _context5.t0 = _context5["catch"](9);
+          console.log(_context5.t0);
+          res.json({
+            add: false,
+            message: "Impossible de modifier le produit."
+          });
+
+        case 21:
+          _context5.next = 26;
+          break;
+
+        case 23:
+          _context5.prev = 23;
+          _context5.t1 = _context5["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible de modifier le produit."
+          });
+
+        case 26:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[0, 23], [9, 17]]);
+};
+
 module.exports = {
   getAllProducts: getAllProducts,
   getProductById: getProductById,
   addRating: addRating,
-  addComment: addComment
+  addComment: addComment,
+  modifyProduct: modifyProduct
 };

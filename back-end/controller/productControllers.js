@@ -69,4 +69,50 @@ const addComment = async (req, res) => {
     });
   }
 };
-module.exports = { getAllProducts, getProductById, addRating, addComment };
+const modifyProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+    });
+    console.log(product);
+    if (product === null)
+      res.json({ auth: false, message: "Ce produit n'existe pas." });
+    else {
+      try {
+        const newP = await Product.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              author: req.body.author,
+              title: req.body.title,
+              price: req.body.price,
+            },
+          }
+        );
+        console.log(newP);
+        res.json({
+          add: true,
+          message: "Produit modifié avec succès.",
+        });
+      } catch (err) {
+        console.log(err);
+        res.json({
+          add: false,
+          message: "Impossible de modifier le produit.",
+        });
+      }
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible de modifier le produit.",
+    });
+  }
+};
+module.exports = {
+  getAllProducts,
+  getProductById,
+  addRating,
+  addComment,
+  modifyProduct,
+};
