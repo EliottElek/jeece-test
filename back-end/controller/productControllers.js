@@ -6,17 +6,52 @@ const getAllProducts = async (req, res) => {
     res.json(products);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Erreur serveur." });
   }
 };
-
+const getProductsByCategory = async (req, res) => {
+  try {
+    const products = await Product.find({
+      category: req.params.category,
+    });
+    if (products.length === 0) {
+      res.json({ message: "Aucun résultat trouvé" });
+    } else {
+    }
+    res.json({
+      results: products,
+      message: `${products.length} résultat(s) trouvé(s)`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+};
+const getProductsByAuthor = async (req, res) => {
+  try {
+    const products = await Product.find({
+      author: req.params.author,
+    });
+    if (products.length === 0) {
+      res.json({ message: "Aucun résultat trouvé" });
+    } else {
+    }
+    res.json({
+      results: products,
+      message: `${products.length} résultat(s) trouvé(s)`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+};
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     res.json(product);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Erreur serveur." });
   }
 };
 
@@ -115,4 +150,6 @@ module.exports = {
   addRating,
   addComment,
   modifyProduct,
+  getProductsByCategory,
+  getProductsByAuthor,
 };

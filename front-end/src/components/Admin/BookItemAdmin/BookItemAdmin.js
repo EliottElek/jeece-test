@@ -170,6 +170,14 @@ const BookItem = ({ bookItem, user }) => {
                 {bookItem.price}€
               </Typography>
             </div>
+            <Button
+              component={Link}
+              to={`/produit/${bookItem._id}/admin`}
+              key={bookItem.id}
+              variant='contained'
+            >
+              Modification avancée
+            </Button>
           </div>
         </div>
       </Grid>
@@ -204,7 +212,7 @@ const BookItem = ({ bookItem, user }) => {
               to={`/produit/${bookItem._id}/admin`}
               key={bookItem.id}
             >
-              Modifications avancées
+              Modification avancée
             </Button>
             <Button
               type="submit"

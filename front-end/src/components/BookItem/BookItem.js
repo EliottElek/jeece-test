@@ -85,41 +85,44 @@ const BookItem = ({
       lg={3}
     >
       <div style={styles.item} className="item">
-        <Paper style={styles.heartContainer} elevation={0}>
-          {!inWish &&
-          (like || wishlist?.some((item) => item.title === bookItem.title)) ? (
-            <IconButton
-              onClick={() => {
-                removeFromWishList(bookItem);
-                setLike(false);
-              }}
-            >
-              <FavoriteIcon sx={{ color: "primary.main", opacity: 1 }} />
-            </IconButton>
-          ) : (
-            !inWish && (
+        {!user?.admin && (
+          <Paper style={styles.heartContainer} elevation={0}>
+            {!inWish &&
+            (like ||
+              wishlist?.some((item) => item.title === bookItem.title)) ? (
               <IconButton
                 onClick={() => {
-                  addWish(bookItem);
-                  setLike(true);
+                  removeFromWishList(bookItem);
+                  setLike(false);
                 }}
-                disabled={!user ? true : false}
               >
-                <FavoriteBorderIcon />
+                <FavoriteIcon sx={{ color: "primary.main", opacity: 1 }} />
               </IconButton>
-            )
-          )}
-          {inWish && (
-            <Button
-              onClick={() => {
-                removeFromWishList(bookItem);
-                setLike(false);
-              }}
-            >
-              Retier
-            </Button>
-          )}
-        </Paper>
+            ) : (
+              !inWish && (
+                <IconButton
+                  onClick={() => {
+                    addWish(bookItem);
+                    setLike(true);
+                  }}
+                  disabled={!user ? true : false}
+                >
+                  <FavoriteBorderIcon />
+                </IconButton>
+              )
+            )}
+            {inWish && (
+              <Button
+                onClick={() => {
+                  removeFromWishList(bookItem);
+                  setLike(false);
+                }}
+              >
+                Retier
+              </Button>
+            )}
+          </Paper>
+        )}
         <Link to={`/produit/${bookItem._id}`} key={bookItem.id}>
           <img
             style={styles.itemImage}

@@ -102,7 +102,7 @@ const styles = {
   },
 };
 
-const SignUp = ({ user, setUser }) => {
+const SignUp = ({ user, setUser, setWishList, setCart }) => {
   const [emptyFirstnameMessage, setEmptyFirstnameMessage] =
     useState("Votre prénom");
   const [emptyLastnameMessage, setEmptyLastnameMessage] = useState("Votre nom");
@@ -177,11 +177,13 @@ const SignUp = ({ user, setUser }) => {
       ) {
         try {
           const usr = {
-            avatarUrl:'https://pbs.twimg.com/media/Emzyu36XEAE5vjh.jpg',
+            avatarUrl: "https://pbs.twimg.com/media/Emzyu36XEAE5vjh.jpg",
             firstname: firstname,
             lastname: lastname,
             email: email,
             birthdate: "29/02/1999",
+            cart: [],
+            wishlist: [],
             password: bcrypt.hashSync(password, bcrypt.genSaltSync()),
           };
           const { data: res } = await axios.post(
@@ -192,6 +194,8 @@ const SignUp = ({ user, setUser }) => {
           if (res.creation) {
             setEmptyEmailMessage(res.message);
             setUser(res.user[0]);
+            setCart([]);
+            setWishList([]);
           } else {
             setEmptyEmailMessage(res.message);
             setUser(null);

@@ -9,7 +9,7 @@
 }
 *::-webkit-scrollbar {
   width: 5px;
-  height:5px;
+  height: 5px;
 }
 
 *::-webkit-scrollbar-track {
@@ -20,6 +20,6 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(165, 164, 164, 0.76);
+  background: #ee2b6978;
   border-radius: 20px;
 }

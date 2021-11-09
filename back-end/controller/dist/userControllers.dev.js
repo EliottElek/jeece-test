@@ -467,9 +467,9 @@ var removeFromCart = function removeFromCart(req, res) {
   }, null, null, [[0, 15]]);
 };
 
-var getWishlist = function getWishlist(req, res) {
+var emptyCart = function emptyCart(req, res) {
   var user;
-  return regeneratorRuntime.async(function getWishlist$(_context10) {
+  return regeneratorRuntime.async(function emptyCart$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
@@ -481,31 +481,56 @@ var getWishlist = function getWishlist(req, res) {
 
         case 3:
           user = _context10.sent;
-          if (user === null) res.json({
+
+          if (!(user === null)) {
+            _context10.next = 8;
+            break;
+          }
+
+          res.json({
             auth: false,
             message: "Cet utilisateur n'existe pas."
-          });else res.json({
-            wishlist: user.wishlist
           });
-          _context10.next = 10;
+          _context10.next = 11;
           break;
 
-        case 7:
-          _context10.prev = 7;
-          _context10.t0 = _context10["catch"](0);
-          console.error(_context10.t0);
+        case 8:
+          _context10.next = 10;
+          return regeneratorRuntime.awrap(User.findOneAndUpdate({
+            _id: user._id
+          }, {
+            cart: []
+          }));
 
         case 10:
+          res.json({
+            add: true,
+            message: "Panier vidé avec succès."
+          });
+
+        case 11:
+          _context10.next = 16;
+          break;
+
+        case 13:
+          _context10.prev = 13;
+          _context10.t0 = _context10["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible de vider le panier."
+          });
+
+        case 16:
         case "end":
           return _context10.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 13]]);
 };
 
-var getOrders = function getOrders(req, res) {
-  var user, orders;
-  return regeneratorRuntime.async(function getOrders$(_context11) {
+var emptyWishlist = function emptyWishlist(req, res) {
+  var user;
+  return regeneratorRuntime.async(function emptyWishlist$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
@@ -527,31 +552,128 @@ var getOrders = function getOrders(req, res) {
             auth: false,
             message: "Cet utilisateur n'existe pas."
           });
-          _context11.next = 12;
+          _context11.next = 11;
           break;
 
         case 8:
           _context11.next = 10;
+          return regeneratorRuntime.awrap(User.findOneAndUpdate({
+            _id: user._id
+          }, {
+            wishlist: []
+          }));
+
+        case 10:
+          res.json({
+            add: true,
+            message: "Liste de souhaits vidée avec succès."
+          });
+
+        case 11:
+          _context11.next = 16;
+          break;
+
+        case 13:
+          _context11.prev = 13;
+          _context11.t0 = _context11["catch"](0);
+          res.json({
+            add: false,
+            message: "Impossible de vider la liste de souhaits."
+          });
+
+        case 16:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  }, null, null, [[0, 13]]);
+};
+
+var getWishlist = function getWishlist(req, res) {
+  var user;
+  return regeneratorRuntime.async(function getWishlist$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.prev = 0;
+          _context12.next = 3;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: req.params.email
+          }));
+
+        case 3:
+          user = _context12.sent;
+          if (user === null) res.json({
+            auth: false,
+            message: "Cet utilisateur n'existe pas."
+          });else res.json({
+            wishlist: user.wishlist
+          });
+          _context12.next = 10;
+          break;
+
+        case 7:
+          _context12.prev = 7;
+          _context12.t0 = _context12["catch"](0);
+          console.error(_context12.t0);
+
+        case 10:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+var getOrders = function getOrders(req, res) {
+  var user, orders;
+  return regeneratorRuntime.async(function getOrders$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          _context13.prev = 0;
+          _context13.next = 3;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: req.params.email
+          }));
+
+        case 3:
+          user = _context13.sent;
+
+          if (!(user === null)) {
+            _context13.next = 8;
+            break;
+          }
+
+          res.json({
+            auth: false,
+            message: "Cet utilisateur n'existe pas."
+          });
+          _context13.next = 12;
+          break;
+
+        case 8:
+          _context13.next = 10;
           return regeneratorRuntime.awrap(Order.find({
             email: req.params.email
           }));
 
         case 10:
-          orders = _context11.sent;
+          orders = _context13.sent;
           res.json(orders);
 
         case 12:
-          _context11.next = 17;
+          _context13.next = 17;
           break;
 
         case 14:
-          _context11.prev = 14;
-          _context11.t0 = _context11["catch"](0);
-          console.error(_context11.t0);
+          _context13.prev = 14;
+          _context13.t0 = _context13["catch"](0);
+          console.error(_context13.t0);
 
         case 17:
         case "end":
-          return _context11.stop();
+          return _context13.stop();
       }
     }
   }, null, null, [[0, 14]]);
@@ -568,5 +690,7 @@ module.exports = {
   removeFromWishlist: removeFromWishlist,
   removeFromCart: removeFromCart,
   getWishlist: getWishlist,
-  getOrders: getOrders
+  getOrders: getOrders,
+  emptyWishlist: emptyWishlist,
+  emptyCart: emptyCart
 };

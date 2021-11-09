@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, CircularProgress } from "@mui/material";
+import { Grid, CircularProgress, Typography, Button } from "@mui/material";
 import BookItem from "../BookItem/BookItem";
 const BookList = ({
   inWish,
@@ -7,11 +7,31 @@ const BookList = ({
   addWish,
   removeFromWishList,
   wishlist,
+  removeFilter,
   user,
 }) => {
+  if (!bookList)
+    return (
+      <div
+        style={{
+          width: "90%",
+          margin: "auto",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography>la recherche n'a donné aucun résultat.</Typography>
+        <Button onClick={removeFilter}>Retirer les filtres</Button>
+      </div>
+    );
+  if (bookList?.length === 0)
+    return <Typography>Votre liste d'envies est vide.</Typography>;
+
   return (
     <>
-      {bookList?.length === 0 ? (
+      {!bookList.length ? (
         <div
           style={{
             width: "100%",
@@ -28,7 +48,7 @@ const BookList = ({
           container
           justifyContent="flex-start"
           spacing={4}
-          sx={{ width: "90%", margin: "auto", height:"100%" }}
+          sx={{ width: "90%", margin: "auto", height: "100%" }}
         >
           {bookList?.map((book) => (
             <BookItem

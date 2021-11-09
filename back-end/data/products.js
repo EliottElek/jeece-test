@@ -9,6 +9,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/846-large_default/robe-de-marie.jpg",
     stock: 12,
+    category: "Drame",
   },
   {
     title: "Versant secret",
@@ -20,6 +21,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/851-large_default/versant-secret.jpg",
     stock: 12,
+    category: "Amour",
   },
   {
     title: "Vers le soleil",
@@ -31,6 +33,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/850-large_default/vers-le-soleil.jpg",
     stock: 12,
+    category: "Science Fiction",
   },
   {
     title: "Un été sous les tilleuls",
@@ -42,6 +45,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/849-large_default/un-ete-sous-les-tilleuls.jpg",
     stock: 12,
+    category: "Fantastique",
   },
   {
     title: "Trois vœux",
@@ -53,6 +57,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/848-large_default/trois-voeux.jpg",
     stock: 12,
+    category: "Philosophie",
   },
   {
     title: "Retour à Whistle Stop",
@@ -64,6 +69,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/845-large_default/retour-a-whistle-stop.jpg",
     stock: 12,
+    category: "Histoire",
   },
   {
     title: "Tout peut s'oublier",
@@ -75,6 +81,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/847-large_default/tout-peut-s-oublier.jpg",
     stock: 12,
+    category: "Amour",
   },
   {
     title: "Marionnettes d'amour",
@@ -86,6 +93,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/842-large_default/marionnettes-d-amour.jpg",
     stock: 12,
+    category: "Histoire",
   },
   {
     title: "Les Flammes de la destinée",
@@ -97,6 +105,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/840-large_default/les-flammes-de-la-destinee.jpg",
     stock: 12,
+    category: "Drame",
   },
   {
     title: "Les Trois Vies de Suzana Baker",
@@ -108,6 +117,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/841-large_default/les-trois-vies-de-suzana-baker.jpg",
     stock: 12,
+    category: "Amour",
   },
   {
     title: "Le Rêve de Marie-Hélise",
@@ -119,6 +129,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/839-large_default/le-reve-de-marie-helise.jpg",
     stock: 12,
+    category: "Drame",
   },
   {
     title: "Intuitio",
@@ -130,6 +141,8 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/837-large_default/intuitio.jpg",
     stock: 12,
+    category: "Fantastique",
+
     comments: [
       {
         avatar: "",
@@ -159,6 +172,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/838-large_default/le-mystere-soline-au-dela-du-temps.jpg",
     stock: 12,
+    category: "Histoire",
   },
   {
     title: "Skidamarink",
@@ -170,6 +184,7 @@ const products = [
     mediaUrl:
       "https://www.editionslibradiffusio.fr/702-large_default/skidamarink.jpg",
     stock: 12,
+    category: "Amour",
   },
 ];
 module.exports = products;

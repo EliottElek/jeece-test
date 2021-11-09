@@ -165,6 +165,48 @@ const removeFromCart = async (req, res) => {
     });
   }
 };
+const emptyCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      await User.findOneAndUpdate({ _id: user._id }, { cart: [] });
+      res.json({
+        add: true,
+        message: "Panier vidé avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible de vider le panier.",
+    });
+  }
+};
+const emptyWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: [] });
+      res.json({
+        add: true,
+        message: "Liste de souhaits vidée avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible de vider la liste de souhaits.",
+    });
+  }
+};
 const getWishlist = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -206,4 +248,6 @@ module.exports = {
   removeFromCart,
   getWishlist,
   getOrders,
+  emptyWishlist,
+  emptyCart,
 };

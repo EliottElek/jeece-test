@@ -14,6 +14,7 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import { Redirect } from "react-router";
 const styles = {
   image: {
     height: "auto",
@@ -51,7 +52,7 @@ const styles = {
     margin: 15,
   },
   textarea: {
-    maxWidth:500,
+    maxWidth: 500,
     minHeight: "40px",
     width: "90%",
     borderRadius: "12px",
@@ -59,7 +60,7 @@ const styles = {
     border: "solid 1px gray",
   },
   titleInput: {
-    maxWidth:500,
+    maxWidth: 500,
     width: "90%",
     marginBottom: "8px",
     height: "30px",
@@ -72,7 +73,7 @@ const styles = {
   icon: { marginLeft: "7px" },
 };
 
-const Product = ({ id, user, addCart, addToWishlist }) => {
+const Product = ({ id, user, addToCart, addToWishlist }) => {
   const [product, setProduct] = useState();
   const [rating, setRating] = useState();
   const [ratingValues, setRatingValues] = useState([]);
@@ -121,17 +122,6 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
       console.log(err);
     }
   };
-  const addToCart = async () => {
-    try {
-      await axios.post(`http://localhost:5000/users/${user.email}/cart`, {
-        user: user,
-        item: product,
-      });
-      addCart(product);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -148,7 +138,7 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
       }
     }
     fetchData();
-  }, [id, ratingValues, user?.email]);
+  }, [id, user?.email]);
   if (!product) {
     return (
       <div
@@ -161,6 +151,13 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
         }}
       >
         <CircularProgress color={"primary"} />
+      </div>
+    );
+  }
+  if (user?.admin) {
+    return (
+      <div>
+        <Redirect to={`/produit/${id}/admin`} />
       </div>
     );
   }
@@ -234,7 +231,7 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
           <div container style={styles.actions}>
             <Button
               disabled={user ? false : true}
-              onClick={addToCart}
+              onClick={() => addToCart(product)}
               style={styles.addCartButton}
               variant="contained"
               color={"primary"}
@@ -336,16 +333,16 @@ const Product = ({ id, user, addCart, addToWishlist }) => {
               />
             </div>
             <Button
-                style={styles.sendRating}
-                disabled={user && comment && titleComment ? false : true}
-                onClick={addComment}
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                envoyer
-                <SendIcon sx={styles.icon} />
-              </Button>
+              style={styles.sendRating}
+              disabled={user && comment && titleComment ? false : true}
+              onClick={addComment}
+              variant="contained"
+              color="secondary"
+              size="small"
+            >
+              envoyer
+              <SendIcon sx={styles.icon} />
+            </Button>
           </>
         ) : (
           <>

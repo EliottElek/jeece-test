@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOrder } = require("../controller/orderController");
+const { createOrder, getOrders } = require("../controller/orderController");
 //@desc GET all products from db
 //@route GET /procuts
 //@access Public
 router.post("/", createOrder);
+router.get("/", getOrders);
 
 module.exports = router;

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import BookList from "../BookList/BookList";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import axios from "axios";
 import {
   List,
   ListItem,
@@ -10,10 +13,13 @@ import {
   Typography,
   Drawer,
   Breadcrumbs,
-  Toolbar
+  Toolbar,
+  Button,
+  IconButton,
 } from "@mui/material";
 const drawerWidth = 240;
 const catego = [
+  "Pet",
   "Drame",
   "Amour",
   "Science Fiction",
@@ -28,16 +34,35 @@ const Home = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const [filter, setFilter] = useState({
-    parent: "auteurs",
-    children: "Sandrel Julien",
-  });
   const getAuthors = () => {
     const authors = [];
-    for (let i = 0; i < props.bookList.length; i++) {
-      authors.push(props.bookList[i].author);
+    for (let i = 0; i < props.allProducts.length; i++) {
+      authors.push(props.allProducts[i].author);
     }
     return authors;
+  };
+
+  const fetchProductsByCateg = async (categ) => {
+    try {
+      const { data: res } = await axios.get(
+        `http://localhost:5000/products/category/${categ}`
+      );
+      props.setProducts(res.results);
+    } catch (e) {
+      alert("Impossible de se connecter au serveur.");
+      console.error(e);
+    }
+  };
+  const fetchProductsByAuthor = async (auth) => {
+    try {
+      const { data: res } = await axios.get(
+        `http://localhost:5000/products/author/${auth}`
+      );
+      props.setProducts(res.results);
+    } catch (e) {
+      alert("Impossible de se connecter au serveur.");
+      console.error(e);
+    }
   };
   const Nav = () => (
     <List style={{ overflowY: "auto" }}>
@@ -50,9 +75,10 @@ const Home = (props) => {
       <Divider />
       {catego.map((categorie) => (
         <ListItemButton
-          onClick={() =>
-            setFilter({ parent: "categorie", children: categorie })
-          }
+          onClick={() => {
+            props.setFilter({ parent: "categorie", children: categorie });
+            fetchProductsByCateg(categorie);
+          }}
         >
           {categorie}
         </ListItemButton>
@@ -66,7 +92,10 @@ const Home = (props) => {
       <Divider />
       {getAuthors()?.map((author) => (
         <ListItemButton
-          onClick={() => setFilter({ parent: "auteurs", children: author })}
+          onClick={() => {
+            props.setFilter({ parent: "auteurs", children: author });
+            fetchProductsByAuthor(author);
+          }}
         >
           {author}
         </ListItemButton>
@@ -78,15 +107,6 @@ const Home = (props) => {
         </Typography>
       </ListItem>
       <Divider />
-      {catego.map((categorie) => (
-        <ListItemButton
-          onClick={() =>
-            setFilter({ parent: "categorie", children: categorie })
-          }
-        >
-          {categorie}
-        </ListItemButton>
-      ))}
       <Divider />
     </List>
   );
@@ -101,14 +121,13 @@ const Home = (props) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -135,16 +154,44 @@ const Home = (props) => {
         </Drawer>
       </Box>
       <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `100%` } }}>
+        <Button
+          variant="contained"
+          onClick={handleDrawerToggle}
+          sx={{
+            position: "fixed",
+            top: 85,
+            zIndex: 2,
+            left: 16,
+            marginBottom: "20px",
+            marginTop: "-20px",
+            display: { xs: "flex", sm: "none" },
+          }}
+        >
+          <ArrowBackIosIcon /> Filtres
+        </Button>
         <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: "50px" }}>
           <Typography underline="hover" color="primary" href="/">
             Boutique
           </Typography>
-          <Typography color="inherit" href="/getting-started/installation/">
-            {filter.parent}
-          </Typography>
-          <Typography color="text.primary">{filter.children}</Typography>
+          {props.filter !== null && (
+            <Typography color="inherit">{props.filter.parent}</Typography>
+          )}
+          {props.filter !== null && (
+            <Typography color="text.primary">
+              {props.filter.children}{" "}
+              <IconButton
+                onClick={() => {
+                  props.removeFilter();
+                  props.setFilter(null);
+                }}
+              >
+                <HighlightOffIcon color={"primary"} />
+              </IconButton>
+            </Typography>
+          )}
         </Breadcrumbs>
         <BookList
+          removeFilter={props.removeFilter}
           wishlist={props.wishlist}
           removeFromWishList={props.removeFromWishList}
           bookList={props.bookList}

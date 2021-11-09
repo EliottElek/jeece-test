@@ -15,7 +15,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import logo from "../../images/logo.png";
-const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
+const PrimarySearchAppBar = ({ user, cart, wishlist, removeFilter }) => {
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,
@@ -53,6 +53,7 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
     return (
       <Toolbar sx={{ zIndex: 3 }}>
         <Typography
+          onClick={removeFilter}
           component={Link}
           to="/"
           variant="h6"
@@ -114,6 +115,7 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
   const displayDesktop = () => (
     <Toolbar sx={{ zIndex: 3 }}>
       <Typography
+        onClick={removeFilter}
         component={Link}
         to="/"
         variant="h6"
@@ -141,7 +143,7 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
           color="inherit"
         >
           <Badge color="secondary">
-            <Avatar src={user?.avatarUrl}/>
+            <Avatar src={user?.avatarUrl} />
           </Badge>
         </IconButton>
       </div>
@@ -150,7 +152,12 @@ const PrimarySearchAppBar = ({user, cart, wishlist, books }) => {
 
   return (
     <div style={{ marginBottom: "80px", zIndex: 2 }}>
-      <AppBar position="fixed" sx={{zIndex:34234323}} className={classes.appBar} color="inherit">
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: 34234323 }}
+        className={classes.appBar}
+        color="inherit"
+      >
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </div>

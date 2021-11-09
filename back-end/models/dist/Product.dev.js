@@ -38,6 +38,10 @@ var productSchema = new mongoose.Schema({
   comments: {
     type: Array,
     required: false
+  },
+  category: {
+    type: String,
+    required: true
   }
 });
 var Product = mongoose.model("product", productSchema);

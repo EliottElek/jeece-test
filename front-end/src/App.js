@@ -17,6 +17,7 @@ import ErrorPage from "./components/404/404";
 import MyOrders from "./components/MyOrders/MyOrders";
 import Card from "./components/Card/Card";
 import BookListAdmin from "./components/Admin/BookListAdmin/BookListAdmin";
+import ProductAdmin from "./components/Admin/ProductAdmin/ProductAdmin";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
@@ -62,6 +63,10 @@ function App() {
   const [wishlist, setWishlist] = useState(null);
   const [response, setResponse] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
+
+  const [filter, setFilter] = useState(null);
+
   const handleCloseSnack = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -86,8 +91,26 @@ function App() {
   };
   const addCart = (item) => {
     setCart([...cart, item]);
-    setResponse({add:true, message:"Produit ajouté au panier avec succès."});
+  };
+  const addToCart = async (product) => {
+    try {
+      const { data: res } = await axios.post(
+        `http://localhost:5000/users/${user.email}/cart`,
+        {
+          user: user,
+          item: product,
+        }
+      );
+      addCart(product);
+      setResponse(res);
       setOpenSnack(true);
+    } catch (err) {
+      console.log(err);
+      setResponse({
+        add: false,
+        message: "Un problème est survenu lors de l'ajout au panier.",
+      });
+    }
   };
   const addToWishList = async (item) => {
     try {
@@ -103,6 +126,10 @@ function App() {
       setOpenSnack(true);
     } catch (err) {
       console.log(err);
+      setResponse({
+        add: false,
+        message: "Un problème est survenu lors de l'ajout à la liste d'envies.",
+      });
     }
   };
   const removeFromCart = async (item) => {
@@ -121,6 +148,10 @@ function App() {
       setResponse(res);
       setOpenSnack(true);
     } catch (err) {
+      setResponse({
+        add: false,
+        message: "Un problème est survenu lors de la suppression du panier.",
+      });
       console.log(err);
     }
   };
@@ -140,11 +171,52 @@ function App() {
       setResponse(res);
       setOpenSnack(true);
     } catch (err) {
+      setResponse({
+        add: false,
+        message:
+          "Un problème est survenu lors de la suppression de la liste de souhaits.",
+      });
       console.log(err);
     }
   };
   const emptyCart = async () => {
-    setCart([]);
+    try {
+      const { data: res } = await axios.post(
+        `http://localhost:5000/users/${user.email}/cart/empty`,
+        {
+          email: user.email,
+        }
+      );
+      setCart([]);
+      setResponse(res);
+      setOpenSnack(true);
+    } catch (err) {
+      console.log(err);
+      setResponse({
+        add: false,
+        message: "Un problème est survenu lors de la suppression du panier.",
+      });
+    }
+  };
+  const emptyWishlist = async () => {
+    try {
+      const { data: res } = await axios.post(
+        `http://localhost:5000/users/${user.email}/wishlist/empty`,
+        {
+          email: user.email,
+        }
+      );
+      setWishlist([]);
+      setResponse(res);
+      setOpenSnack(true);
+    } catch (err) {
+      console.log(err);
+      setResponse({
+        add: false,
+        message:
+          "Un problème est survenu lors de la suppression de la liste de souhaits.",
+      });
+    }
   };
   useEffect(() => {
     const fetchProducts = async () => {
@@ -153,7 +225,7 @@ function App() {
           `http://localhost:5000/products`
         );
         setProducts(prdcts);
-        console.log("ftched");
+        setAllProducts(prdcts);
       } catch (e) {
         alert("Could not connect to server. Please try again later.");
         console.error(e);
@@ -161,12 +233,16 @@ function App() {
     };
     fetchProducts();
   }, []);
-
+  const removeFilter = () => {
+    setProducts(allProducts);
+    setFilter(null);
+  };
   return (
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
         <Router>
           <AppBar
+            removeFilter={removeFilter}
             user={user}
             books={products}
             cart={cart}
@@ -175,6 +251,11 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Home
+                filter={filter}
+                setFilter={setFilter}
+                removeFilter={removeFilter}
+                allProducts={allProducts}
+                setProducts={setProducts}
                 addWish={addToWishList}
                 removeFromWishList={removeFromWishList}
                 wishlist={wishlist}
@@ -193,10 +274,16 @@ function App() {
               />
             </Route>
             <Route exact path="/register">
-              <SignUp user={user} setUser={setUser} />
+              <SignUp
+                user={user}
+                setUser={setUser}
+                setCart={setCart}
+                setWishList={setWishlist}
+              />
             </Route>
             <Route exact path="/wishlist">
               <Wishlist
+                emptyWishlist={emptyWishlist}
                 addWish={addToWishList}
                 user={user}
                 wishlist={wishlist}
@@ -241,7 +328,20 @@ function App() {
               path="/produit/:id"
               render={(props) => (
                 <Product
-                  addCart={addCart}
+                  addToCart={addToCart}
+                  addToWishlist={addToWishList}
+                  user={user}
+                  id={props.match.params.id}
+                  key={props.location.key}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/produit/:id/admin"
+              render={(props) => (
+                <ProductAdmin
+                  addToCart={addToCart}
                   addToWishlist={addToWishList}
                   user={user}
                   id={props.match.params.id}
