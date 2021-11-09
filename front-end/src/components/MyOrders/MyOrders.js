@@ -287,6 +287,21 @@ const MyOrders = ({ user, profilePage }) => {
       </div>
     );
   }
+  if (orders?.length === 0) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography>Aucune commande passée.</Typography>
+      </div>
+    );
+  }
   if (!orders?.length) {
     return (
       <div

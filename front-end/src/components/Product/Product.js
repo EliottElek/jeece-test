@@ -75,11 +75,12 @@ const styles = {
 
 const Product = ({ id, user, addToCart, addToWishlist }) => {
   const [product, setProduct] = useState();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(0);
   const [ratingValues, setRatingValues] = useState([]);
   const [newRater, setNewRater] = useState(true);
-  const [comment, setComment] = useState();
-  const [titleComment, setTitleComment] = useState();
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [titleComment, setTitleComment] = useState("");
   const [commentSent, setCommentSent] = useState(false);
   const getMeanRating = () => {
     if (ratingValues.length > 0) {
@@ -100,6 +101,8 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
       await axios.post(`http://localhost:5000/products/${id}/rating`, {
         rate: rate,
       });
+      setRatingValues([...ratingValues, rate]);
+      setNewRater(false);
     } catch (err) {
       console.log(err);
     }
@@ -117,6 +120,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
       await axios.post(`http://localhost:5000/products/${id}/comment`, {
         comment: newComment,
       });
+      setComments([...comments, newComment]);
       setCommentSent(true);
     } catch (err) {
       console.log(err);
@@ -128,6 +132,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
         const data = await axios.get(`http://localhost:5000/products/${id}`);
         setProduct(data.data);
         setRatingValues(data.data.rating);
+        setComments(data.data.comments);
         const emails = [];
         data.data.rating.map((rate) => emails.push(rate.email));
         if (emails.indexOf(user?.email) > -1) {
@@ -207,14 +212,14 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
             )}
             <div style={{ display: "flex", alignItems: "center" }}>
               <BasicRating rating={getMeanRating()} />
-              {product?.rating?.length <= 1 ? (
+              {ratingValues.length <= 1 ? (
                 <Typography variant="caption">
-                  {product?.rating?.length} avis donné ({getMeanRating()}{" "}
+                  {ratingValues.length} avis donné ({getMeanRating()}{" "}
                   {getMeanRating() <= 1 ? "étoile" : "étoiles"})
                 </Typography>
               ) : (
                 <Typography variant="caption">
-                  {product?.rating?.length} avis donnés ({getMeanRating()}{" "}
+                  {ratingValues.length} avis donnés ({getMeanRating()}{" "}
                   {getMeanRating() <= 1 ? "étoile" : "étoiles"})
                 </Typography>
               )}
@@ -267,9 +272,8 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
         )}
         {!newRater && (
           <>
-            <Typography>Merci d'avoir laissé une note.</Typography>
-            <Typography variant="caption">
-              Vous ne pouvez plus laisser de note sur ce livre.
+            <Typography>
+              Vous avez déjà laissé une note sur ce livre.
             </Typography>
           </>
         )}
@@ -308,11 +312,11 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
             <Typography variant="caption">Titre</Typography>
             <br></br>
             <input
-              maxlength="199"
+              maxLength="199"
               style={styles.titleInput}
               value={titleComment}
               onChange={(e) => setTitleComment(e.target.value)}
-              placeHolder="(max 200 caractères)"
+              placeholder="(max 200 caractères)"
               disabled={user ? false : true}
             />
             <br></br>
@@ -354,13 +358,11 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
           </>
         )}
         <div style={{ marginTop: "20px" }}>
-          {product.comments.length === 0 ? (
+          {comments.length === 0 ? (
             <Typography>Aucun autre commentaire.</Typography>
           ) : (
             <div>
-              <Typography>
-                Autres commentaires ({product.comments.length})
-              </Typography>
+              <Typography>Autres commentaires ({comments.length})</Typography>
               <List
                 sx={{
                   width: "100%",
@@ -368,7 +370,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
                   bgcolor: "background.paper",
                 }}
               >
-                {product.comments
+                {comments
                   .map((comment) => (
                     <>
                       <ListItem alignItems="flex-start">
