@@ -21,6 +21,8 @@ import ProductAdmin from "./components/Admin/ProductAdmin/ProductAdmin";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
+import OrdersAdmin from "./components/Admin/OrdersAdmin/OrdersAdmin";
+import ClientsAdmin from "./components/Admin/ClientsAdmin/ClientsAdmin";
 const styles = {
   root: {
     padding: 0,
@@ -314,8 +316,14 @@ function App() {
             <Route exact path="/myorders">
               <MyOrders user={user} />
             </Route>
+            <Route exact path="/admin/orders">
+              <OrdersAdmin user={user} />
+            </Route>
+            <Route exact path="/admin/clients">
+              <ClientsAdmin user={user} />
+            </Route>
             <Route exact path="/admin/products">
-              <BookListAdmin user={user} products={products} />
+              <BookListAdmin user={user} products={allProducts} />
             </Route>
             <Route exact path="/card">
               <Card />

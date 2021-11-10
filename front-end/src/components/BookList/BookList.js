@@ -27,7 +27,7 @@ const BookList = ({
       </div>
     );
   if (bookList?.length === 0)
-    return <Typography>Votre liste d'envies est vide.</Typography>;
+    return <Typography>Rien à afficher ici.</Typography>;
 
   return (
     <>

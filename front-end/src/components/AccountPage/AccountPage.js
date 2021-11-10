@@ -2,10 +2,10 @@ import { Paper, Grid, Avatar, Typography, Button } from "@mui/material";
 import React from "react";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LockIcon from "@mui/icons-material/Lock";
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import RedeemIcon from "@mui/icons-material/Redeem";
-import PeopleIcon from '@mui/icons-material/People';
-import { Link } from "react-router-dom";
+import PeopleIcon from "@mui/icons-material/People";
+import { Link, Redirect } from "react-router-dom";
 import MyOrders from "../MyOrders/MyOrders";
 const styles = {
   root: {
@@ -20,6 +20,12 @@ const styles = {
   },
 };
 const AccountPage = ({ user }) => {
+  if (!user)
+    return (
+      <div>
+        <Redirect to="/404" />
+      </div>
+    );
   return (
     <div style={styles.root}>
       <Paper sx={styles.paper} elevation={0}>
@@ -228,9 +234,9 @@ const AccountPage = ({ user }) => {
                     to="/admin/products"
                   >
                     <Typography align="center" variant="h6">
-                     Produits
+                      Produits
                     </Typography>
-                    <MenuBookIcon style={{ fontSize: "50px" }}/>
+                    <MenuBookIcon style={{ fontSize: "50px" }} />
                   </Paper>
                 </Grid>
                 <Grid
@@ -248,6 +254,8 @@ const AccountPage = ({ user }) => {
                   lg={4}
                 >
                   <Paper
+                    component={Link}
+                    to="/admin/orders"
                     sx={{
                       bgcolor: "primary.main",
                       color: "white",
@@ -283,6 +291,8 @@ const AccountPage = ({ user }) => {
                   lg={4}
                 >
                   <Paper
+                  component={Link}
+                  to="/admin/clients"
                     sx={{
                       bgcolor: "primary.main",
                       width: "100%",

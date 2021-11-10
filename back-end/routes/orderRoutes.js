@@ -6,6 +6,6 @@ const { createOrder, getOrders } = require("../controller/orderController");
 //@route GET /procuts
 //@access Public
 router.post("/", createOrder);
-router.get("/", getOrders);
+router.get("/admin", getOrders);
 
 module.exports = router;

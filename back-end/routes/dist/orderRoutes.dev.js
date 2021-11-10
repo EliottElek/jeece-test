@@ -12,5 +12,5 @@ var _require = require("../controller/orderController"),
 
 
 router.post("/", createOrder);
-router.get("/", getOrders);
+router.get("/admin", getOrders);
 module.exports = router;
