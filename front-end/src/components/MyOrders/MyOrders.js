@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Typography, CircularProgress, Button } from "@mui/material";
+import { Typography, CircularProgress, Button, Chip } from "@mui/material";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import { Link, Redirect } from "react-router-dom";
@@ -73,14 +73,7 @@ const MyOrders = ({ user, profilePage }) => {
             {row.total}€
           </TableCell>
           <TableCell style={{ maxHeight: "100px", padding: 0 }} align="right">
-            <Typography
-              variant="caption"
-              style={{
-                margin: "3px",
-              }}
-            >
-              En préparation
-            </Typography>
+            <Chip color="success" label="En préparation" />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -326,7 +319,38 @@ const MyOrders = ({ user, profilePage }) => {
     );
   return (
     <div style={{ margin: "20px" }}>
-      {!profilePage && <Typography variant="h5">Vos commandes</Typography>}
+      {!profilePage ? (
+        <Typography
+          variant="h5"
+          sx={{ width: "95%", maxWidth: "1000px", margin: "auto" }}
+        >
+          Vos commandes
+        </Typography>
+      ) : orders?.length === 1 ? (
+        <Typography
+          variant="h6"
+          sx={{
+            width: "95%",
+            maxWidth: "1000px",
+            margin: "auto",
+            marginBottom: "10px",
+          }}
+        >
+          Votre dernière commande
+        </Typography>
+      ) : (
+        <Typography
+          variant="h6"
+          sx={{
+            width: "95%",
+            maxWidth: "1000px",
+            margin: "auto",
+            marginBottom: "10px",
+          }}
+        >
+          Vos {orders?.length} dernières commandes <Button component = {Link} to ="/myorders">Tout voir </Button>
+        </Typography>
+      )}
       <TableContainer
         sx={{ width: "95%", maxWidth: "1000px", margin: "auto" }}
         component={Paper}

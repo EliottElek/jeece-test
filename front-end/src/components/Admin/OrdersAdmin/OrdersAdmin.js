@@ -8,7 +8,9 @@ const OrdersAdmin = ({ user }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data: ords } = await axios.get("http://localhost:5000/orders/admin");
+        const { data: ords } = await axios.get(
+          "http://localhost:5000/orders/admin"
+        );
         setOrders(ords);
       } catch (err) {
         console.error(err);
@@ -22,7 +24,7 @@ const OrdersAdmin = ({ user }) => {
         <Redirect to="/404" />
       </div>
     );
-    if (!orders?.length)
+  if (!orders?.length)
     return (
       <div
         style={{
@@ -33,7 +35,7 @@ const OrdersAdmin = ({ user }) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress color="primary" />
+        <CircularProgress style={{ color: "#EE2B69" }} />
       </div>
     );
 

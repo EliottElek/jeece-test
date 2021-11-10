@@ -7,6 +7,7 @@ import RedeemIcon from "@mui/icons-material/Redeem";
 import PeopleIcon from "@mui/icons-material/People";
 import { Link, Redirect } from "react-router-dom";
 import MyOrders from "../MyOrders/MyOrders";
+import BookList from "../BookList/BookList";
 const styles = {
   root: {
     width: "90%",
@@ -19,7 +20,7 @@ const styles = {
     height: "100%",
   },
 };
-const AccountPage = ({ user }) => {
+const AccountPage = ({ user, wishlist, removeFromWishList }) => {
   if (!user)
     return (
       <div>
@@ -111,6 +112,7 @@ const AccountPage = ({ user }) => {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
+                      textDecoration: "none",
                     }}
                     component={Link}
                     to="/myorders"
@@ -118,7 +120,7 @@ const AccountPage = ({ user }) => {
                     <Typography align="center" variant="h6">
                       Mes commandes
                     </Typography>
-                    <FormatListBulletedIcon style={{ fontSize: "50px" }} />
+                    {/* <FormatListBulletedIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
                 </Grid>
                 <Grid
@@ -146,13 +148,14 @@ const AccountPage = ({ user }) => {
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
+                      textDecoration: "none",
                       alignItems: "center",
                     }}
                   >
                     <Typography align="center" variant="h6">
                       Modifier mon mot de passe
                     </Typography>
-                    <LockIcon style={{ fontSize: "50px" }} />
+                    {/* <LockIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
                 </Grid>
                 <Grid
@@ -171,6 +174,8 @@ const AccountPage = ({ user }) => {
                   lg={4}
                 >
                   <Paper
+                    component={Link}
+                    to="/wishlist"
                     sx={{
                       bgcolor: "primary.main",
                       width: "100%",
@@ -181,13 +186,14 @@ const AccountPage = ({ user }) => {
                       color: "white",
                       flexDirection: "column",
                       justifyContent: "center",
+                      textDecoration: "none",
                       alignItems: "center",
                     }}
                   >
                     <Typography align="center" variant="h6">
                       Ma liste d'envies
                     </Typography>
-                    <RedeemIcon style={{ fontSize: "50px" }} />
+                    {/* <RedeemIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
                 </Grid>
               </Grid>
@@ -236,7 +242,7 @@ const AccountPage = ({ user }) => {
                     <Typography align="center" variant="h6">
                       Produits
                     </Typography>
-                    <MenuBookIcon style={{ fontSize: "50px" }} />
+                    {/* <MenuBookIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
                 </Grid>
                 <Grid
@@ -272,7 +278,7 @@ const AccountPage = ({ user }) => {
                     <Typography align="center" variant="h6">
                       Commandes
                     </Typography>
-                    <FormatListBulletedIcon style={{ fontSize: "50px" }} />
+                    {/* <FormatListBulletedIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
                 </Grid>
                 <Grid
@@ -291,8 +297,8 @@ const AccountPage = ({ user }) => {
                   lg={4}
                 >
                   <Paper
-                  component={Link}
-                  to="/admin/clients"
+                    component={Link}
+                    to="/admin/clients"
                     sx={{
                       bgcolor: "primary.main",
                       width: "100%",
@@ -319,8 +325,12 @@ const AccountPage = ({ user }) => {
         <div style={{ height: "35px" }} />
         {!user.admin && (
           <>
-            <Typography variant="h5">Vos 5 dernières commandes</Typography>
             <MyOrders user={user} profilePage={true} />
+          </>
+        )}
+        {!user.admin && (
+          <>
+            <BookList user={user} bookList={wishlist} account={true} inWish={true} removeFromWishList={removeFromWishList}/>
           </>
         )}
       </Paper>

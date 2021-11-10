@@ -131,7 +131,7 @@ const BookItem = ({ bookItem, user }) => {
     <>
       <Grid
         style={styles.gridItem}
-        key={bookItem.id}
+        key={bookItem._id}
         item
         xs={12}
         sm={6}

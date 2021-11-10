@@ -6,17 +6,15 @@ import { Redirect } from "react-router";
 const ClientAdmin = ({ user }) => {
   const [clients, setClients] = useState([]);
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchClients = async () => {
       try {
-        const { data: ords } = await axios.get(
-          "http://localhost:5000/users"
-        );
-        setClients(ords);
+        const { data: cli } = await axios.get("http://localhost:5000/users");
+        setClients(cli);
       } catch (err) {
         console.error(err);
       }
     };
-    fetchOrders();
+    fetchClients();
   }, []);
   if (!user || !user?.admin)
     return (
@@ -35,11 +33,11 @@ const ClientAdmin = ({ user }) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress color="primary" />
+        <CircularProgress style={{ color: "#EE2B69" }} />
       </div>
     );
 
-  if (clients.length === 0)
+  if (clients?.length === 0)
     return <Typography>Aucun client enregistré.</Typography>;
   return (
     <div>

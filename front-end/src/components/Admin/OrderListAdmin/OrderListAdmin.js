@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Typography, CircularProgress, Button } from "@mui/material";
+import { Typography, CircularProgress, Button, Chip } from "@mui/material";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 const OrderListAdmin = ({ orders }) => {
@@ -52,14 +52,7 @@ const OrderListAdmin = ({ orders }) => {
             {row.total}€
           </TableCell>
           <TableCell style={{ maxHeight: "100px", padding: 0 }} align="right">
-            <Typography
-              variant="caption"
-              style={{
-                margin: "3px",
-              }}
-            >
-              En préparation
-            </Typography>
+            <Chip color="success" label="En préparation" />
           </TableCell>
         </TableRow>
         <TableRow>

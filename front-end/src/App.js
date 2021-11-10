@@ -301,6 +301,8 @@ function App() {
                 setCart={setCart}
                 setUser={setUser}
                 setWishlist={setWishlist}
+                wishlist={wishlist}
+                removeFromWishList={removeFromWishList}
                 user={user}
               />
             </Route>

@@ -56,6 +56,7 @@ const styles = {
   },
 };
 const BookItem = ({
+  account,
   inWish,
   bookItem,
   addWish,
@@ -77,12 +78,12 @@ const BookItem = ({
   return (
     <Grid
       style={styles.gridItem}
-      key={bookItem.id}
+      key={bookItem._id}
       item
-      xs={12}
-      sm={6}
-      md={4}
-      lg={3}
+      xs={account ? 6 : 12}
+      sm={account ? 3 : 6}
+      md={account ? 3 : 4}
+      lg={account ? 2 : 3}
     >
       <div style={styles.item} className="item">
         {!user?.admin && (
@@ -123,39 +124,43 @@ const BookItem = ({
             )}
           </Paper>
         )}
-        <Link to={`/produit/${bookItem._id}`} key={bookItem.id}>
+        <Link
+          style={{ textDecoration: "none", color: "inherit" }}
+          to={`/produit/${bookItem._id}`}
+          key={bookItem.id}
+        >
           <img
             style={styles.itemImage}
             src={bookItem.mediaUrl}
             alt={bookItem.id}
           />
+          <div style={styles.itemInfos}>
+            <div>
+              <Typography
+                align="center"
+                variant="h6"
+                style={{ fontSize: "1rem" }}
+              >
+                {bookItem.title}
+              </Typography>
+              <Typography
+                align="center"
+                variant="h6"
+                style={{ fontSize: "0.8rem" }}
+              >
+                {bookItem.author}
+              </Typography>
+            </div>
+            <div>
+              <Typography align="center" color="primary" variant="body1">
+                {bookItem.price}€
+              </Typography>
+            </div>
+            {getMeanRating() > 0 && !account && (
+              <Rating name="size-small" size="small" rating={getMeanRating()} />
+            )}
+          </div>
         </Link>
-        <div style={styles.itemInfos}>
-          <div>
-            <Typography
-              align="center"
-              variant="h6"
-              style={{ fontSize: "1rem" }}
-            >
-              {bookItem.title}
-            </Typography>
-            <Typography
-              align="center"
-              variant="h6"
-              style={{ fontSize: "0.8rem" }}
-            >
-              {bookItem.author}
-            </Typography>
-          </div>
-          <div>
-            <Typography align="center" color="primary" variant="body1">
-              {bookItem.price}€
-            </Typography>
-          </div>
-          {getMeanRating() > 0 && (
-            <Rating name="size-small" size="small" rating={getMeanRating()} />
-          )}
-        </div>
       </div>
     </Grid>
   );

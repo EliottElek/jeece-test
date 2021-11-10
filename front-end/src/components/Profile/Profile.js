@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Card, Typography, TextField, Button } from "@mui/material";
+import {
+  Card,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
 
 import { Link } from "react-router-dom";
@@ -100,13 +106,20 @@ const styles = {
   },
 };
 
-const Profile = ({ user, setUser, setCart, setWishlist }) => {
+const Profile = ({
+  user,
+  setUser,
+  setCart,
+  setWishlist,
+  wishlist,
+  removeFromWishList,
+}) => {
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
   const [emptyPassMessage, setEmptyPassMessage] =
     useState("Votre mot de passe");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [submitted, setSubmitted] = useState(false);
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -128,6 +141,7 @@ const Profile = ({ user, setUser, setCart, setWishlist }) => {
         setEmptyPassMessage("");
       }
       if (email !== "" && password !== "") {
+        setSubmitted(true);
         try {
           const { data: res } = await axios.get(
             `http://localhost:5000/users/${email}/${password}`
@@ -205,7 +219,7 @@ const Profile = ({ user, setUser, setCart, setWishlist }) => {
               onClick={handleSubmit}
               style={styles.button}
             >
-              Connexion
+              {!submitted ? "Connexion" : <CircularProgress style={{color:"white", height:"30px", width:"30px"}} />}
             </Button>
             <Typography style={styles.link}>
               Pas de compte ?
@@ -216,7 +230,11 @@ const Profile = ({ user, setUser, setCart, setWishlist }) => {
           </form>
         </Card>
       ) : (
-        <AccountPage user={user} />
+        <AccountPage
+          user={user}
+          removeFromWishList={removeFromWishList}
+          wishlist={wishlist}
+        />
       )}
     </div>
   );
