@@ -86,7 +86,7 @@ const BookItem = ({
       lg={account ? 2 : 3}
     >
       <div style={styles.item} className="item">
-        {!user?.admin && (
+        {!user?.admin && user && (
           <Paper style={styles.heartContainer} elevation={0}>
             {!inWish &&
             (like ||
@@ -99,7 +99,7 @@ const BookItem = ({
               >
                 <FavoriteIcon sx={{ color: "primary.main", opacity: 1 }} />
               </IconButton>
-            ) : (
+            ) : user && (
               !inWish && (
                 <IconButton
                   onClick={() => {

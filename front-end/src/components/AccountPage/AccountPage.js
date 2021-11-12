@@ -137,26 +137,6 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
                   md={4}
                   lg={4}
                 >
-                  <Paper
-                    sx={{
-                      bgcolor: "primary.main",
-                      color: "white",
-                      width: "100%",
-                      cursor: "pointer",
-                      height: "100%",
-                      padding: "12px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      textDecoration: "none",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography align="center" variant="h6">
-                      Modifier mon mot de passe
-                    </Typography>
-                    {/* <LockIcon style={{ fontSize: "50px" }} /> */}
-                  </Paper>
                 </Grid>
                 <Grid
                   sx={{
@@ -315,7 +295,6 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
                     <Typography align="center" variant="h6">
                       Clients
                     </Typography>
-                    <PeopleIcon style={{ fontSize: "50px" }} />
                   </Paper>
                 </Grid>
               </Grid>
