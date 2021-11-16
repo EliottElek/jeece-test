@@ -5,8 +5,11 @@ import { Context } from "../Context/Context";
 const WishList = () => {
   const {
     user,
-    wishlist
+    wishlist,
+    setHeader
   } = useContext(Context)
+  setHeader("Ma liste d'envies");
+
   if (!user || user?.admin)
     return (
       <div>

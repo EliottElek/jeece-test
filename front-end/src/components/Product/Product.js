@@ -4,6 +4,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress, Grid, Typography, Button } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
 import BasicRating from "../Rating/Rating";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
@@ -75,7 +76,7 @@ const styles = {
 };
 
 const Product = ({ id }) => {
-  const { user, addToCart, addToWishList, setHeader } = useContext(Context);
+  const { user, addToCart, addToWishList, setHeader, removeFromWishList, wishlist } = useContext(Context);
   const [product, setProduct] = useState();
   const [rating, setRating] = useState(0);
   const [ratingValues, setRatingValues] = useState([]);
@@ -247,16 +248,29 @@ const Product = ({ id }) => {
               Ajouter au panier
               <ShoppingBasketIcon sx={styles.icon} />
             </Button>
-            <Button
+            {wishlist?.some((item) => item.title === product.title) ? (<Button
               style={styles.addWishButton}
               disabled={user ? false : true}
-              onClick={() => addToWishList(product)}
+              onClick={() => removeFromWishList(product)}
               color={"secondary"}
               variant="contained"
             >
-              Ajouter à ma liste d'envies
-              <FavoriteBorderIcon sx={styles.icon} />
+              Retirer de la liste d'envies
+              <ClearIcon sx={styles.icon} />
             </Button>
+            )
+              : (
+                <Button
+                  style={styles.addWishButton}
+                  disabled={user ? false : true}
+                  onClick={() => addToWishList(product)}
+                  color={"secondary"}
+                  variant="contained"
+                >
+                  Ajouter à ma liste d'envies
+                  <FavoriteBorderIcon sx={styles.icon} />
+                </Button>
+              )}
           </div>
         </Grid>
       </Grid>

@@ -13,7 +13,7 @@ const styles = {
     }
 }
 
-const AddProduct = () => {
+const AddProduct = ({ setOpenAddPopup }) => {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [price, setPrice] = useState("");
@@ -35,10 +35,11 @@ const AddProduct = () => {
             publishingDate: new Date()
         }
         try {
-             await axios.post("http://localhost:5000/products",
+            await axios.post("http://localhost:5000/products",
                 { product: product }
             )
             setSuccess({ success: true, message: "Produit ajouté avec succès." })
+            //setOpenAddPopup(false)
         } catch (e) {
             console.log(e);
             setSuccess({ success: false, message: "Impossible d'ajouter le produit." })

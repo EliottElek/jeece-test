@@ -325,7 +325,7 @@ const MyOrders = ({ profilePage }) => {
       {!profilePage ? (
         <Typography
           variant="h5"
-          sx={{ width: "95%", maxWidth: "1000px", margin: "auto" }}
+          sx={{ width: "92%", margin: "auto" }}
         >
           Vos commandes
         </Typography>
@@ -355,7 +355,7 @@ const MyOrders = ({ profilePage }) => {
         </Typography>
       )}
       <TableContainer
-        sx={{ width: "95%", maxWidth: "1000px", margin: "auto" }}
+        sx={{ width: "92%", margin: "auto" }}
         component={Paper}
         elevation={1}
       >

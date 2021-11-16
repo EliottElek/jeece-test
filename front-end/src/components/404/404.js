@@ -17,8 +17,8 @@ const ErrorPage = () => {
     >
       <Typography variant="h4">Erreur 404</Typography>
       <Typography variant="h6">
-        On dirait que vous vous êtes perdu...{" "}
-        <Link to="/">Revenez en lieu sûr.</Link>
+        Cette page est introuvable. Connectez-vous ou
+        <Link to="/"> revenez en lieu sûr.</Link>
       </Typography>
     </div>
   );

@@ -130,7 +130,8 @@ const modifyProduct = async (req, res) => {
               title: req.body.title,
               price: req.body.price,
             },
-          }
+          },
+          { new: true }
         );
         console.log(newP);
         res.json({

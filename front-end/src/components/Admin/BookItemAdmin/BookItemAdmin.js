@@ -80,7 +80,7 @@ const styles = {
 };
 
 const BookItem = ({ bookItem }) => {
-  const {user} = useContext(Context)
+  const { user, setAllProducts, allProducts } = useContext(Context)
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const handleCloseSnack = (event, reason) => {
@@ -102,7 +102,11 @@ const BookItem = ({ bookItem }) => {
         `http://localhost:5000/products/${bookItem?._id}/modify`,
         { author: author, price: price, title: title }
       );
-      console.log(res);
+      const newProducts = allProducts;
+      newProducts.find(x => x._id === bookItem._id).title = title;
+      newProducts.find(x => x._id === bookItem._id).price = price;
+      newProducts.find(x => x._id === bookItem._id).author = author;
+      setAllProducts(newProducts)
       setResponse(res);
       setOpenSnack(true);
       handleClose();
