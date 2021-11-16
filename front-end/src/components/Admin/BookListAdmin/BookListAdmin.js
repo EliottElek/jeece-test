@@ -1,8 +1,26 @@
-import React from "react";
-import { Grid, CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, CircularProgress, Fab } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 import BookItem from "../BookItemAdmin/BookItemAdmin";
 import { Redirect } from "react-router";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import AddProduct from "../AddProduct/AddProduct";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  borderRadius:"8px",
+  boxShadow: 24,
+  p: 4,
+};
+
 const BookList = ({ products, user }) => {
+  const [openAddPopup, setOpenAddPopup] = useState(false);
   if (!user?.admin || !user) {
     return (
       <div>
@@ -12,6 +30,11 @@ const BookList = ({ products, user }) => {
   }
   return (
     <>
+      <Fab style={{ marginLeft: "6%" }} variant="extended" color="primary" aria-label="add" onClick={() => setOpenAddPopup(true)}
+      >
+        <AddIcon sx={{ ml: 1 }} />
+        Ajouter un produit
+      </Fab>
       {products?.length === 0 ? (
         <div
           style={{
@@ -36,6 +59,25 @@ const BookList = ({ products, user }) => {
           ))}
         </Grid>
       )}
+      <Fab style={{
+        position: 'sticky',
+        bottom: 16,
+        left: "95%",
+      }} color="primary" aria-label="add"
+        onClick={() => setOpenAddPopup(true)}
+      >
+        <AddIcon />
+      </Fab>
+      <Modal
+        open={openAddPopup}
+        onClose={() => setOpenAddPopup(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <AddProduct />
+        </Box>
+      </Modal>
     </>
   );
 };

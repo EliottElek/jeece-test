@@ -24,10 +24,12 @@ const BookList = ({
           alignItems: "center",
         }}
       >
-        <Typography>Rien à afficher.</Typography>
+        <Typography align="center">Rien à afficher.</Typography>
         {!inWish && <Button onClick={removeFilter}>Retirer les filtres</Button>}
       </div>
     );
+    if (bookList.length === 0)
+    return <Typography align="center">Rien à afficher ici.</Typography>;
   if (!bookList.length)
     return (
       <div
@@ -42,8 +44,6 @@ const BookList = ({
         <CircularProgress color={"primary"} />
       </div>
     );
-  if (bookList.length === 0)
-    return <Typography>Rien à afficher ici.</Typography>;
 
   return (
     <>

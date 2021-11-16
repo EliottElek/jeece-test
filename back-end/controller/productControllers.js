@@ -1,6 +1,18 @@
 const Product = require("../models/Product");
 
-const getAllProducts = async (req, res) => {
+const createProduct = async (req, res) => {
+  console.log(req.body.product)
+  try {
+    await Product.insertMany(req.body.product);
+    res.json({
+      add: true,
+      message: "Produit ajouté avec succès.",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+}; const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
     res.json(products);
@@ -14,10 +26,6 @@ const getProductsByCategory = async (req, res) => {
     const products = await Product.find({
       category: req.params.category,
     });
-    if (products.length === 0) {
-      res.json({ message: "Aucun résultat trouvé" });
-    } else {
-    }
     res.json({
       results: products,
       message: `${products.length} résultat(s) trouvé(s)`,
@@ -105,6 +113,7 @@ const addComment = async (req, res) => {
   }
 };
 const modifyProduct = async (req, res) => {
+  console.log(req.body)
   try {
     const product = await Product.findOne({
       _id: req.params.id,
@@ -145,6 +154,7 @@ const modifyProduct = async (req, res) => {
   }
 };
 module.exports = {
+  createProduct,
   getAllProducts,
   getProductById,
   addRating,

@@ -23,9 +23,9 @@ const styles = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     maxWidth: 400,
-    width:"90%",
+    width: "90%",
     bgcolor: "background.paper",
-    border: "2px solid #000",
+    borderRadius: "8px",
     boxShadow: 24,
     p: 4,
   },
@@ -194,19 +194,19 @@ const BookItem = ({ bookItem, user }) => {
               sx={{ marginTop: "22px" }}
               label="Titre"
               value={title}
-              onChange={(e) => setTitle(e.target.event)}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <TextField
               sx={{ marginTop: "12px" }}
               label="Auteur"
               value={author}
-              onChange={(e) => setAuthor(e.target.event)}
+              onChange={(e) => setAuthor(e.target.value)}
             />
             <TextField
               sx={{ marginTop: "12px", marginBottom: "12px" }}
               label="Prix"
               value={price}
-              onChange={(e) => setPrice(e.target.event)}
+              onChange={(e) => setPrice(e.target.value)}
             />
             <Button
               component={Link}

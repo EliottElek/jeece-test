@@ -15,7 +15,6 @@ const OrderListAdmin = ({ orders }) => {
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-
     return (
       <React.Fragment>
         <TableRow
@@ -252,7 +251,7 @@ const OrderListAdmin = ({ orders }) => {
       </React.Fragment>
     );
   }
-  if (orders?.length === 0) {
+  if (orders.length===0) {
     return (
       <div
         style={{
@@ -267,7 +266,7 @@ const OrderListAdmin = ({ orders }) => {
       </div>
     );
   }
-  if (!orders?.length) {
+  if (!orders.length) {
     return (
       <div
         style={{

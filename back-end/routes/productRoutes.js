@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getAllProducts,
+  createProduct,
   getProductById,
   addRating,
   addComment,
@@ -13,6 +14,7 @@ const {
 //@desc GET all products from db
 //@route GET /procuts
 //@access Public
+router.post("/", createProduct);
 router.get("/", getAllProducts);
 router.get("/category/:category", getProductsByCategory);
 router.get("/author/:author", getProductsByAuthor);

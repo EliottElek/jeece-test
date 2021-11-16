@@ -22,23 +22,24 @@ const ClientAdmin = ({ user }) => {
         <Redirect to="/404" />
       </div>
     );
-  if (!clients?.length)
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    if (!clients.length) {
+      return (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
         <CircularProgress style={{ color: "#EE2B69" }} />
-      </div>
-    );
+        </div>
+      );
+    }
+  if (clients.length === 0)
+    return <Typography align="center">Aucune commande passée.</Typography>;
 
-  if (clients?.length === 0)
-    return <Typography>Aucun client enregistré.</Typography>;
   return (
     <div>
       <ClientListAdmin clients={clients} />

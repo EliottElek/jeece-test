@@ -24,23 +24,23 @@ const OrdersAdmin = ({ user }) => {
         <Redirect to="/404" />
       </div>
     );
-  if (!orders?.length)
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+    if (!orders.length) {
+      return (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
         <CircularProgress style={{ color: "#EE2B69" }} />
-      </div>
-    );
-
+        </div>
+      );
+    }
   if (orders.length === 0)
-    return <Typography>Aucune commande passée.</Typography>;
+    return <Typography align="center">Aucune commande passée.</Typography>;
   return (
     <div>
       <OrderListAdmin orders={orders} />
