@@ -1,10 +1,8 @@
 import { Paper, Grid, Avatar, Typography, Button } from "@mui/material";
-import React from "react";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import LockIcon from "@mui/icons-material/Lock";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import RedeemIcon from "@mui/icons-material/Redeem";
-import PeopleIcon from "@mui/icons-material/People";
+import { FormControl, TextField, Alert } from "@mui/material";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import MyOrders from "../MyOrders/MyOrders";
 import BookList from "../BookList/BookList";
@@ -19,8 +17,30 @@ const styles = {
     width: "100%",
     height: "100%",
   },
+  input: {
+    width: "100%",
+    marginTop: "5px",
+    marginBottom: "5px"
+  },
+  control: {
+    width: "100%",
+
+  },
+  box: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    borderRadius: "8px",
+    boxShadow: 24,
+    p: 4,
+  }
 };
+
 const AccountPage = ({ user, wishlist, removeFromWishList }) => {
+  const [openModal, setOpenModal] = useState(false);
   if (!user)
     return (
       <div>
@@ -36,8 +56,8 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
             item
             xs={12}
             sm={12}
-            md={6}
-            lg={6}
+            md={4}
+            lg={4}
           >
             <Avatar
               src={user?.avatarUrl}
@@ -71,12 +91,12 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
             item
             xs={12}
             sm={12}
-            md={6}
-            lg={6}
+            md={8}
+            lg={8}
           >
             {!user.admin ? (
               <Grid
-                spacing={4}
+                spacing={1}
                 container
                 sx={{
                   width: "100%",
@@ -128,6 +148,7 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
                     marginTop: "20px",
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                     width: "100%",
                     maxHeight: "100px",
                   }}
@@ -137,6 +158,27 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
                   md={4}
                   lg={4}
                 >
+                  <Paper
+                    sx={{
+                      bgcolor: "primary.main",
+                      width: "100%",
+                      color: "white",
+                      cursor: "pointer",
+                      height: "100%",
+                      padding: "12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textDecoration: "none",
+                    }}
+                    onClick={() => setOpenModal(true)}
+                  >
+                    <Typography align="center" variant="h6">
+                      Mes infos
+                    </Typography>
+                    {/* <FormatListBulletedIcon style={{ fontSize: "50px" }} /> */}
+                  </Paper>
                 </Grid>
                 <Grid
                   sx={{
@@ -309,10 +351,27 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
         )}
         {!user.admin && (
           <>
-            <BookList user={user} bookList={wishlist} account={true} inWish={true} removeFromWishList={removeFromWishList}/>
+            <BookList user={user} bookList={wishlist} account={true} inWish={true} removeFromWishList={removeFromWishList} />
           </>
         )}
       </Paper>
+      <Modal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles.box}>
+          <FormControl style={styles.control}>
+            <Typography>Modifier vos informations</Typography>
+            <TextField style={styles.input} label="Nom" />
+            <TextField style={styles.input} label="Prénom" />
+            <TextField style={styles.input} label="Email" />
+            <TextField style={styles.input} label="Adresses" />
+            <Button variant="contained" >Sauvegarder</Button>
+          </FormControl>
+        </Box>
+      </Modal>
     </div>
   );
 };

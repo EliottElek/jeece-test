@@ -113,7 +113,6 @@ const addComment = async (req, res) => {
   }
 };
 const modifyProduct = async (req, res) => {
-  console.log(req.body)
   try {
     const product = await Product.findOne({
       _id: req.params.id,
