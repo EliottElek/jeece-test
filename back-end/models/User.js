@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatarUrl: {
+    type: String,
+    required: false,
+  },
   birthdate: {
     type: String,
     required: true,
@@ -20,6 +24,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  cart: {
+    type: Array,
+    required: false,
+  },
+  wishlist: {
+    type: Array,
+    required: false,
   },
 });
 

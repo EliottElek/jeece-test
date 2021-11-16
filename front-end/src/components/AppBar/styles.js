@@ -3,7 +3,8 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles((theme) => ({
   appBar: {
     boxShadow: "none!important",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+    width:'100vw',
+    borderBottom: "1px solid rgba(238, 43, 105, 0.12)",
   },
   title: {
     alignItems: "center",
@@ -37,26 +38,6 @@ export default makeStyles((theme) => ({
   desktopLinks: {
     display: "flex",
     flexDirection: "row",
-  },
-  links: {
-    color: "inherit",
-    textDecoration: "none",
-    textTransform: "uppercase",
-    letterSpacing: "-0.05em",
-    fontWeight: "bold",
-    borderRadius: "8px",
-  },
-  custom: {
-    color: "white",
-    textDecoration: "none",
-    textTransform: "uppercase",
-    letterSpacing: "-0.05em",
-    fontWeight: "bold",
-    borderRadius: "8px",
-    backgroundColor: "#95ADF9",
-    "@media (max-width: 900px)": {
-      color: "inherit",
-    },
   },
   buttonMobile: {
     marginRight: "10px",

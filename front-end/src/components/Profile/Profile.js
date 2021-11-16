@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Card, Typography, TextField, Button } from "@mui/material";
+import {
+  Card,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
 
 import { Link } from "react-router-dom";
@@ -100,12 +106,20 @@ const styles = {
   },
 };
 
-const Profile = ({ user, setUser }) => {
+const Profile = ({
+  user,
+  setUser,
+  setCart,
+  setWishlist,
+  wishlist,
+  removeFromWishList,
+}) => {
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
-  const [emptyPassMessage, setEmptyPassMessage] = useState("Votre mot de passe");
+  const [emptyPassMessage, setEmptyPassMessage] =
+    useState("Votre mot de passe");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [submitted, setSubmitted] = useState(false);
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -127,6 +141,7 @@ const Profile = ({ user, setUser }) => {
         setEmptyPassMessage("");
       }
       if (email !== "" && password !== "") {
+        setSubmitted(true);
         try {
           const { data: res } = await axios.get(
             `http://localhost:5000/users/${email}/${password}`
@@ -134,9 +149,23 @@ const Profile = ({ user, setUser }) => {
           if (res.auth) {
             setEmptyEmailMessage("");
             setUser(res.user);
+            setCart(res.user.cart);
+            setWishlist(res.user.wishlist);
           } else {
-            setEmptyEmailMessage(res.message);
-            setUser(null);
+            try {
+              const { data: res } = await axios.get(
+                `http://localhost:5000/admins/${email}/${password}`
+              );
+              if (res.auth) {
+                setEmptyEmailMessage("");
+                setUser(res.admin);
+              } else {
+                setEmptyEmailMessage(res.message);
+                setUser(null);
+              }
+            } catch (err) {
+              setUser(null);
+            }
           }
         } catch (err) {
           console.error(err);
@@ -167,7 +196,11 @@ const Profile = ({ user, setUser }) => {
             />
             <div style={{ height: "30px" }}></div>
             <TextField
-              color={emptyPassMessage === "Votre mot de passe" ? "primary" : "warning"}
+              color={
+                emptyPassMessage === "Votre mot de passe"
+                  ? "primary"
+                  : "warning"
+              }
               fullWidth
               label={emptyPassMessage}
               id="margin-none"
@@ -177,11 +210,7 @@ const Profile = ({ user, setUser }) => {
               placeholder="Votre mot de passe...*"
               type="password"
             />
-            <Typography
-              component={Link}
-              style={styles.link}
-              to={"/"}
-            >
+            <Typography component={Link} style={styles.link} to={"/"}>
               Mot de passe oublié ?
             </Typography>
             <Button
@@ -190,7 +219,7 @@ const Profile = ({ user, setUser }) => {
               onClick={handleSubmit}
               style={styles.button}
             >
-              Connexion
+              {!submitted ? "Connexion" : <CircularProgress style={{color:"white", height:"30px", width:"30px"}} />}
             </Button>
             <Typography style={styles.link}>
               Pas de compte ?
@@ -201,7 +230,11 @@ const Profile = ({ user, setUser }) => {
           </form>
         </Card>
       ) : (
-        <AccountPage user={user} />
+        <AccountPage
+          user={user}
+          removeFromWishList={removeFromWishList}
+          wishlist={wishlist}
+        />
       )}
     </div>
   );

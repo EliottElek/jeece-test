@@ -11,21 +11,17 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import logo from "../../images/logo.png";
-
-const PrimarySearchAppBar = ({ books, totalItems }) => {
+const PrimarySearchAppBar = ({ user, cart, wishlist, removeFilter }) => {
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,
     drawerOpen: false,
   });
 
-  const links = [
-    { label: "Boutique", path: "/", class: classes.links },
-    { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
-  ];
   const linksMobile = [
     { label: "Boutique", path: "/", class: classes.links },
     { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
@@ -55,8 +51,9 @@ const PrimarySearchAppBar = ({ books, totalItems }) => {
     const handleDrawerClose = () =>
       setState((prevState) => ({ ...prevState, drawerOpen: false }));
     return (
-      <Toolbar>
+      <Toolbar sx={{ zIndex: 3 }}>
         <Typography
+          onClick={removeFilter}
           component={Link}
           to="/"
           variant="h6"
@@ -116,8 +113,9 @@ const PrimarySearchAppBar = ({ books, totalItems }) => {
     </div>
   );
   const displayDesktop = () => (
-    <Toolbar>
+    <Toolbar sx={{ zIndex: 3 }}>
       <Typography
+        onClick={removeFilter}
         component={Link}
         to="/"
         variant="h6"
@@ -127,19 +125,16 @@ const PrimarySearchAppBar = ({ books, totalItems }) => {
         <img src={logo} style={{ height: "50px", width: "auto" }} alt="logo" />
       </Typography>
       <div className={classes.grow}>{/* <SearchBar books = {books}/> */}</div>
-      {getDrawerChoices(links, classes.desktopLinks)}
-      <div className={classes.button}>
-        <IconButton
-          component={Link}
-          to="/panier"
-          aria-label="Show cart items"
-          color="inherit"
-        >
-          <Badge badgeContent={totalItems} color="secondary">
-            <ShoppingBasketIcon sx={{color:"#bdbdbd"}}/>
-          </Badge>
-        </IconButton>
-      </div>
+      <MenuItem component={Link} to="/wishlist">
+        <Badge badgeContent={wishlist?.length} color="secondary">
+          <FavoriteBorderIcon sx={{ color: "#bdbdbd" }} />
+        </Badge>
+      </MenuItem>
+      <MenuItem component={Link} to="/panier">
+        <Badge badgeContent={cart?.length} color="primary">
+          <ShoppingBasketIcon sx={{ color: "#bdbdbd" }} />
+        </Badge>
+      </MenuItem>
       <div className={classes.button}>
         <IconButton
           component={Link}
@@ -148,7 +143,7 @@ const PrimarySearchAppBar = ({ books, totalItems }) => {
           color="inherit"
         >
           <Badge color="secondary">
-            <Avatar />
+            <Avatar src={user?.avatarUrl} />
           </Badge>
         </IconButton>
       </div>
@@ -156,8 +151,13 @@ const PrimarySearchAppBar = ({ books, totalItems }) => {
   );
 
   return (
-    <div style={{ marginBottom: "80px" }}>
-      <AppBar position="fixed" className={classes.appBar} color="inherit">
+    <div style={{ marginBottom: "80px", zIndex: 2 }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: 34234323 }}
+        className={classes.appBar}
+        color="inherit"
+      >
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </div>

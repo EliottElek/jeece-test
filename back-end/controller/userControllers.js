@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Order = require("../models/Order");
+
 const bcrypt = require("bcrypt");
 const getUsers = async (req, res) => {
   try {
@@ -43,7 +45,6 @@ const login = async (req, res) => {
 };
 const createAccount = async (req, res) => {
   try {
-    console.log(req.body.user);
     const usr = await User.findOne({
       email: req.body.user.email,
     });
@@ -61,4 +62,192 @@ const createAccount = async (req, res) => {
     console.error(err);
   }
 };
-module.exports = { getUsers, getUserByEmail, login, createAccount };
+const addToCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const newcart = user.cart;
+      newcart.push(req.body.item);
+      await User.findOneAndUpdate({ _id: user._id }, { cart: newcart });
+      res.json({ add: true, message: "Ajouté au panier avec succès." });
+    }
+  } catch (err) {
+    res.json({ add: false, message: "Impossible d'ajouter au panier." });
+  }
+};
+const getCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else res.json({ cart: user.cart });
+  } catch (err) {
+    console.error(err);
+  }
+};
+const addToWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const newWishlist = user.wishlist;
+      newWishlist.push(req.body.item);
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
+      res.json({
+        add: true,
+        message: "Ajouté à la liste des souhaits avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
+  }
+};
+
+const removeFromWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const item = req.body.item;
+      let newWishlist = user.wishlist.filter(function (e) {
+        return e._id !== item._id;
+      });
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
+      res.json({
+        add: true,
+        message: "Objet supprimé de la liste des souhaits avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
+  }
+};
+const removeFromCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const item = req.body.item;
+      let newCart = user.cart.filter(function (e) {
+        return e._id !== item._id;
+      });
+      await User.findOneAndUpdate({ _id: user._id }, { cart: newCart });
+      res.json({
+        add: true,
+        message: "Objet supprimé du panier avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible d'ajouter à la liste des souhaits.",
+    });
+  }
+};
+const emptyCart = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      await User.findOneAndUpdate({ _id: user._id }, { cart: [] });
+      res.json({
+        add: true,
+        message: "Panier vidé avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible de vider le panier.",
+    });
+  }
+};
+const emptyWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      await User.findOneAndUpdate({ _id: user._id }, { wishlist: [] });
+      res.json({
+        add: true,
+        message: "Liste de souhaits vidée avec succès.",
+      });
+    }
+  } catch (err) {
+    res.json({
+      add: false,
+      message: "Impossible de vider la liste de souhaits.",
+    });
+  }
+};
+const getWishlist = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else res.json({ wishlist: user.wishlist });
+  } catch (err) {
+    console.error(err);
+  }
+};
+const getOrders = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      const orders = await Order.find({
+        email: req.params.email,
+      });
+      res.json(orders);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+module.exports = {
+  getUsers,
+  getUserByEmail,
+  login,
+  createAccount,
+  addToCart,
+  getCart,
+  addToWishlist,
+  removeFromWishlist,
+  removeFromCart,
+  getWishlist,
+  getOrders,
+  emptyWishlist,
+  emptyCart,
+};

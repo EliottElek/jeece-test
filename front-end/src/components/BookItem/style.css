@@ -7,3 +7,19 @@
   border: solid 0.15px #c2c2c2;
   transition: 0.2s ease-out;
 }
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 20px;
+  margin: 5px;
+  margin-top: 70px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ee2b6978;
+  border-radius: 20px;
+}
