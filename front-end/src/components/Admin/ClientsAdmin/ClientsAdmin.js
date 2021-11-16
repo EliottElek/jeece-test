@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import ClientListAdmin from "../ClientListAdmin/ClientListAdmin";
 import axios from "axios";
 import { Redirect } from "react-router";
-const ClientAdmin = ({ user }) => {
+import { Context } from "../../Context/Context";
+const ClientAdmin = () => {
+  const { user } = useContext(Context)
   const [clients, setClients] = useState([]);
   useEffect(() => {
     const fetchClients = async () => {
@@ -22,21 +24,21 @@ const ClientAdmin = ({ user }) => {
         <Redirect to="/404" />
       </div>
     );
-    if (!clients.length) {
-      return (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+  if (!clients.length) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CircularProgress style={{ color: "#EE2B69" }} />
-        </div>
-      );
-    }
+      </div>
+    );
+  }
   if (clients.length === 0)
     return <Typography align="center">Aucune commande passée.</Typography>;
 

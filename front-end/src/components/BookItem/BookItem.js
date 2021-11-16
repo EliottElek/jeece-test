@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "../Rating/Rating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import { Context } from "../Context/Context";
+import { useContext } from "react";
 const styles = {
   gridItem: {
     padding: 12,
@@ -55,15 +56,15 @@ const styles = {
     background: "whitesmoke",
   },
 };
-const BookItem = ({
-  account,
-  inWish,
-  bookItem,
-  addWish,
-  removeFromWishList,
-  user,
-  wishlist,
-}) => {
+const BookItem = ({bookItem}) => {
+  const {
+    account,
+    inWish,
+    addToWishList,
+    removeFromWishList,
+    user,
+    wishlist,
+  } = useContext(Context)
   const [like, setLike] = useState(false);
   const getMeanRating = () => {
     if (bookItem?.rating?.length > 0) {
@@ -89,8 +90,8 @@ const BookItem = ({
         {!user?.admin && user && (
           <Paper style={styles.heartContainer} elevation={0}>
             {!inWish &&
-            (like ||
-              wishlist?.some((item) => item.title === bookItem.title)) ? (
+              (like ||
+                wishlist?.some((item) => item.title === bookItem.title)) ? (
               <IconButton
                 onClick={() => {
                   removeFromWishList(bookItem);
@@ -103,7 +104,7 @@ const BookItem = ({
               !inWish && (
                 <IconButton
                   onClick={() => {
-                    addWish(bookItem);
+                    addToWishList(bookItem);
                     setLike(true);
                   }}
                   disabled={!user ? true : false}

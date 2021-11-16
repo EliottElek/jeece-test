@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,8 +13,11 @@ import { Typography, CircularProgress, Button, Chip } from "@mui/material";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import { Link, Redirect } from "react-router-dom";
-const MyOrders = ({ user, profilePage }) => {
+import { Context } from "../Context/Context";
+const MyOrders = ({ profilePage }) => {
+  const { user, setHeader } = useContext(Context)
   const [orders, setOrders] = useState();
+  setHeader("Mon compte");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -348,7 +351,7 @@ const MyOrders = ({ user, profilePage }) => {
             marginBottom: "10px",
           }}
         >
-          Vos {orders?.length} dernières commandes <Button component = {Link} to ="/myorders">Tout voir </Button>
+          Vos {orders?.length} dernières commandes <Button component={Link} to="/myorders">Tout voir </Button>
         </Typography>
       )}
       <TableContainer

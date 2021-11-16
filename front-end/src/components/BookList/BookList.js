@@ -2,16 +2,14 @@ import React from "react";
 import { Grid, CircularProgress, Typography, Button } from "@mui/material";
 import BookItem from "../BookItem/BookItem";
 import { Link } from "react-router-dom";
-const BookList = ({
-  inWish,
-  account,
-  bookList,
-  addWish,
-  removeFromWishList,
-  wishlist,
-  removeFilter,
-  user,
-}) => {
+import { Context } from "../Context/Context";
+import { useContext } from "react";
+const BookList = ({bookList}) => {
+  const {
+    inWish,
+    account,
+    removeFilter,
+  } = useContext(Context)
   if (!bookList)
     return (
       <div
@@ -28,7 +26,7 @@ const BookList = ({
         {!inWish && <Button onClick={removeFilter}>Retirer les filtres</Button>}
       </div>
     );
-    if (bookList.length === 0)
+  if (bookList.length === 0)
     return <Typography align="center">Rien à afficher ici.</Typography>;
   if (!bookList.length)
     return (
@@ -70,14 +68,7 @@ const BookList = ({
         sx={{ width: "90%", margin: "auto", height: "100%" }}
       >
         {bookList?.map((book) => (
-          <BookItem
-            account={account}
-            inWish={inWish}
-            wishlist={wishlist}
-            bookItem={book}
-            addWish={addWish}
-            removeFromWishList={removeFromWishList}
-            user={user}
+          <BookItem bookItem={book}
           />
         ))}
       </Grid>

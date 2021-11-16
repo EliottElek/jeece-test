@@ -35,7 +35,7 @@ const AddProduct = () => {
             publishingDate: new Date()
         }
         try {
-            const { data: res } = await axios.post("http://localhost:5000/products",
+             await axios.post("http://localhost:5000/products",
                 { product: product }
             )
             setSuccess({ success: true, message: "Produit ajouté avec succès." })

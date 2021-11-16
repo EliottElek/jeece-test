@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Typography,
@@ -10,6 +10,7 @@ import AccountPage from "../AccountPage/AccountPage";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Context } from "../Context/Context";
 const styles = {
   title: {
     alignSelf: "flex-start",
@@ -106,14 +107,14 @@ const styles = {
   },
 };
 
-const Profile = ({
-  user,
-  setUser,
-  setCart,
-  setWishlist,
-  wishlist,
-  removeFromWishList,
-}) => {
+const Profile = () => {
+  const { user,
+    setUser,
+    setCart,
+    setWishlist,
+    wishlist,
+    removeFromWishList , setHeader} = useContext(Context)
+    setHeader("Connectez-vous");
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
   const [emptyPassMessage, setEmptyPassMessage] =
     useState("Votre mot de passe");
@@ -219,7 +220,7 @@ const Profile = ({
               onClick={handleSubmit}
               style={styles.button}
             >
-              {!submitted ? "Connexion" : <CircularProgress style={{color:"white", height:"30px", width:"30px"}} />}
+              {!submitted ? "Connexion" : <CircularProgress style={{ color: "white", height: "30px", width: "30px" }} />}
             </Button>
             <Typography style={styles.link}>
               Pas de compte ?

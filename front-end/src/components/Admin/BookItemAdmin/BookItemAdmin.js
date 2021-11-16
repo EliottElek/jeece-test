@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Grid,
   Typography,
@@ -16,6 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Context } from "../../Context/Context";
 const styles = {
   modal: {
     position: "absolute",
@@ -78,7 +79,8 @@ const styles = {
   },
 };
 
-const BookItem = ({ bookItem, user }) => {
+const BookItem = ({ bookItem }) => {
+  const {user} = useContext(Context)
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const handleCloseSnack = (event, reason) => {

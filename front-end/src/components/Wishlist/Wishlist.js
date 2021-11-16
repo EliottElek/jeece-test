@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import BookList from "../BookList/BookList";
 import { Redirect } from "react-router";
-const WishList = ({
-  addWish,
-  emptyWishlist,
-  user,
-  wishlist,
-  removeFromWishList,
-}) => {
+import { Context } from "../Context/Context";
+const WishList = () => {
+  const {
+    user,
+    wishlist
+  } = useContext(Context)
   if (!user || user?.admin)
     return (
       <div>
@@ -17,14 +16,7 @@ const WishList = ({
 
   return (
     <div>
-      <BookList
-        emptyWishlist={emptyWishlist}
-        wishlist={wishlist}
-        removeFromWishList={removeFromWishList}
-        bookList={wishlist}
-        addWish={addWish}
-        user={user}
-        inWish={true}
+      <BookList bookList={wishlist}
       />
     </div>
   );

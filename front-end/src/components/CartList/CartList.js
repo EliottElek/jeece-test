@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,7 +11,10 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link, Redirect } from "react-router-dom";
-const CartList = ({ user, cart, total, removeFromCart, emptyCart }) => {
+import { Context } from "../Context/Context";
+const CartList = () => {
+  const { user, cart, total, removeFromCart, emptyCart, setHeader } = useContext(Context)
+  setHeader("Votre panier");
   if (!user || user?.admin)
     return (
       <div>

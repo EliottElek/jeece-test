@@ -15,7 +15,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import logo from "../../images/logo.png";
-const PrimarySearchAppBar = ({ user, cart, wishlist, removeFilter }) => {
+import { Context } from "../Context/Context";
+import { useContext } from "react";
+const PrimarySearchAppBar = () => {
+  const { user, cart, wishlist, removeFilter } = useContext(Context)
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,

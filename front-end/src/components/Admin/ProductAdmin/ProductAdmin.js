@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CircularProgress, Grid, Typography, Button } from "@mui/material";
 import BasicRating from "../../Rating/Rating";
@@ -10,6 +10,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Context } from "../../Context/Context";
 const styles = {
   image: {
     height: "auto",
@@ -68,7 +69,8 @@ const styles = {
   icon: { marginLeft: "7px" },
 };
 
-const Product = ({ id, user, addToCart, addToWishlist }) => {
+const Product = ({ id }) => {
+  const { user, addToCart, addToWishlist } = useContext(Context)
   const [product, setProduct] = useState();
   const [ratingValues, setRatingValues] = useState([]);
   const getMeanRating = () => {
@@ -232,14 +234,14 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
                             {ratingValues?.find(
                               (item) => item?.email === comment?.email
                             )?.value && (
-                              <BasicRating
-                                rating={
-                                  ratingValues?.find(
-                                    (item) => item?.email === comment?.email
-                                  )?.value
-                                }
-                              />
-                            )}
+                                <BasicRating
+                                  rating={
+                                    ratingValues?.find(
+                                      (item) => item?.email === comment?.email
+                                    )?.value
+                                  }
+                                />
+                              )}
                           </>
                         }
                         secondary={

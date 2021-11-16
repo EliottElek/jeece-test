@@ -11,7 +11,7 @@ import {
   List,
   ListItemAvatar,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Stepper from "../Stepper/Stepper";
@@ -21,14 +21,17 @@ import { Link, Redirect } from "react-router-dom";
 import CreditCard from "../Card/Card";
 import axios from "axios";
 import logo from "../../images/logo.png";
+import { Context } from "../Context/Context";
 const styles = {
   input: {
     marginTop: "10px",
   },
 };
-const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
-  const [finished, setFinished] = useState(false);
+const FinishOrder = () => {
+  const { cart, user, addOrder, getTotal, emptyCart, setHeader } = useContext(Context)
+  setHeader("Finalisez votre commande");
 
+  const [finished, setFinished] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [disabled2, setDisabled2] = useState(true);
   const [disabled3, setDisabled3] = useState(true);
@@ -93,7 +96,7 @@ const FinishOrder = ({ cart, user, addOrder, tot, emptyCart }) => {
   }, [cardNumber, expireDate, crypto, owner]);
   const handleAdd = async () => {
     try {
-      const total = tot;
+      const total = getTotal();
       const payment = {
         cardNumber: cardNumber,
         expireDate: expireDate,

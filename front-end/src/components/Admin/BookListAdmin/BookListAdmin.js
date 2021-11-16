@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Grid, CircularProgress, Fab } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import BookItem from "../BookItemAdmin/BookItemAdmin";
@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AddProduct from "../AddProduct/AddProduct";
+import { Context } from "../../Context/Context";
 
 const style = {
   position: 'absolute',
@@ -19,7 +20,8 @@ const style = {
   p: 4,
 };
 
-const BookList = ({ products, user }) => {
+const BookList = () => {
+  const { products, user } = useContext(Context)
   const [openAddPopup, setOpenAddPopup] = useState(false);
   if (!user?.admin || !user) {
     return (

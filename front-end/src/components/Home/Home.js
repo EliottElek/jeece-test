@@ -17,6 +17,8 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
+import { Context } from "../Context/Context";
+import { useContext } from "react";
 const drawerWidth = 240;
 const catego = [
   "Pet",
@@ -28,16 +30,18 @@ const catego = [
   "Histoire",
 ];
 const Home = (props) => {
+  const { filter, setProducts, setFilter, allProducts,removeFilter, products, setHeader } = useContext(Context)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  setHeader("Boutique");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
   const getAuthors = () => {
     const authors = [];
-    for (let i = 0; i < props.allProducts.length; i++) {
-      authors.push(props.allProducts[i].author);
+    for (let i = 0; i < allProducts.length; i++) {
+      authors.push(allProducts[i].author);
     }
     return authors;
   };
@@ -47,7 +51,7 @@ const Home = (props) => {
       const { data: res } = await axios.get(
         `http://localhost:5000/products/category/${categ}`
       );
-      props.setProducts(res.results);
+      setProducts(res.results);
     } catch (e) {
       alert("Impossible de se connecter au serveur.");
       console.error(e);
@@ -58,7 +62,7 @@ const Home = (props) => {
       const { data: res } = await axios.get(
         `http://localhost:5000/products/author/${auth}`
       );
-      props.setProducts(res.results);
+      setProducts(res.results);
     } catch (e) {
       alert("Impossible de se connecter au serveur.");
       console.error(e);
@@ -76,7 +80,7 @@ const Home = (props) => {
       {catego.map((categorie) => (
         <ListItemButton
           onClick={() => {
-            props.setFilter({ parent: "categorie", children: categorie });
+            setFilter({ parent: "categorie", children: categorie });
             fetchProductsByCateg(categorie);
           }}
         >
@@ -93,7 +97,7 @@ const Home = (props) => {
       {getAuthors()?.map((author) => (
         <ListItemButton
           onClick={() => {
-            props.setFilter({ parent: "auteurs", children: author });
+            setFilter({ parent: "auteurs", children: author });
             fetchProductsByAuthor(author);
           }}
         >
@@ -173,16 +177,16 @@ const Home = (props) => {
           <Typography underline="hover" color="primary" href="/">
             Boutique
           </Typography>
-          {props.filter !== null && (
-            <Typography color="inherit">{props.filter.parent}</Typography>
+          {filter !== null && (
+            <Typography color="inherit">{filter.parent}</Typography>
           )}
-          {props.filter !== null && (
+          {filter !== null && (
             <Typography color="text.primary">
-              {props.filter.children}{" "}
+              {filter.children}{" "}
               <IconButton
                 onClick={() => {
-                  props.removeFilter();
-                  props.setFilter(null);
+                  removeFilter();
+                  setFilter(null);
                 }}
               >
                 <HighlightOffIcon color={"primary"} />
@@ -190,13 +194,7 @@ const Home = (props) => {
             </Typography>
           )}
         </Breadcrumbs>
-        <BookList
-          removeFilter={props.removeFilter}
-          wishlist={props.wishlist}
-          removeFromWishList={props.removeFromWishList}
-          bookList={props.bookList}
-          addWish={props.addWish}
-          user={props.user}
+        <BookList bookList = {products}
         />
       </Box>
     </Box>

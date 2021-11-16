@@ -1,11 +1,13 @@
 import { Paper, Grid, Avatar, Typography, Button } from "@mui/material";
-import { FormControl, TextField, Alert } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import MyOrders from "../MyOrders/MyOrders";
 import BookList from "../BookList/BookList";
+import { Context } from "../Context/Context";
+import { useContext } from "react";
 const styles = {
   root: {
     width: "90%",
@@ -39,8 +41,11 @@ const styles = {
   }
 };
 
-const AccountPage = ({ user, wishlist, removeFromWishList }) => {
+const AccountPage = () => {
+  const { user, wishlist, setHeader } = useContext(Context)
   const [openModal, setOpenModal] = useState(false);
+  setHeader("Votre compte");
+
   if (!user)
     return (
       <div>
@@ -346,12 +351,12 @@ const AccountPage = ({ user, wishlist, removeFromWishList }) => {
         <div style={{ height: "35px" }} />
         {!user.admin && (
           <>
-            <MyOrders user={user} profilePage={true} />
+            <MyOrders profilePage={true} />
           </>
         )}
         {!user.admin && (
           <>
-            <BookList user={user} bookList={wishlist} account={true} inWish={true} removeFromWishList={removeFromWishList} />
+            <BookList bookList={wishlist} />
           </>
         )}
       </Paper>

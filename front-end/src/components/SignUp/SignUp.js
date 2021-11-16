@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Card, Typography, TextField, Button } from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Context } from "../Context/Context";
 
 const bcrypt = require("bcryptjs");
 
@@ -102,7 +103,9 @@ const styles = {
   },
 };
 
-const SignUp = ({ user, setUser, setWishList, setCart }) => {
+const SignUp = () => {
+  const { user, setUser, setWishList, setCart, setHeader } = useContext(Context);
+  setHeader("Créez votre compte");
   const [emptyFirstnameMessage, setEmptyFirstnameMessage] =
     useState("Votre prénom");
   const [emptyLastnameMessage, setEmptyLastnameMessage] = useState("Votre nom");

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CircularProgress, Typography } from "@material-ui/core";
 import OrderListAdmin from "../OrderListAdmin/OrderListAdmin";
 import axios from "axios";
 import { Redirect } from "react-router";
-const OrdersAdmin = ({ user }) => {
+import { Context } from "../../Context/Context";
+const OrdersAdmin = () => {
+  const { user } = useContext(Context)
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const fetchOrders = async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -15,6 +15,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { Redirect } from "react-router";
+import { Context } from "../Context/Context";
 const styles = {
   image: {
     height: "auto",
@@ -73,7 +74,8 @@ const styles = {
   icon: { marginLeft: "7px" },
 };
 
-const Product = ({ id, user, addToCart, addToWishlist }) => {
+const Product = ({ id }) => {
+  const { user, addToCart, addToWishList, setHeader } = useContext(Context);
   const [product, setProduct] = useState();
   const [rating, setRating] = useState(0);
   const [ratingValues, setRatingValues] = useState([]);
@@ -131,6 +133,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
       try {
         const data = await axios.get(`http://localhost:5000/products/${id}`);
         setProduct(data.data);
+        setHeader(data.data.title);
         setRatingValues(data.data.rating);
         setComments(data.data.comments);
         const emails = [];
@@ -143,7 +146,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
       }
     }
     fetchData();
-  }, [id, user?.email]);
+  }, [id, user?.email, setHeader]);
   if (!product) {
     return (
       <div
@@ -247,7 +250,7 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
             <Button
               style={styles.addWishButton}
               disabled={user ? false : true}
-              onClick={() => addToWishlist(product)}
+              onClick={() => addToWishList(product)}
               color={"secondary"}
               variant="contained"
             >
@@ -387,14 +390,14 @@ const Product = ({ id, user, addToCart, addToWishlist }) => {
                               {ratingValues?.find(
                                 (item) => item?.email === comment?.email
                               )?.value && (
-                                <BasicRating
-                                  rating={
-                                    ratingValues?.find(
-                                      (item) => item?.email === comment?.email
-                                    )?.value
-                                  }
-                                />
-                              )}
+                                  <BasicRating
+                                    rating={
+                                      ratingValues?.find(
+                                        (item) => item?.email === comment?.email
+                                      )?.value
+                                    }
+                                  />
+                                )}
                             </>
                           }
                           secondary={
