@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { CircularProgress, Grid, Typography, Button } from "@mui/material";
+import { CircularProgress, Grid, Typography, Button, FormControl, TextField, InputLabel, Select, MenuItem, TextareaAutosize, Alert } from "@mui/material";
 import BasicRating from "../../Rating/Rating";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -8,10 +8,19 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Context } from "../../Context/Context";
+import { useHistory } from 'react-router-dom';
+
 const styles = {
+  input: {
+    width: "100%",
+    marginTop: "7px",
+    marginBottom: "7px"
+  },
   image: {
     height: "auto",
     width: "90%",
@@ -67,12 +76,78 @@ const styles = {
     display: "flex",
   },
   icon: { marginLeft: "7px" },
+  modal: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    maxHeight: "70%",
+    overflowY: "auto",
+    bgcolor: 'background.paper',
+    borderRadius: "8px",
+    boxShadow: 24,
+    p: 4,
+  },
 };
 
 const Product = ({ id }) => {
-  const { user, addToCart, addToWishlist } = useContext(Context)
+  const history = useHistory();
+  const { user, setAllProducts, setOpenSnack, allProducts, setHeader, categList, response, setResponse } = useContext(Context)
   const [product, setProduct] = useState();
   const [ratingValues, setRatingValues] = useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openModifyModal, setOpenModifyModal] = useState(false);
+  const [title, setTitle] = useState();
+  const [author, setAuthor] = useState();
+  const [price, setPrice] = useState();
+  const [mediaUrl, setMediaUrl] = useState();
+  const [category, setCategory] = useState();
+  const [stock, setStock] = useState();
+  const [description, setDescription] = useState();
+
+  const [success, setSuccess] = useState({});
+  const handleMakeModifs = async () => {
+    try {
+      const { data: res } = await axios.post(
+        `http://localhost:5000/products/${product?._id}/modifyDeep`,
+        { author: author, price: price, title: title, category: category, mediaUrl: mediaUrl, stock: stock, description: description }
+      );
+      const newProducts = allProducts;
+      newProducts.find(x => x._id === product?._id).title = title;
+      newProducts.find(x => x._id === product?._id).price = price;
+      newProducts.find(x => x._id === product?._id).author = author;
+      newProducts.find(x => x._id === product?._id).category = category;
+      newProducts.find(x => x._id === product?._id).stock = stock;
+      newProducts.find(x => x._id === product?._id).description = description;
+      newProducts.find(x => x._id === product?._id).mediaUrl = mediaUrl;
+
+      setAllProducts(newProducts)
+      setSuccess({ success: true, message: "Produit modifié avec succès." });
+      setResponse(res);
+      setOpenModifyModal(false);
+      setOpenSnack(true);
+
+    } catch (err) {
+      setSuccess({ success: false, message: "Impossible de modifier le produit." });
+      console.error(err);
+    }
+  };
+  const handleDeleteProduct = async () => {
+    try {
+      const { data: res } = await axios.post(`http://localhost:5000/products/${product?._id}/delete`);
+      //On le retire de la liste
+      var newList = allProducts.filter(function (el) { return el._id !== product?._id; });
+      setAllProducts(newList);
+      setResponse(res);
+      setOpenDeleteModal(false);
+      setOpenSnack(true);
+      history.push('/admin/products');
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
   const getMeanRating = () => {
     if (ratingValues.length > 0) {
       var sum = 0;
@@ -87,16 +162,25 @@ const Product = ({ id }) => {
     async function fetchData() {
       try {
         const data = await axios.get(`http://localhost:5000/products/${id}`);
+        setHeader(`${data.data.title} (administrateur)`)
         setProduct(data.data);
         setRatingValues(data.data.rating);
+        setTitle(data.data.title);
+        setAuthor(data.data.author);
+        setPrice(data.data.price);
+        setMediaUrl(data.data.mediaUrl);
+        setStock(data.data.stock);
+        setDescription(data.data.description);
+        setCategory(data.data.category)
         const emails = [];
+        console.log("fetched")
         data.data.rating.map((rate) => emails.push(rate.email));
       } catch (err) {
         console.error(err);
       }
     }
     fetchData();
-  }, [id, user?.email]);
+  }, [id, user?.email, response, setHeader]);
   if (!product) {
     return (
       <div
@@ -182,10 +266,10 @@ const Product = ({ id }) => {
           <div container style={styles.actions}>
             <Button
               disabled={user ? false : true}
-              onClick={() => addToCart(product)}
               style={styles.addCartButton}
               variant="contained"
               color={"primary"}
+              onClick={() => setOpenModifyModal(true)}
             >
               Modification avancée
               <ModeEditIcon sx={styles.icon} />
@@ -193,9 +277,9 @@ const Product = ({ id }) => {
             <Button
               style={styles.addWishButton}
               disabled={user ? false : true}
-              onClick={() => addToWishlist(product)}
               color={"secondary"}
               variant="contained"
+              onClick={() => setOpenDeleteModal(true)}
             >
               Supprimer définitivement
               <DeleteForeverIcon sx={styles.icon} />
@@ -268,6 +352,67 @@ const Product = ({ id }) => {
           </div>
         )}
       </div>
+      <Modal
+        open={openModifyModal}
+        onClose={() => setOpenModifyModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles.modal}>
+          <FormControl style={{ width: "100%" }}>
+            <TextField style={styles.input} label="Titre" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <TextField style={styles.input} label="Auteur" value={author} onChange={(e) => setAuthor(e.target.value)} />
+            <TextField style={styles.input} label="Prix" value={price} onChange={(e) => setPrice(e.target.value)} />
+            <TextField style={styles.input} label="Media" value={mediaUrl} onChange={(e) => setMediaUrl(e.target.value)} />
+            <Box style={styles.input}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Catégorie</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={category}
+                  label="Catégorie"
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+
+                  {categList?.map((categ) => (
+                    <MenuItem value={categ}>{categ}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <TextField style={styles.input} label="Inventaire" value={stock} onChange={(e) => setStock(e.target.value)} />
+            <Typography variant="caption">Description</Typography>
+            <TextareaAutosize
+              style={{ marginBottom: "5px", padding: '4px' }}
+              aria-label="empty textarea"
+              placeholder={"Description"}
+              value={description}
+              minRows={10}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <Button variant="contained" onClick={handleMakeModifs}>Sauvegarder</Button>
+            {success.success ? <Alert severity="success">{success.message}</Alert>
+              : success.success === false && <Alert severity="error">{success.message}</Alert>}
+            <Button onClick={() => setOpenModifyModal(false)}>Annuler</Button>
+          </FormControl>
+        </Box>
+      </Modal>
+      <Modal
+        open={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={styles.modal}>
+          <Typography>Êtes-vous sûr(e) de vouloir supprimer ce produit ?</Typography>
+          <Typography variant='caption'>La suppression est définitive.</Typography>
+          <div style={{ display: 'flex', marginTop: '20px', justifyContent: "space-between" }}>
+            <Button onClick={handleDeleteProduct} variant="contained">Supprimer</Button>
+            <Button onClick={() => setOpenDeleteModal(false)}>Annuler</Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

@@ -26,6 +26,8 @@ const OrdersAdmin = () => {
         <Redirect to="/404" />
       </div>
     );
+    if (orders.length === 0)
+    return <Typography align="center">Aucune commande passée.</Typography>;
     if (!orders.length) {
       return (
         <div
@@ -41,8 +43,6 @@ const OrdersAdmin = () => {
         </div>
       );
     }
-  if (orders.length === 0)
-    return <Typography align="center">Aucune commande passée.</Typography>;
   return (
     <div>
       <OrderListAdmin orders={orders} />

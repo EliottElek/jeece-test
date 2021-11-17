@@ -7,7 +7,7 @@ const getOrders = async (req, res) => {
     res.json(orders);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Erreur au niveau du server." });
   }
 };
 
@@ -19,13 +19,16 @@ const createOrder = async (req, res) => {
     const ord = await Order.insertMany(order);
     await User.findOneAndUpdate({ email: email }, { cart: [] });
     res.json({
-      creation: true,
+      success: true,
       message: "Commande passée avec succès.",
       order: ord,
     });
   } catch (err) {
-    console.error(err);
-  }
+    res.json({
+      success: false,
+      message: "Impossible de finaliser la commande.",
+      order: ord,
+    });  }
 };
 module.exports = {
   getOrders,

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Order = require("../models/Order");
+const Admin = require("../models/Admin");
 
 const bcrypt = require("bcrypt");
 const getUsers = async (req, res) => {
@@ -45,23 +46,77 @@ const login = async (req, res) => {
 };
 const createAccount = async (req, res) => {
   try {
-    const usr = await User.findOne({
-      email: req.body.user.email,
+    const admin = await Admin.findOne({
+      email: req.params.email,
     });
-    if (usr !== null)
-      res.json({ creation: false, message: "Cet email est déjà pris." });
+    if (admin !== null)
+      res.json({ success: false, message: "Cet email est déjà pris." });
     else {
-      const user = await User.insertMany(req.body.user);
-      res.json({
-        creation: true,
-        message: "Utilisateur créé avec succès.",
-        user: user,
-      });
+      try {
+        const usr = await User.findOne({
+          email: req.body.user.email,
+        });
+        if (usr !== null)
+          res.json({ success: false, message: "Cet email est déjà pris." });
+        else {
+          const user = await User.insertMany(req.body.user);
+          res.json({
+            success: true,
+            message: "Utilisateur créé avec succès.",
+            user: user,
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
-  } catch (err) {
-    console.error(err);
+  } catch {
+    res.json({ sucess: false, message: "Cet email est déjà pris." });
   }
 };
+
+const modifyUser = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      try {
+        const newUser = await User.findOneAndUpdate(
+          { email: req.params.email },
+          {
+            $set: {
+              email: req.body.email,
+              firstname: req.body.firstname,
+              lastname: req.body.lastname,
+              avatarUrl: req.body.avatarUrl,
+            },
+          },
+          { new: true }
+        );
+        console.log(newUser);
+        res.json({
+          success: true,
+          message: "Utilisateur modifié avec succès.",
+        });
+      } catch (err) {
+        console.log(err);
+        res.json({
+          success: false,
+          message: "Impossible de modifier l'utilisateur.",
+        });
+      }
+    }
+  } catch (err) {
+    res.json({
+      success: false,
+      message: "Impossible de modifier le produit.",
+    });
+  }
+};
+
 const addToCart = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -73,10 +128,10 @@ const addToCart = async (req, res) => {
       const newcart = user.cart;
       newcart.push(req.body.item);
       await User.findOneAndUpdate({ _id: user._id }, { cart: newcart });
-      res.json({ add: true, message: "Ajouté au panier avec succès." });
+      res.json({ success: true, message: "Ajouté au panier avec succès." });
     }
   } catch (err) {
-    res.json({ add: false, message: "Impossible d'ajouter au panier." });
+    res.json({ success: false, message: "Impossible d'ajouter au panier." });
   }
 };
 const getCart = async (req, res) => {
@@ -85,7 +140,7 @@ const getCart = async (req, res) => {
       email: req.params.email,
     });
     if (user === null)
-      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
     else res.json({ cart: user.cart });
   } catch (err) {
     console.error(err);
@@ -103,13 +158,13 @@ const addToWishlist = async (req, res) => {
       newWishlist.push(req.body.item);
       await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
       res.json({
-        add: true,
+        success: true,
         message: "Ajouté à la liste des souhaits avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible d'ajouter à la liste des souhaits.",
     });
   }
@@ -121,7 +176,7 @@ const removeFromWishlist = async (req, res) => {
       email: req.params.email,
     });
     if (user === null)
-      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
     else {
       const item = req.body.item;
       let newWishlist = user.wishlist.filter(function (e) {
@@ -129,13 +184,13 @@ const removeFromWishlist = async (req, res) => {
       });
       await User.findOneAndUpdate({ _id: user._id }, { wishlist: newWishlist });
       res.json({
-        add: true,
+        success: true,
         message: "Objet supprimé de la liste des souhaits avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible d'ajouter à la liste des souhaits.",
     });
   }
@@ -146,7 +201,7 @@ const removeFromCart = async (req, res) => {
       email: req.params.email,
     });
     if (user === null)
-      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
     else {
       const item = req.body.item;
       let newCart = user.cart.filter(function (e) {
@@ -154,13 +209,13 @@ const removeFromCart = async (req, res) => {
       });
       await User.findOneAndUpdate({ _id: user._id }, { cart: newCart });
       res.json({
-        add: true,
+        success: true,
         message: "Objet supprimé du panier avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible d'ajouter à la liste des souhaits.",
     });
   }
@@ -171,17 +226,17 @@ const emptyCart = async (req, res) => {
       email: req.params.email,
     });
     if (user === null)
-      res.json({ auth: false, message: "Cet utilisateur n'existe pas." });
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
     else {
       await User.findOneAndUpdate({ _id: user._id }, { cart: [] });
       res.json({
-        add: true,
+        success: true,
         message: "Panier vidé avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible de vider le panier.",
     });
   }
@@ -236,10 +291,40 @@ const getOrders = async (req, res) => {
     console.error(err);
   }
 };
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.params.email,
+    });
+    if (user === null)
+      res.json({ success: false, message: "Cet utilisateur n'existe pas." });
+    else {
+      try {
+      await User.findOneAndDelete({
+        email: req.params.email,
+      })
+      res.json({
+        success: true,
+        message: "Utilisateur supprimé avec succès.",
+      });
+    }
+    catch (e){
+      res.json({
+        success: false,
+        message: "Utilisateur de supprimer le produit.",
+      });
+    }
+    }
+  }
+  catch (e) {
+
+  }
+}
 module.exports = {
   getUsers,
   getUserByEmail,
   login,
+  modifyUser,
   createAccount,
   addToCart,
   getCart,
@@ -250,4 +335,5 @@ module.exports = {
   getOrders,
   emptyWishlist,
   emptyCart,
+  deleteUser,
 };

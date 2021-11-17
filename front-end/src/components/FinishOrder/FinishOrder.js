@@ -28,7 +28,7 @@ const styles = {
   },
 };
 const FinishOrder = () => {
-  const { cart, user, addOrder, getTotal, emptyCart, setHeader } = useContext(Context)
+  const { cart, user, addOrder, getTotal, emptyCart, setHeader, setResponse, setOpenSnack } = useContext(Context)
   setHeader("Finalisez votre commande");
 
   const [finished, setFinished] = useState(false);
@@ -132,15 +132,18 @@ const FinishOrder = () => {
       const { data: res } = await axios.post(`http://localhost:5000/orders/`, {
         order: order,
       });
-      if (res.creation) {
+      if (res.success) {
         addOrder(res.order[0]);
         setFinished(true);
         emptyCart();
+        setResponse(res);
+        setOpenSnack(true);
       } else {
-        console.log("Impossible de finaliser la commande.");
-      }
+        setResponse(res);
+        setOpenSnack(true);      }
     } catch (err) {
-      console.log(err);
+      setResponse({message:"rrrrerere"});
+      setOpenSnack(true);
     }
   };
 

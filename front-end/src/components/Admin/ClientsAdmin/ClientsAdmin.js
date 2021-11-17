@@ -24,6 +24,8 @@ const ClientAdmin = () => {
         <Redirect to="/404" />
       </div>
     );
+    if (clients.length === 0)
+    return <Typography align="center">Aucune client enregistré.</Typography>;
   if (!clients.length) {
     return (
       <div
@@ -39,12 +41,10 @@ const ClientAdmin = () => {
       </div>
     );
   }
-  if (clients.length === 0)
-    return <Typography align="center">Aucune commande passée.</Typography>;
 
   return (
     <div>
-      <ClientListAdmin clients={clients} />
+      <ClientListAdmin clients={clients} setClients={setClients}/>
     </div>
   );
 };

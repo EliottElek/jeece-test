@@ -1,6 +1,7 @@
-import { FormControl, TextField, Button, Typography, Alert } from "@mui/material";
-import React, { useState } from "react"
-import axios from 'axios'
+import { FormControl, TextField, Button, Typography, Alert, TextareaAutosize, MenuItem, Select, InputLabel, Box } from "@mui/material";
+import React, { useContext, useState } from "react";
+import axios from 'axios';
+import { Context } from "../../Context/Context";
 const styles = {
     input: {
         width: "100%",
@@ -14,6 +15,7 @@ const styles = {
 }
 
 const AddProduct = ({ setOpenAddPopup }) => {
+    const { categList } = useContext(Context)
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [price, setPrice] = useState("");
@@ -54,9 +56,32 @@ const AddProduct = ({ setOpenAddPopup }) => {
             <TextField style={styles.input} label="Auteur" value={author} onChange={(e) => setAuthor(e.target.value)} />
             <TextField style={styles.input} label="Prix" value={price} onChange={(e) => setPrice(e.target.value)} />
             <TextField style={styles.input} label="Media" value={mediaUrl} onChange={(e) => setMediaUrl(e.target.value)} />
-            <TextField style={styles.input} label="Catégorie" value={category} onChange={(e) => setCategory(e.target.value)} />
+            <Box>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Catégorie</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={category}
+                        label="Catégorie"
+                        onChange={(e) => setCategory(e.target.value)}
+                    >
+
+                        {categList?.map((categ) => (
+                            <MenuItem value={categ}>{categ}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
             <TextField style={styles.input} label="Inventaire" value={stock} onChange={(e) => setStock(e.target.value)} />
-            <textarea value={description} placeholder="description" onChange={(e) => setDescription(e.target.value)}></textarea>
+            <TextareaAutosize
+                style={{ marginBottom: "5px" }}
+                aria-label="empty textarea"
+                placeholder={"Description"}
+                value={description}
+                minRows={10}
+                onChange={(e) => setDescription(e.target.value)}
+            />
             <Button variant="contained" onClick={handleAddProduct} disabled={success.success && true}>Ajouter</Button>
             {success.success ? <Alert severity="success">{success.message}</Alert>
                 : success.success === false && <Alert severity="error">{success.message}</Alert>}

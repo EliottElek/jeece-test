@@ -75,13 +75,13 @@ const addRating = async (req, res) => {
       newRating.push(req.body.rate);
       await Product.findOneAndUpdate({ _id: item._id }, { rating: newRating });
       res.json({
-        add: true,
+        success: true,
         message: "Note ajoutée avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible d'ajouter la note.",
     });
   }
@@ -92,7 +92,7 @@ const addComment = async (req, res) => {
       _id: req.params.id,
     });
     if (item === null)
-      res.json({ auth: false, message: "Cet article n'existe pas." });
+      res.json({ success: false, message: "Cet article n'existe pas." });
     else {
       const newComments = item.comments;
       newComments.push(req.body.comment);
@@ -101,13 +101,13 @@ const addComment = async (req, res) => {
         { comments: newComments }
       );
       res.json({
-        add: true,
+        success: true,
         message: "Commentaire ajouté avec succès.",
       });
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible d'ajouter le commentaire.",
     });
   }
@@ -135,24 +135,98 @@ const modifyProduct = async (req, res) => {
         );
         console.log(newP);
         res.json({
-          add: true,
+          success: true,
           message: "Produit modifié avec succès.",
         });
       } catch (err) {
         console.log(err);
         res.json({
-          add: false,
+          success: false,
           message: "Impossible de modifier le produit.",
         });
       }
     }
   } catch (err) {
     res.json({
-      add: false,
+      success: false,
       message: "Impossible de modifier le produit.",
     });
   }
 };
+const modifyDeepProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+    });
+    console.log(product);
+    if (product === null)
+      res.json({ success: false, message: "Ce produit n'existe pas." });
+    else {
+      try {
+        const newP = await Product.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              author: req.body.author,
+              title: req.body.title,
+              price: req.body.price,
+              mediaUrl: req.body.mediaUrl,
+              stock: req.body.stock,
+              description: req.body.description,
+              category: req.body.category,
+            },
+          },
+          { new: true }
+        );
+        console.log(newP);
+        res.json({
+          success: true,
+          message: "Produit modifié avec succès.",
+        });
+      } catch (err) {
+        console.log(err);
+        res.json({
+          success: false,
+          message: "Impossible de modifier le produit.",
+        });
+      }
+    }
+  } catch (err) {
+    res.json({
+      success: false,
+      message: "Impossible de modifier le produit.",
+    });
+  }
+};
+const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+    });
+    if (product === null)
+      res.json({ success: false, message: "Ce produit n'existe pas." });
+    else {
+      try {
+      await Product.findOneAndDelete({
+        _id: req.params.id,
+      })
+      res.json({
+        success: true,
+        message: "Produit supprimé avec succès.",
+      });
+    }
+    catch (e){
+      res.json({
+        success: false,
+        message: "Impossible de supprimer le produit.",
+      });
+    }
+    }
+  }
+  catch (e) {
+
+  }
+}
 module.exports = {
   createProduct,
   getAllProducts,
@@ -162,4 +236,6 @@ module.exports = {
   modifyProduct,
   getProductsByCategory,
   getProductsByAuthor,
+  modifyDeepProduct,
+  deleteProduct,
 };

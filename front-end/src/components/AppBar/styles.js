@@ -45,4 +45,7 @@ export default makeStyles((theme) => ({
   logoTitle: {
     fontFamily: "Parisienne",
   },
+  button:{
+    marginRight:"20px"
+  }
 }));

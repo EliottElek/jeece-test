@@ -45,7 +45,7 @@ let theme = createTheme({
 });
 
 function App() {
-  const {wishlist,setOpenSnack, response, setProducts,  allProducts, setAllProducts, openSnack} =  useContext(Context)
+  const {wishlist,setOpenSnack, response, setResponse, setProducts, setAllProducts, openSnack} =  useContext(Context)
   
   const handleCloseSnack = (event, reason) => {
     if (reason === "clickaway") {
@@ -75,13 +75,15 @@ function App() {
         );
         setProducts(prdcts);
         setAllProducts(prdcts);
+        console.log("fetched")
       } catch (e) {
-        alert("Could not connect to server. Please try again later.");
+        setResponse(e);
+        setOpenSnack(true);
         console.error(e);
       }
     };
     fetchProducts();
-  }, [setProducts,setAllProducts]);
+  }, [setProducts,setAllProducts, setOpenSnack, setResponse]);
   
   return (
     <div style={styles.root}>
@@ -128,7 +130,7 @@ function App() {
               <ClientsAdmin  />
             </Route>
             <Route exact path="/admin/products">
-              <BookListAdmin bookList = {allProducts}/>
+              <BookListAdmin />
             </Route>
             <Route exact path="/card">
               <Card />
@@ -165,7 +167,7 @@ function App() {
           onClose={handleCloseSnack}
           action={action}
         >
-          {response && response?.add ? (
+          {response && response?.success ? (
             <Alert onClose={handleCloseSnack} severity="success">
               {response.message}
             </Alert>

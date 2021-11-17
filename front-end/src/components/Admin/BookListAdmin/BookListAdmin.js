@@ -14,14 +14,16 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  maxHeight: "70%",
+  overflowY: "auto",
   bgcolor: 'background.paper',
-  borderRadius:"8px",
+  borderRadius: "8px",
   boxShadow: 24,
   p: 4,
 };
 
 const BookList = () => {
-  const { products, user } = useContext(Context)
+  const { allProducts, user } = useContext(Context)
   const [openAddPopup, setOpenAddPopup] = useState(false);
   if (!user?.admin || !user) {
     return (
@@ -37,7 +39,7 @@ const BookList = () => {
         <AddIcon sx={{ ml: 1 }} />
         Ajouter un produit
       </Fab>
-      {products?.length === 0 ? (
+      {allProducts?.length === 0 ? (
         <div
           style={{
             width: "100%",
@@ -56,7 +58,7 @@ const BookList = () => {
           spacing={4}
           sx={{ width: "90%", margin: "auto", height: "100%" }}
         >
-          {products?.map((book) => (
+          {allProducts?.map((book) => (
             <BookItem bookItem={book} user={user} />
           ))}
         </Grid>
@@ -77,7 +79,7 @@ const BookList = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddProduct />
+          <AddProduct setOpenAddPopup={setOpenAddPopup} />
         </Box>
       </Modal>
     </>

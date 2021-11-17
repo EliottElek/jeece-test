@@ -26,6 +26,15 @@ export const ContextProvider = ({ children }) => {
         openSnack: openSnack,
         allProducts: allProducts,
         filter: filter,
+        categList : [
+          "Pet",
+          "Drame",
+          "Amour",
+          "Science Fiction",
+          "Fantastique",
+          "Philosophie",
+          "Histoire",
+        ],
         setHeader: setHeader,
         setProducts: setProducts,
         setUser: setUser,
@@ -36,6 +45,9 @@ export const ContextProvider = ({ children }) => {
         setOpenSnack: setOpenSnack,
         setAllProducts: setAllProducts,
         setFilter: setFilter,
+        handleLogOut : () =>{
+          window.location.reload();
+        },
         removeFilter: () => {
           setProducts(allProducts);
           setFilter(null);

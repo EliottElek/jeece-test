@@ -189,6 +189,7 @@ const BookItem = ({ bookItem }) => {
         </div>
       </Grid>
       <Modal
+        style={{ zIndex: 33333333333 }}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

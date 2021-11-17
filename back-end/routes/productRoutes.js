@@ -10,6 +10,8 @@ const {
   modifyProduct,
   getProductsByCategory,
   getProductsByAuthor,
+  modifyDeepProduct,
+  deleteProduct,
 } = require("../controller/productControllers");
 //@desc GET all products from db
 //@route GET /procuts
@@ -26,5 +28,7 @@ router.get("/:id", getProductById);
 router.post("/:id/rating", addRating);
 router.post("/:id/comment", addComment);
 router.post("/:id/modify", modifyProduct);
+router.post("/:id/modifyDeep", modifyDeepProduct);
+router.post("/:id/delete", deleteProduct);
 
 module.exports = router;

@@ -133,11 +133,13 @@ const Profile = () => {
     if (!user) {
       if (email === "") {
         setEmptyEmailMessage("- Please enter your email.");
+        setSubmitted(false);
       } else {
         setEmptyEmailMessage("");
       }
       if (password === "") {
         setEmptyPassMessage("- Please enter your password.");
+        setSubmitted(false);
       } else {
         setEmptyPassMessage("");
       }
@@ -163,9 +165,11 @@ const Profile = () => {
               } else {
                 setEmptyEmailMessage(res.message);
                 setUser(null);
+                setSubmitted(false);
               }
             } catch (err) {
               setUser(null);
+              setSubmitted(false);
             }
           }
         } catch (err) {

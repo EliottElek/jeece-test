@@ -20,17 +20,9 @@ import {
 import { Context } from "../Context/Context";
 import { useContext } from "react";
 const drawerWidth = 240;
-const catego = [
-  "Pet",
-  "Drame",
-  "Amour",
-  "Science Fiction",
-  "Fantastique",
-  "Philosophie",
-  "Histoire",
-];
+
 const Home = (props) => {
-  const { filter, setProducts, setFilter, allProducts,removeFilter, products, setHeader } = useContext(Context)
+  const { filter, setProducts, setFilter, allProducts,removeFilter, products, setHeader, categList } = useContext(Context)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   setHeader("Boutique");
@@ -77,7 +69,7 @@ const Home = (props) => {
         </Typography>
       </ListItem>
       <Divider />
-      {catego.map((categorie) => (
+      {categList?.map((categorie) => (
         <ListItemButton
           onClick={() => {
             setFilter({ parent: "categorie", children: categorie });

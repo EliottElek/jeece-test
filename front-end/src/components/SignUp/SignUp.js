@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Card, Typography, TextField, Button } from "@mui/material";
+import { Card, Typography, TextField, Button, CircularProgress } from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -104,7 +104,8 @@ const styles = {
 };
 
 const SignUp = () => {
-  const { user, setUser, setWishList, setCart, setHeader } = useContext(Context);
+  const { user, setUser, setWishlist, setCart, setHeader, setOpenSnack, setResponse } = useContext(Context);
+  const [submitted, setSubmitted] = useState(false);
   setHeader("Créez votre compte");
   const [emptyFirstnameMessage, setEmptyFirstnameMessage] =
     useState("Votre prénom");
@@ -138,35 +139,42 @@ const SignUp = () => {
     setVerifPassword(e.target.value);
   };
   const handleSubmit = async (e) => {
+    setSubmitted(true);
     e.preventDefault();
     if (!user) {
       if (firstname === "") {
         setEmptyFirstnameMessage("- Votre prénom est requis.");
+        setSubmitted(false);
       } else {
         setEmptyFirstnameMessage("");
       }
       if (lastname === "") {
         setEmptyLastnameMessage("- Votre nom est requis.");
+        setSubmitted(false);
       } else {
         setEmptyLastnameMessage("");
       }
       if (email === "") {
         setEmptyEmailMessage("- Votre email est requis.");
+        setSubmitted(false);
       } else {
         setEmptyEmailMessage("");
       }
       if (password === "") {
         setEmptyPassMessage("- Un mot de passe est requis.");
+        setSubmitted(false);
       } else {
         setEmptyPassMessage("");
       }
       if (verifPassword === "") {
         setEmptyVerifPassMessage("- Vous devez vérifier votre mot de passe.");
+        setSubmitted(false);
       } else {
         setEmptyVerifPassMessage("");
       }
       if (verifPassword !== password) {
         setEmptyVerifPassMessage("- Les mots de passe doivent correspondre.");
+        setSubmitted(false);
       } else {
         setEmptyVerifPassMessage("");
       }
@@ -194,17 +202,20 @@ const SignUp = () => {
             { user: usr }
           );
           console.log(res);
-          if (res.creation) {
-            setEmptyEmailMessage(res.message);
+          if (res.success) {
             setUser(res.user[0]);
+            setResponse(res);
+            setOpenSnack(true);
             setCart([]);
-            setWishList([]);
+            setWishlist([]);
           } else {
             setEmptyEmailMessage(res.message);
             setUser(null);
+            setSubmitted(false);
           }
         } catch (err) {
           console.error(err);
+          setSubmitted(false);
         }
       }
     }
@@ -297,7 +308,7 @@ const SignUp = () => {
               onClick={handleSubmit}
               style={styles.button}
             >
-              Créer mon compte
+              {!submitted ? "Créer mon compte" : <CircularProgress style={{ color: "white", height: "30px", width: "30px" }} />}
             </Button>
             <Typography style={styles.link}>
               Déjà un compte ?

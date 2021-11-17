@@ -136,7 +136,7 @@ const OrderListAdmin = ({ orders }) => {
                   <TableBody>
                     <TableRow key={"item._id"}>
                       <TableCell component="th" scope="row">
-                        {row.deliveryAddress.address}
+                        {row.deliveryAddress.address}, {row.deliveryAddress.postal}, {row.deliveryAddress.city}
                       </TableCell>
                       <TableCell> {row.deliveryAddress.country}</TableCell>
                     </TableRow>
@@ -164,7 +164,7 @@ const OrderListAdmin = ({ orders }) => {
                   <TableBody>
                     <TableRow key={"item._id"}>
                       <TableCell component="th" scope="row">
-                        {row.facturationAddress.address}
+                        {row.facturationAddress.address}, {row.facturationAddress.postal}, {row.facturationAddress.city}
                       </TableCell>
                       <TableCell> {row.facturationAddress.country}</TableCell>
                     </TableRow>

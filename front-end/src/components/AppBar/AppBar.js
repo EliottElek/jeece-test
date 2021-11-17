@@ -70,6 +70,18 @@ const PrimarySearchAppBar = () => {
           />
         </Typography>
         <div className={classes.grow}></div>
+      <div className={classes.button}>
+        <IconButton
+          component={Link}
+          to="/compte"
+          aria-label="logIn"
+          color="inherit"
+        >
+          <Badge color="secondary">
+            <Avatar src={user?.avatarUrl} />
+          </Badge>
+        </IconButton>
+      </div>
         <IconButton
           {...{
             edge: "start",
@@ -138,6 +150,7 @@ const PrimarySearchAppBar = () => {
           <ShoppingBasketIcon sx={{ color: "#bdbdbd" }} />
         </Badge>
       </MenuItem>
+        <Typography variant ="h6">{user?.firstname} {user?.lastname}</Typography>
       <div className={classes.button}>
         <IconButton
           component={Link}
