@@ -15,6 +15,7 @@ const styles = {
     width: "100%",
     height: "100%",
     margin: "auto",
+    maxHeight:'500px',
     display: "grid",
     borderRadius: "5px",
     gridTemplateRows: "70% 30%",

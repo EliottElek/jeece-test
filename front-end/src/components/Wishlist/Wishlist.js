@@ -6,11 +6,12 @@ const WishList = () => {
   const {
     user,
     wishlist,
-    setHeader
+    setHeader,
+    cookies
   } = useContext(Context)
   setHeader("Ma liste d'envies");
 
-  if (!user || user?.admin)
+  if (!cookies.user || user?.admin)
     return (
       <div>
         <Redirect to="/404" />

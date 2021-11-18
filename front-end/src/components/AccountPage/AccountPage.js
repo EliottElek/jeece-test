@@ -28,7 +28,7 @@ const styles = {
   control: {
     width: "100%",
     display: "flex",
-    justifyContent:"center",
+    justifyContent: "center",
     //alignItems:"center",
   },
   box: {
@@ -47,7 +47,7 @@ const styles = {
 };
 
 const AccountPage = () => {
-  const { user, wishlist, setHeader, handleLogOut, setUser, setResponse, setOpenSnack } = useContext(Context)
+  const { user, wishlist, setHeader, handleLogOut, setUser, setResponse, setOpenSnack, setCookie } = useContext(Context)
   const [openModal, setOpenModal] = useState(false);
   const [newFirstname, setNewFirstname] = useState(user.firstname);
   const [newLastname, setNewLastname] = useState(user.lastname);
@@ -68,6 +68,7 @@ const AccountPage = () => {
       newUser.email = newEmail;
       newUser.avatarUrl = newAvatar;
       setUser(newUser);
+      setCookie("user", newUser);
       setOpenModal(false);
       setResponse(res);
       setOpenSnack(true);
@@ -92,8 +93,8 @@ const AccountPage = () => {
             item
             xs={12}
             sm={12}
-            md={4}
-            lg={4}
+            md={6}
+            lg={6}
           >
             <Avatar
               src={user?.avatarUrl}
@@ -127,8 +128,8 @@ const AccountPage = () => {
             item
             xs={12}
             sm={12}
-            md={8}
-            lg={8}
+            md={6}
+            lg={6}
           >
             {!user.admin ? (
               <Grid
@@ -211,7 +212,7 @@ const AccountPage = () => {
                     onClick={() => setOpenModal(true)}
                   >
                     <Typography align="center" variant="h6">
-                      Mes infos
+                      Mes informations
                     </Typography>
                     {/* <FormatListBulletedIcon style={{ fontSize: "50px" }} /> */}
                   </Paper>
@@ -387,7 +388,7 @@ const AccountPage = () => {
         )}
         {!user.admin && (
           <>
-            <BookList bookList={wishlist} />
+            <BookList bookList={wishlist} inWish={true} />
           </>
         )}
       </Paper>
@@ -402,7 +403,7 @@ const AccountPage = () => {
           <FormControl style={styles.control}>
             <Avatar
               src={user?.avatarUrl}
-              sx={{ margin: 3, width: 200, height: 200, alignSelf:'center' }}
+              sx={{ margin: 3, width: 200, height: 200, alignSelf: 'center' }}
             />
             <TextField value={newAvatar} onChange={(e) => setNewAvatar(e.target.value)} style={styles.input} label="URL de l'avatar" />
             <Typography style={{ marginBottom: "5px" }}>Modifier vos informations</Typography>

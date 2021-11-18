@@ -7,7 +7,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
-
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../Context/Context";
@@ -112,9 +111,9 @@ const Profile = () => {
     setUser,
     setCart,
     setWishlist,
-    wishlist,
-    removeFromWishList , setHeader} = useContext(Context)
-    setHeader("Connectez-vous");
+    wishlist, setCookie,
+    removeFromWishList, setHeader } = useContext(Context)
+  setHeader("Connectez-vous");
   const [emptyEmailMessage, setEmptyEmailMessage] = useState("Votre mail");
   const [emptyPassMessage, setEmptyPassMessage] =
     useState("Votre mot de passe");
@@ -150,18 +149,24 @@ const Profile = () => {
             `http://localhost:5000/users/${email}/${password}`
           );
           if (res.auth) {
+            setCookie("user", res.user);
+            setCookie("cart", res.user.cart);
+            setCookie("wishlist", res.user.wishlist);
             setEmptyEmailMessage("");
-            setUser(res.user);
             setCart(res.user.cart);
             setWishlist(res.user.wishlist);
+            setUser(res.user);
+            window.location.reload();
           } else {
             try {
               const { data: res } = await axios.get(
                 `http://localhost:5000/admins/${email}/${password}`
               );
               if (res.auth) {
+                setCookie("user", res.admin);
                 setEmptyEmailMessage("");
                 setUser(res.admin);
+                window.location.reload();
               } else {
                 setEmptyEmailMessage(res.message);
                 setUser(null);
@@ -191,7 +196,6 @@ const Profile = () => {
               color={emptyEmailMessage === "Votre mail" ? "primary" : "warning"}
               fullWidth
               label={emptyEmailMessage}
-              id="margin-none"
               autoComplete="on"
               onChange={handleChangeEmail}
               value={email}
@@ -208,7 +212,6 @@ const Profile = () => {
               }
               fullWidth
               label={emptyPassMessage}
-              id="margin-none"
               onChange={handleChangePassword}
               value={password}
               style={styles.input}

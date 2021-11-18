@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 export const Context = React.createContext();
 export const ContextProvider = ({ children }) => {
   const [header, setHeader] = useState("Boutique");
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [wishlist, setWishlist] = useState(null);
+  const [wishlist, setWishlist] = useState([]);
   const [response, setResponse] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [filter, setFilter] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies([]);
 
   return (
     <Context.Provider
@@ -26,7 +28,10 @@ export const ContextProvider = ({ children }) => {
         openSnack: openSnack,
         allProducts: allProducts,
         filter: filter,
-        categList : [
+        cookies: cookies,
+        setCookie: setCookie,
+        removeCookie: removeCookie,
+        categList: [
           "Pet",
           "Drame",
           "Amour",
@@ -45,7 +50,10 @@ export const ContextProvider = ({ children }) => {
         setOpenSnack: setOpenSnack,
         setAllProducts: setAllProducts,
         setFilter: setFilter,
-        handleLogOut : () =>{
+        handleLogOut: () => {
+          removeCookie("user");
+          removeCookie("cart");
+          removeCookie("wishlist");
           window.location.reload();
         },
         removeFilter: () => {
@@ -83,6 +91,7 @@ export const ContextProvider = ({ children }) => {
                 item: product,
               }
             );
+            setCookie("cart", [...cart, product]);
             setCart([...cart, product]);
             setResponse(res);
             setOpenSnack(true);
@@ -103,6 +112,7 @@ export const ContextProvider = ({ children }) => {
                 item: item,
               }
             );
+            setCookie("wishlist", [...wishlist, item]);
             setWishlist([...wishlist, item]);
             setResponse(res);
             setOpenSnack(true);
@@ -126,6 +136,7 @@ export const ContextProvider = ({ children }) => {
             var newCart = cart.filter(function (e) {
               return e._id !== item._id;
             });
+            setCookie("cart", newCart);
             setCart(newCart);
             setResponse(res);
             setOpenSnack(true);
@@ -149,6 +160,7 @@ export const ContextProvider = ({ children }) => {
             var newWishList = wishlist.filter(function (e) {
               return e._id !== item._id;
             });
+            setCookie("wishlist", newWishList);
             setWishlist(newWishList);
             setResponse(res);
             setOpenSnack(true);
@@ -169,6 +181,7 @@ export const ContextProvider = ({ children }) => {
                 email: user.email,
               }
             );
+            setCookie("cart", []);
             setCart([]);
             setResponse(res);
             setOpenSnack(true);

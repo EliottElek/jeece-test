@@ -4,7 +4,7 @@ import BookItem from "../BookItem/BookItem";
 import { Link } from "react-router-dom";
 import { Context } from "../Context/Context";
 import { useContext } from "react";
-const BookList = ({bookList}) => {
+const BookList = ({ bookList }) => {
   const {
     inWish,
     account,
@@ -21,13 +21,18 @@ const BookList = ({bookList}) => {
           flexDirection: "column",
           alignItems: "center",
         }}
-      >
+      >{!inWish && <>
         <Typography align="center">Rien à afficher.</Typography>
-        {!inWish && <Button onClick={removeFilter}>Retirer les filtres</Button>}
+        <Button onClick={removeFilter}>Retirer les filtres</Button></>}
+        {inWish &&
+          <Typography align="center">Votre liste de souhaits s'affichera ici.</Typography>}
       </div>
     );
-  if (bookList.length === 0)
-    return <Typography align="center">Rien à afficher ici.</Typography>;
+  if (bookList.length === 0 && inWish)
+    return <Typography align="center">Votre liste de souhaits s'affichera ici.</Typography>
+  if (bookList.length === 0 && !inWish)
+    return <Typography align="center">Rien à afficher ici.</Typography>
+
   if (!bookList.length)
     return (
       <div

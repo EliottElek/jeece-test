@@ -13,9 +13,9 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link, Redirect } from "react-router-dom";
 import { Context } from "../Context/Context";
 const CartList = () => {
-  const { user, cart, total, removeFromCart, emptyCart, setHeader } = useContext(Context)
+  const { user, cart, total, removeFromCart, emptyCart, setHeader, cookies } = useContext(Context)
   setHeader("Votre panier");
-  if (!user || user?.admin)
+  if (!cookies.user || user?.admin)
     return (
       <div>
         <Redirect to="/404" />
@@ -25,7 +25,7 @@ const CartList = () => {
   return (
     <>
       {cart?.length === 0 ? (
-        <Typography>Votre panier est vide.</Typography>
+        <Typography align='center'>Votre panier est vide.</Typography>
       ) : (
         <>
           <TableContainer
@@ -42,7 +42,7 @@ const CartList = () => {
                   <TableCell align="left">Titre</TableCell>
                   <TableCell align="left">Auteur</TableCell>
                   <TableCell align="center">Prix (€)</TableCell>
-                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">Quantité</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -88,9 +88,13 @@ const CartList = () => {
                       style={{ maxHeight: "100px", padding: 0 }}
                       align="right"
                     >
-                      <IconButton onClick={() => removeFromCart(row)}>
-                        <DeleteForeverIcon />
-                      </IconButton>
+                      <div style={{ maxHeight: "100px", padding: 0, display: 'flex', alignItems: "center", justifyContent: 'flex-end' }}
+                      >
+                        <Typography>x{row?.quantity}</Typography>
+                        <IconButton onClick={() => removeFromCart(row)}>
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

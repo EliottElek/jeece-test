@@ -19,10 +19,11 @@ import {
 } from "@mui/material";
 import { Context } from "../Context/Context";
 import { useContext } from "react";
+import Footer from "../Footer/Footer";
 const drawerWidth = 240;
 
 const Home = (props) => {
-  const { filter, setProducts, setFilter, allProducts,removeFilter, products, setHeader, categList } = useContext(Context)
+  const { filter, setProducts, setFilter, allProducts, removeFilter, products, setHeader, categList } = useContext(Context)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   setHeader("Boutique");
@@ -186,8 +187,9 @@ const Home = (props) => {
             </Typography>
           )}
         </Breadcrumbs>
-        <BookList bookList = {products}
+        <BookList bookList={products}
         />
+        <Footer />
       </Box>
     </Box>
   );

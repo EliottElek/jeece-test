@@ -4,7 +4,6 @@ import AccountPage from "../AccountPage/AccountPage";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../Context/Context";
-
 const bcrypt = require("bcryptjs");
 
 const styles = {
@@ -104,7 +103,7 @@ const styles = {
 };
 
 const SignUp = () => {
-  const { user, setUser, setWishlist, setCart, setHeader, setOpenSnack, setResponse } = useContext(Context);
+  const { user, setUser, setWishlist, setCart, setHeader, setOpenSnack, setResponse, setCookie } = useContext(Context);
   const [submitted, setSubmitted] = useState(false);
   setHeader("Créez votre compte");
   const [emptyFirstnameMessage, setEmptyFirstnameMessage] =
@@ -188,7 +187,7 @@ const SignUp = () => {
       ) {
         try {
           const usr = {
-            avatarUrl: "https://pbs.twimg.com/media/Emzyu36XEAE5vjh.jpg",
+            avatarUrl: "https://static-openask-com.s3.amazonaws.com/content/images/tests/large/3784_test.jpg",
             firstname: firstname,
             lastname: lastname,
             email: email,
@@ -203,11 +202,16 @@ const SignUp = () => {
           );
           console.log(res);
           if (res.success) {
+            const userForCookies = { ...res.user[0], cart: [], wishlist: [] }
+            setCookie("user", userForCookies);
+            setCookie("cart", []);
+            setCookie("wishlist", []);
             setUser(res.user[0]);
             setResponse(res);
             setOpenSnack(true);
             setCart([]);
             setWishlist([]);
+            window.location.reload();
           } else {
             setEmptyEmailMessage(res.message);
             setUser(null);

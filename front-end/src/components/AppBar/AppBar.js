@@ -17,8 +17,11 @@ import useStyles from "./styles";
 import logo from "../../images/logo.png";
 import { Context } from "../Context/Context";
 import { useContext } from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SearchBar from "../SearchBar/SearchBar";
 const PrimarySearchAppBar = () => {
-  const { user, cart, wishlist, removeFilter } = useContext(Context)
+  const { user, cart, wishlist, removeFilter, handleLogOut } =
+    useContext(Context);
   const classes = useStyles();
   const [state, setState] = useState({
     mobileView: false,
@@ -70,18 +73,18 @@ const PrimarySearchAppBar = () => {
           />
         </Typography>
         <div className={classes.grow}></div>
-      <div className={classes.button}>
-        <IconButton
-          component={Link}
-          to="/compte"
-          aria-label="logIn"
-          color="inherit"
-        >
-          <Badge color="secondary">
-            <Avatar src={user?.avatarUrl} />
-          </Badge>
-        </IconButton>
-      </div>
+        <div className={classes.button}>
+          <IconButton
+            component={Link}
+            to="/compte"
+            aria-label="logIn"
+            color="inherit"
+          >
+            <Badge color="secondary">
+              <Avatar src={user?.avatarUrl} />
+            </Badge>
+          </IconButton>
+        </div>
         <IconButton
           {...{
             edge: "start",
@@ -139,6 +142,7 @@ const PrimarySearchAppBar = () => {
       >
         <img src={logo} style={{ height: "50px", width: "auto" }} alt="logo" />
       </Typography>
+      <SearchBar placeholder={"Trouvez un livre..."}/>
       <div className={classes.grow}>{/* <SearchBar books = {books}/> */}</div>
       <MenuItem component={Link} to="/wishlist">
         <Badge badgeContent={wishlist?.length} color="secondary">
@@ -150,7 +154,9 @@ const PrimarySearchAppBar = () => {
           <ShoppingBasketIcon sx={{ color: "#bdbdbd" }} />
         </Badge>
       </MenuItem>
-        <Typography variant ="h6">{user?.firstname} {user?.lastname}</Typography>
+      <Typography variant="h6">
+        {user?.firstname} {user?.lastname}
+      </Typography>
       <div className={classes.button}>
         <IconButton
           component={Link}
@@ -162,6 +168,11 @@ const PrimarySearchAppBar = () => {
             <Avatar src={user?.avatarUrl} />
           </Badge>
         </IconButton>
+        {user && (
+          <IconButton onClick={handleLogOut}>
+            <LogoutIcon sx={{ color: "primary.main" }} />
+          </IconButton>
+        )}
       </div>
     </Toolbar>
   );

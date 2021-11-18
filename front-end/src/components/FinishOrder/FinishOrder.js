@@ -602,17 +602,17 @@ const FinishOrder = () => {
               >
                 {cart.map((item) => (
                   <ListItem
-                    key={item._id}
+                    key={item?._id}
                     component="div"
                     disablePadding
-                    secondaryAction={<Typography>x1</Typography>}
+                    secondaryAction={<Typography>x{item?.quantity}</Typography>}
                   >
                     <ListItemAvatar>
-                      <img height="50px" src={item.mediaUrl} alt={item._id} />
+                      <img height="50px" src={item?.mediaUrl} alt={item?._id} />
                     </ListItemAvatar>
                     <ListItemText
-                      primary={item.title}
-                      secondary={item.author}
+                      primary={item?.title}
+                      secondary={item?.author}
                     />
                   </ListItem>
                 ))}

@@ -68,9 +68,7 @@ const MyOrders = ({ profilePage }) => {
             </Typography>
           </TableCell>
           <TableCell style={{ maxHeight: "100px", padding: 0 }} align="left">
-            {row.items.length === 1
-              ? row.items.length + "  article"
-              : row.items.length + "  articles"}
+            {new Date(row?.creation).getDate()}/{new Date(row?.creation).getMonth()}/{new Date(row?.creation).getFullYear()}
           </TableCell>
           <TableCell style={{ maxHeight: "100px", padding: 0 }} align="center">
             {row.total}€
@@ -260,11 +258,11 @@ const MyOrders = ({ profilePage }) => {
                             alt={item._id}
                           />
                         </TableCell>
-                        <TableCell align="left">{item._id}</TableCell>
-                        <TableCell align="center">{item.title}</TableCell>
-                        <TableCell align="right">{item.author}</TableCell>
-                        <TableCell align="right">1</TableCell>
-                        <TableCell align="right">{item.price} €</TableCell>
+                        <TableCell align="left">{item?._id}</TableCell>
+                        <TableCell align="center">{item?.title}</TableCell>
+                        <TableCell align="right">{item?.author}</TableCell>
+                        <TableCell align="right">{item?.quantity}</TableCell>
+                        <TableCell align="right">{item?.price} €</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -294,7 +292,7 @@ const MyOrders = ({ profilePage }) => {
           alignItems: "center",
         }}
       >
-        <Typography>Aucune commande passée.</Typography>
+        <Typography>Vos commandes s'afficheront ici.</Typography>
       </div>
     );
   }
@@ -363,7 +361,7 @@ const MyOrders = ({ profilePage }) => {
           <TableHead>
             <TableRow sx={{ padding: 0 }}>
               <TableCell align="left">Numéro de commande</TableCell>
-              <TableCell align="left">Nombre d'articles</TableCell>
+              <TableCell align="left">Date</TableCell>
               <TableCell align="center">Total</TableCell>
               <TableCell align="right">Etat</TableCell>
             </TableRow>

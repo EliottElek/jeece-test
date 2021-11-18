@@ -15,7 +15,6 @@ import Footer from "./components/Footer/Footer";
 import FinishOrder from "./components/FinishOrder/FinishOrder";
 import ErrorPage from "./components/404/404";
 import MyOrders from "./components/MyOrders/MyOrders";
-import Card from "./components/Card/Card";
 import BookListAdmin from "./components/Admin/BookListAdmin/BookListAdmin";
 import ProductAdmin from "./components/Admin/ProductAdmin/ProductAdmin";
 import Snackbar from "@mui/material/Snackbar";
@@ -26,6 +25,7 @@ import ClientsAdmin from "./components/Admin/ClientsAdmin/ClientsAdmin";
 import Header from './components/Header/Header'
 import { Context } from "./components/Context/Context";
 import { useContext } from "react";
+
 const styles = {
   root: {
     padding: 0,
@@ -45,8 +45,7 @@ let theme = createTheme({
 });
 
 function App() {
-  const {wishlist,setOpenSnack, response, setResponse, setProducts, setAllProducts, openSnack} =  useContext(Context)
-  
+  const { wishlist, setOpenSnack, response, setResponse, setProducts, setAllProducts, openSnack, cookies, setUser, setWishlist, setCart } = useContext(Context)
   const handleCloseSnack = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -66,7 +65,7 @@ function App() {
       </IconButton>
     </React.Fragment>
   );
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -83,8 +82,21 @@ function App() {
       }
     };
     fetchProducts();
-  }, [setProducts,setAllProducts, setOpenSnack, setResponse]);
-  
+  }, [setProducts, setAllProducts, setOpenSnack, setResponse]);
+
+  useEffect(() => {
+    const fetchCookies = async () => {
+      if (!cookies.user) {
+        setUser(null);
+      } else {
+        setUser(cookies.user);
+        setCart(cookies.cart);
+        setWishlist(cookies.wishlist);
+      }
+      console.log(cookies)
+    }
+    fetchCookies();
+  }, [cookies, setWishlist, setUser, setCart])
   return (
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
@@ -98,68 +110,76 @@ function App() {
               />
             </Route>
             <Route exact path="/panier">
-              <CartList 
+              <CartList
               />
+              <Footer />
             </Route>
             <Route exact path="/register">
               <SignUp
               />
+              <Footer />
             </Route>
             <Route exact path="/wishlist">
               <Wishlist bookList={wishlist}
               />
+              <Footer />
             </Route>
             <Route path="/404">
               <ErrorPage />
+              <Footer />
             </Route>
             <Route exact path="/compte">
               <Profile
               />
+              <Footer />
             </Route>
             <Route exact path="/order">
-              <FinishOrder               
+              <FinishOrder
               />
+              <Footer />
             </Route>
             <Route exact path="/myorders">
-              <MyOrders  />
+              <MyOrders />
+              <Footer />
             </Route>
             <Route exact path="/admin/orders">
-              <OrdersAdmin  />
+              <OrdersAdmin />
+              <Footer />
             </Route>
             <Route exact path="/admin/clients">
-              <ClientsAdmin  />
+              <ClientsAdmin />
+              <Footer />
             </Route>
             <Route exact path="/admin/products">
               <BookListAdmin />
+              <Footer />
             </Route>
-            <Route exact path="/card">
-              <Card />
-            </Route>
-            {/* <Route path="*">
-              <ErrorPage />
-            </Route> */}
             <Route
               exact
               path="/produit/:id"
               render={(props) => (
+                <>
                 <Product
                   id={props.match.params.id}
                   key={props.location.key}
                 />
+                <Footer />
+                </>
               )}
             />
             <Route
               exact
               path="/produit/:id/admin"
               render={(props) => (
-                <ProductAdmin
-                  id={props.match.params.id}
-                  key={props.location.key}
-                />
-              )}
+                <>
+                  <ProductAdmin
+                    id={props.match.params.id}
+                    key={props.location.key}
+                  />
+                  <Footer />
+                </>)}
             />
           </Switch>
-          <Footer />
         </Router>
         <Snackbar
           open={openSnack}

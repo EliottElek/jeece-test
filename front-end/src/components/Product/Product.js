@@ -3,12 +3,14 @@ import axios from "axios";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
-import { CircularProgress, Grid, Typography, Button } from "@mui/material";
+import { CircularProgress, Grid, Typography, Button, IconButton } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import BasicRating from "../Rating/Rating";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -70,7 +72,9 @@ const styles = {
     border: "solid 1px gray",
   },
   actions: {
+    marginTop: 0,
     display: "flex",
+    alignItems: 'center'
   },
   icon: { marginLeft: "7px" },
 };
@@ -79,6 +83,7 @@ const Product = ({ id }) => {
   const { user, addToCart, addToWishList, setHeader, removeFromWishList, wishlist } = useContext(Context);
   const [product, setProduct] = useState();
   const [rating, setRating] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [ratingValues, setRatingValues] = useState([]);
   const [newRater, setNewRater] = useState(true);
   const [comment, setComment] = useState("");
@@ -95,6 +100,11 @@ const Product = ({ id }) => {
       return avg.toFixed(1);
     } else return 0;
   };
+  const handleAddToCart = () => {
+    const productWithQuantity = { ...product, quantity: quantity };
+    addToCart(productWithQuantity);
+    console.log(productWithQuantity);
+  }
   const addRating = async () => {
     try {
       const rate = {
@@ -230,17 +240,21 @@ const Product = ({ id }) => {
             </div>
           </div>
           <Typography variant="body1">{product?.description}</Typography>
-          <div style={{ display: "flex" }}>
+          <Typography variant="caption">Catégorie : <Typography variant="caption" color="primary">{product?.category}</Typography></Typography>
+          <div style={{ display: "flex", alignItems: 'center' }}>
             <Typography variant="h6">Tarif régulier :</Typography>
             <Typography variant="h6" sx={{ color: "primary.main" }}>
               {" "}
               {product?.price}€
             </Typography>
           </div>
+          <Typography>Quantité : <IconButton disabled={user ? false : true}
+            onClick={() => setQuantity(quantity + 1)}><AddIcon /></IconButton>{quantity}<IconButton disabled={user ? false : true}
+              onClick={() => { if (quantity > 1) setQuantity(quantity - 1) }}><RemoveIcon /></IconButton></Typography>
           <div container style={styles.actions}>
             <Button
               disabled={user ? false : true}
-              onClick={() => addToCart(product)}
+              onClick={handleAddToCart}
               style={styles.addCartButton}
               variant="contained"
               color={"primary"}
