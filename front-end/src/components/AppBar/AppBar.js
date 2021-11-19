@@ -135,6 +135,7 @@ const PrimarySearchAppBar = () => {
   const displayDesktop = () => (
     <Toolbar sx={{ zIndex: 3 }}>
       <Typography
+      style ={{marginRight:'40px'}}
         onClick={removeFilter}
         component={Link}
         to="/"
