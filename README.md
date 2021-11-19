@@ -24,7 +24,7 @@ Ensuite placez vous dans le dossier back-end :<br/>
 Vous venez de lancer le back-end.<br/><br/>
 Il vous faut une connexion internet.  
 
-Lancez maintenant le front-end; pour cela replacez-vous à la racine du projet :<br/>
+Lancez maintenant le front-end; pour cela placez-vous dans le dossier front-end :<br/>
 `cd ../front-end` puis :<br/>
 `npm i` ou `yarn` pour installer les paquets, et enfin :<br/>
 `npm start` ou `yarn start`<br/>
