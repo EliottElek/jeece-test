@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Ce projet a été entièrement réalisé par Eliott Morcillo dans le cadre d'un test technique pour devenir intervant à la JEECE (Junior entreprise de l'ECE).br/>
+Ce projet a été entièrement réalisé par Eliott Morcillo dans le cadre d'un test technique pour devenir intervant à la JEECE (Junior entreprise de l'ECE).<br/>
 Le but de ce projet était de créer un site e-commerce de vente de livres, en ReactJS pour le front-end, et NodeJS pour le back-end.<br/>
 
 ### Front-end 
