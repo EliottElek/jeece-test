@@ -6,7 +6,7 @@ Ce projet a été entièrement réalisé par Eliott Morcillo dans le cadre d'un 
 Le but de ce projet était de créer un site e-commerce de vente de livres, en ReactJS pour le front-end, et NodeJS pour le back-end.<br/>
 
 ### Front-end 
-Le pront-end a été réalisé avec la librairie ReactJS. La principale librairie utilisée est Material-UI : https://mui.com.<br/>
+Le front-end a été réalisé avec la librairie ReactJS. La principale librairie utilisée est Material-UI : https://mui.com.<br/>
 ### Back-end
 Le back-end a été réalisé en NodeJS à l'aide de la librairie ExpressJS ainsi que Mongoose afin de gérer la base de donnée MongoDB. Celle-ci se trouve sur un cluser
 à distance sur https://mongodb.com.<br/>
