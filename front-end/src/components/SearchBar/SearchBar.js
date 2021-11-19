@@ -1,3 +1,6 @@
+
+//La barre de recherche a été inspirée de la vidéo suivante : https://www.youtube.com/watch?v=x7niho285qs
+
 import React, { useContext, useState } from "react";
 import "./SearchBar.css";
 import CloseIcon from "@mui/icons-material/Close";
