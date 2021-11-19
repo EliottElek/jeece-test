@@ -29,3 +29,15 @@ Lancez maintenant le front-end; pour cela replacez-vous à la racine du projet :
 `npm start` ou `yarn start`<br/>
 Pour lancer l'application.<br/>
 
+# Formation
+
+Comme beacoup, j'ai commencé à former sur internet, et notamment grâce à des vidéos youtube. Comme c'était la première fois que j'allais travailler avec MongoDB, j'ai suivi un tutoriel afin de comprendre comment celle-ci fonctionnait.
+C'était la seule nouveauté pour moi dans ce projet, et je trouve que je n'ai globalement pas eu trop de difficultés à m'y adapter. Pour ce qui est de ReactJS, j'avais déjà eu l'occasion de faire un certains nombre de petits projets de mon côté.
+
+# Difficultés
+
+J'ai souhaité utiliser les cookies pour ce projet. Je trouve cela bien plus moderne et user-friendly de ne pas avoir à faire reconnecter l'utilisateur à chaque fois. Je dois dire que, mêmes s'ils ont l'air de fonctionner correctement sur cette application, je ne sais pas si la méthode employée pour garder l'utilisateur connecté est optimale. Je pense que ce sera un point à optimiser par la suite. J'ai également pris la décision de travailler avec le ReactContext, qui est une notion que j'ai découverte récemment et qui s'avère extrêmement pratique. Le seul soucis est que je l'ai découverte lorsque mon projet était déjà bien avancé, donc le reformatage de mon projet a pris un peu de temps mais en valait la peine. 
+
+# Impression
+
+Donnez un projet web à faire à Eliott et il sera heureux. J'ai adoré, j'ai appris plein de nouvelles choses, des nouveaux concepts, de nouvelles conventions et de nouveaux réflexes. 
