@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles((theme) => ({
   appBar: {
     //boxShadow: "none!important",
-    width:'100vw',
+    width: "100vw",
     borderBottom: "1px solid rgba(238, 43, 105, 0.12)",
   },
   title: {
@@ -16,10 +16,14 @@ export default makeStyles((theme) => ({
   },
   grow: {
     flexGrow: 1,
-
   },
   search: {
     position: "relative",
+  },
+  links: {
+    color: "#EE2B69",
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   searchIcon: {
     height: "100%",
@@ -45,7 +49,7 @@ export default makeStyles((theme) => ({
   logoTitle: {
     fontFamily: "Parisienne",
   },
-  button:{
-    marginRight:"20px"
-  }
+  button: {
+    marginRight: "20px",
+  },
 }));

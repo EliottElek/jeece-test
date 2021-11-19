@@ -42,29 +42,46 @@ const Home = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   setHeader("Boutique");
 
+  const getMeanRating = (product) => {
+    if (product?.rating?.length > 0) {
+      var sum = 0;
+      for (let i = 0; i < product?.rating?.length; i++) {
+        sum += parseFloat(product?.rating[i]?.value);
+      }
+      const avg = sum / product?.rating?.length;
+      return avg.toFixed(1);
+    } else return 0;
+  };
   const sorting = (value) => {
     if (value === "PrixCroissant") {
-      const sorted = products.sort(
-        (a, b) => parseFloat(a.price) - parseFloat(b.price)
-      );
+      const sorted = products
+        .slice()
+        .sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
       setProducts([...sorted]);
-    } else if (value === "PrixDecroissant") {
-      const sorted = products.sort(
-        (a, b) => parseFloat(b.price) - parseFloat(a.price)
-      );
+    } else if (value === "prixDecroissant") {
+      const sorted = products
+        .slice()
+        .sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
       setProducts([...sorted]);
     } else if (value === "noteCroissante") {
-      const sorted = products.sort(
-        (a, b) => parseFloat(a.grading) - parseFloat(b.grading)
-      );
+      const sorted = products
+        .slice()
+        .sort(
+          (a, b) =>
+            parseFloat(getMeanRating(a.rating)) -
+            parseFloat(getMeanRating(b.rating))
+        );
       setProducts([...sorted]);
     } else if (value === "noteDecroissante") {
-      const sorted = products.sort(
-        (a, b) => parseFloat(b.grading) - parseFloat(a.grading)
-      );
+      const sorted = products
+        .slice()
+        .sort(
+          (a, b) =>
+            parseInt(getMeanRating(b.rating)) -
+            parseFloat(getMeanRating(a.rating))
+        );
       setProducts([...sorted]);
     }
-    console.log(products)
   };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -243,22 +260,35 @@ const Home = (props) => {
               {"Trier par..."}
             </InputLabel>
             <Select
+              defaultValue=""
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               onChange={(e) => sorting(e.target.value)}
               label="Age"
             >
               <MenuItem
-                onClick={() => sorting("prixCroissant")}
+                onChange={() => sorting("PrixCroissant")}
                 value={"PrixCroissant"}
               >
                 Prix croissant
               </MenuItem>
               <MenuItem
-                onClick={() => sorting("prixDecroissant")}
+                onChange={() => sorting("prixDecroissant")}
                 value={"prixDecroissant"}
               >
                 Prix décroissant
+              </MenuItem>
+              <MenuItem
+                onChange={() => sorting("noteCroissante")}
+                value={"noteCroissante"}
+              >
+                Note croissante
+              </MenuItem>
+              <MenuItem
+                onChange={() => sorting("noteDecroissante")}
+                value={"noteDecroissante"}
+              >
+                Note décroissante
               </MenuItem>
             </Select>
           </FormControl>

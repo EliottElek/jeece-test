@@ -1,5 +1,4 @@
 .searchInputs {
-  margin-left: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +14,9 @@
   font-size: 18px;
   padding: 10px;
   height: 20px;
-  width: 300px;
+  max-width: 300px;
+  min-width:250px;
+  width:100%;
   border-radius: 20px;
 }
 
@@ -35,7 +36,7 @@ input:focus {
 }
 
 .dataResult {
-    margin-left: 40px;
+  z-index: 333333;
   position: absolute;
   width: 300px;
   max-height: 400px;
@@ -44,7 +45,6 @@ input:focus {
   overflow: hidden;
   overflow-y: auto;
 }
-
 
 .dataResult .dataItem {
   width: 100%;

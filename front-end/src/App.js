@@ -26,6 +26,7 @@ import Header from "./components/Header/Header";
 import { Context } from "./components/Context/Context";
 import { useContext } from "react";
 import CookieConsent from "react-cookie-consent";
+import Landing from "./components/Landing/Landing";
 const styles = {
   root: {
     padding: 0,
@@ -86,7 +87,6 @@ function App() {
         );
         setProducts(prdcts);
         setAllProducts(prdcts);
-        console.log("fetched");
       } catch (e) {
         setResponse(e);
         setOpenSnack(true);
@@ -105,7 +105,6 @@ function App() {
         setCart(cookies.cart);
         setWishlist(cookies.wishlist);
       }
-      console.log(cookies);
     };
     fetchCookies();
   }, [cookies, setWishlist, setUser, setCart]);
@@ -140,6 +139,9 @@ function App() {
           </CookieConsent>
           <Switch>
             <Route exact path="/">
+              <Landing />
+            </Route>
+            <Route exact path="/boutique">
               <Home />
             </Route>
             <Route exact path="/panier">

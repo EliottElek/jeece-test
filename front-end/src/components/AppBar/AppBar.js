@@ -29,7 +29,8 @@ const PrimarySearchAppBar = () => {
   });
 
   const linksMobile = [
-    { label: "Boutique", path: "/", class: classes.links },
+    { label: "Accueil", path: "/", class: classes.links },
+    { label: "Boutique", path: "/boutique", class: classes.links },
     { label: "Ma liste d'envies", path: "/wishlist", class: classes.links },
     { label: "Mon compte", path: "/compte", class: classes.links },
     { label: "Mon Panier", path: "/panier", class: classes.links },
@@ -97,6 +98,7 @@ const PrimarySearchAppBar = () => {
           <MenuIcon />
         </IconButton>
         <Drawer
+        sx={{zIndex:6666666666}}
           {...{
             anchor: "left",
             open: drawerOpen,
@@ -144,6 +146,12 @@ const PrimarySearchAppBar = () => {
       </Typography>
       <SearchBar placeholder={"Trouvez un livre..."}/>
       <div className={classes.grow}>{/* <SearchBar books = {books}/> */}</div>
+      <MenuItem component={Link} to="/">
+        Accueil
+      </MenuItem>
+      <MenuItem component={Link} to="/boutique">
+        Boutique
+      </MenuItem>
       <MenuItem component={Link} to="/wishlist">
         <Badge badgeContent={wishlist?.length} color="secondary">
           <FavoriteBorderIcon sx={{ color: "#bdbdbd" }} />
@@ -154,7 +162,7 @@ const PrimarySearchAppBar = () => {
           <ShoppingBasketIcon sx={{ color: "#bdbdbd" }} />
         </Badge>
       </MenuItem>
-      <Typography variant="h6">
+      <Typography variant="body2">
         {user?.firstname} {user?.lastname}
       </Typography>
       <div className={classes.button}>

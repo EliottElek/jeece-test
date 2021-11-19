@@ -69,8 +69,7 @@ const BookList = ({ bookList }) => {
       <Grid
         container
         justifyContent="flex-start"
-        spacing={4}
-        sx={{ width: "90%", margin: "auto", height: "100%" }}
+        sx={{ width: "90%", margin: "auto" }}
       >
         {bookList?.map((book) => (
           <BookItem bookItem={book}
