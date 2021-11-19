@@ -5,6 +5,7 @@ import Divider from "@mui/material/Divider";
 import BookList from "../BookList/BookList";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import Header from "../Header/Header";
 import axios from "axios";
 import {
   List,
@@ -16,6 +17,10 @@ import {
   Toolbar,
   Button,
   IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Context } from "../Context/Context";
 import { useContext } from "react";
@@ -23,11 +28,44 @@ import Footer from "../Footer/Footer";
 const drawerWidth = 240;
 
 const Home = (props) => {
-  const { filter, setProducts, setFilter, allProducts, removeFilter, products, setHeader, categList } = useContext(Context)
+  const {
+    filter,
+    setProducts,
+    setFilter,
+    allProducts,
+    removeFilter,
+    products,
+    setHeader,
+    categList,
+  } = useContext(Context);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   setHeader("Boutique");
 
+  const sorting = (value) => {
+    if (value === "PrixCroissant") {
+      const sorted = products.sort(
+        (a, b) => parseFloat(a.price) - parseFloat(b.price)
+      );
+      setProducts([...sorted]);
+    } else if (value === "PrixDecroissant") {
+      const sorted = products.sort(
+        (a, b) => parseFloat(b.price) - parseFloat(a.price)
+      );
+      setProducts([...sorted]);
+    } else if (value === "noteCroissante") {
+      const sorted = products.sort(
+        (a, b) => parseFloat(a.grading) - parseFloat(b.grading)
+      );
+      setProducts([...sorted]);
+    } else if (value === "noteDecroissante") {
+      const sorted = products.sort(
+        (a, b) => parseFloat(b.grading) - parseFloat(a.grading)
+      );
+      setProducts([...sorted]);
+    }
+    console.log(products)
+  };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -150,7 +188,8 @@ const Home = (props) => {
           <Nav />
         </Drawer>
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `100%` } }}>
+      <Box component="main" sx={{ flexGrow: 1, width: { sm: `100%` } }}>
+        <Header />
         <Button
           variant="contained"
           onClick={handleDrawerToggle}
@@ -166,29 +205,65 @@ const Home = (props) => {
         >
           <ArrowBackIosIcon /> Filtres
         </Button>
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: "50px" }}>
-          <Typography underline="hover" color="primary" href="/">
-            Boutique
-          </Typography>
-          {filter !== null && (
-            <Typography color="inherit">{filter.parent}</Typography>
-          )}
-          {filter !== null && (
-            <Typography color="text.primary">
-              {filter.children}{" "}
-              <IconButton
-                onClick={() => {
-                  removeFilter();
-                  setFilter(null);
-                }}
-              >
-                <HighlightOffIcon color={"primary"} />
-              </IconButton>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingRight: "30px",
+          }}
+        >
+          <Breadcrumbs aria-label="breadcrumb" sx={{ marginLeft: "50px" }}>
+            <Typography underline="hover" color="primary" href="/">
+              Boutique
             </Typography>
-          )}
-        </Breadcrumbs>
-        <BookList bookList={products}
-        />
+            {filter !== null && (
+              <Typography color="inherit">{filter.parent}</Typography>
+            )}
+            {filter !== null && (
+              <Typography color="text.primary">
+                {filter.children}{" "}
+                <IconButton
+                  onClick={() => {
+                    removeFilter();
+                    setFilter(null);
+                  }}
+                >
+                  <HighlightOffIcon color={"primary"} />
+                </IconButton>
+              </Typography>
+            )}
+          </Breadcrumbs>
+          <FormControl
+            variant="standard"
+            sx={{ m: 1, minWidth: 120, marginRight: "50px" }}
+          >
+            <InputLabel id="demo-simple-select-standard-label">
+              {"Trier par..."}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              onChange={(e) => sorting(e.target.value)}
+              label="Age"
+            >
+              <MenuItem
+                onClick={() => sorting("prixCroissant")}
+                value={"PrixCroissant"}
+              >
+                Prix croissant
+              </MenuItem>
+              <MenuItem
+                onClick={() => sorting("prixDecroissant")}
+                value={"prixDecroissant"}
+              >
+                Prix décroissant
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <BookList bookList={products} />
         <Footer />
       </Box>
     </Box>

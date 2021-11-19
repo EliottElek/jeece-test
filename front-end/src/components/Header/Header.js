@@ -10,7 +10,6 @@ const styles = {
         marginTop: "-30px",
         marginBottom: "40px",
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundImage: `url(${headerpic})`,
         backgroundRepeat: "no-repeat",
@@ -22,7 +21,7 @@ const Header = () => {
     const { header } = useContext(Context)
     return (
         <div style={styles.header}>
-            <Typography variant='h4' style={{color: "whitesmoke", fontWeight: "bold" }}>{header}</Typography>
+            <Typography align="left" variant='h4' style={{color: "whitesmoke", fontWeight: "bold", marginLeft:'20%' }}>{header}</Typography>
         </div >
     )
 }

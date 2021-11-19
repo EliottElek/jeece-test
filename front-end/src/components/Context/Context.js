@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
         setCookie: setCookie,
         removeCookie: removeCookie,
         categList: [
-          "Pet",
+          "Humour",
           "Drame",
           "Amour",
           "Science Fiction",

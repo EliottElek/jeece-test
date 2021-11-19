@@ -28,7 +28,16 @@ const styles = {
   },
 };
 const FinishOrder = () => {
-  const { cart, user, addOrder, getTotal, emptyCart, setHeader, setResponse, setOpenSnack } = useContext(Context)
+  const {
+    cart,
+    user,
+    addOrder,
+    getTotal,
+    emptyCart,
+    setHeader,
+    setResponse,
+    setOpenSnack,
+  } = useContext(Context);
   setHeader("Finalisez votre commande");
 
   const [finished, setFinished] = useState(false);
@@ -140,9 +149,10 @@ const FinishOrder = () => {
         setOpenSnack(true);
       } else {
         setResponse(res);
-        setOpenSnack(true);      }
+        setOpenSnack(true);
+      }
     } catch (err) {
-      setResponse({message:"rrrrerere"});
+      setResponse({ message: "rrrrerere" });
       setOpenSnack(true);
     }
   };
@@ -202,28 +212,24 @@ const FinishOrder = () => {
               onChange={(e) => setAddress(e.target.value)}
               style={styles.input}
               label="Adresse"
-              placeHolder={"exemple : 12 rue du Pauvre"}
             />
             <TextField
               value={postal}
               onChange={(e) => setPostal(e.target.value)}
               style={styles.input}
               label="Code postal"
-              placeHolder={"exemple : 76019"}
             />
             <TextField
               value={city}
               onChange={(e) => setCity(e.target.value)}
               style={styles.input}
               label="Ville"
-              placeHolder={"exemple : Rouen"}
             />
             <TextField
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               style={styles.input}
               label="Pays"
-              placeHolder={"exemple : France"}
             />
             <div
               style={{
@@ -295,7 +301,6 @@ const FinishOrder = () => {
                   onChange={(e) => setAddress2(e.target.value)}
                   style={styles.input}
                   label="Adresse"
-                  placeHolder={"exemple : 12 rue du Pauvre"}
                 />
                 <TextField
                   required
@@ -303,7 +308,6 @@ const FinishOrder = () => {
                   onChange={(e) => setPostal2(e.target.value)}
                   style={styles.input}
                   label="Code postal"
-                  placeHolder={"exemple : 76019"}
                 />
                 <TextField
                   required
@@ -311,7 +315,6 @@ const FinishOrder = () => {
                   onChange={(e) => setCity2(e.target.value)}
                   style={styles.input}
                   label="Ville"
-                  placeHolder={"exemple : Rouen"}
                 />
                 <TextField
                   required
@@ -319,7 +322,6 @@ const FinishOrder = () => {
                   onChange={(e) => setCountry2(e.target.value)}
                   style={styles.input}
                   label="Pays"
-                  placeHolder={"exemple : France"}
                 />
                 <div
                   style={{
@@ -346,27 +348,30 @@ const FinishOrder = () => {
           <FormControl style={{ width: "60%", margin: "auto", padding: 10 }}>
             <TextField
               required
+              type="number"
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
               style={styles.input}
               label="Numéro de carte"
-              placeHolder={"exemple : 2132 3212 3212 2312"}
             />
+            <Typography style={{ marginTop: "5px" }} variant="caption">
+              Date d'expiration
+            </Typography>
             <TextField
               required
+              type="date"
+              min={new Date()}
               value={expireDate}
               onChange={(e) => setExpireDate(e.target.value)}
-              style={styles.input}
-              label="Date d'expiration"
-              placeHolder={"exemple : 29/04/23"}
+              style={{ marginBottom: "0px" }}
             />
             <TextField
               required
+              type="number"
               value={crypto}
               onChange={(e) => setCrypto(e.target.value)}
               style={styles.input}
               label="Cryptogramme"
-              placeHolder={"exemple : 121"}
             />
             <TextField
               required
@@ -374,7 +379,6 @@ const FinishOrder = () => {
               onChange={(e) => setOwner(e.target.value)}
               style={styles.input}
               label="Titulaire"
-              placeHolder={"exemple : Arnaud Dupont"}
             />
             <div
               style={{
@@ -433,28 +437,24 @@ const FinishOrder = () => {
                           onChange={(e) => setAddress(e.target.value)}
                           style={styles.input}
                           label="Adresse"
-                          placeHolder={"exemple : 12 rue du Pauvre"}
                         />
                         <TextField
                           value={postal}
                           onChange={(e) => setPostal(e.target.value)}
                           style={styles.input}
                           label="Code postal"
-                          placeHolder={"exemple : 76019"}
                         />
                         <TextField
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
                           style={styles.input}
                           label="Ville"
-                          placeHolder={"exemple : Rouen"}
                         />
                         <TextField
                           value={country}
                           onChange={(e) => setCountry(e.target.value)}
                           style={styles.input}
                           label="Pays"
-                          placeHolder={"exemple : France"}
                         />
                         <div
                           style={{
@@ -523,7 +523,6 @@ const FinishOrder = () => {
                           onChange={(e) => setAddress2(e.target.value)}
                           style={styles.input}
                           label="Adresse"
-                          placeHolder={"exemple : 12 rue du Pauvre"}
                         />
                         <TextField
                           required
@@ -531,7 +530,6 @@ const FinishOrder = () => {
                           onChange={(e) => setPostal2(e.target.value)}
                           style={styles.input}
                           label="Code postal"
-                          placeHolder={"exemple : 76019"}
                         />
                         <TextField
                           required
@@ -539,7 +537,6 @@ const FinishOrder = () => {
                           onChange={(e) => setCity2(e.target.value)}
                           style={styles.input}
                           label="Ville"
-                          placeHolder={"exemple : Rouen"}
                         />
                         <TextField
                           required
@@ -547,7 +544,6 @@ const FinishOrder = () => {
                           onChange={(e) => setCountry2(e.target.value)}
                           style={styles.input}
                           label="Pays"
-                          placeHolder={"exemple : France"}
                         />
                         <div
                           style={{

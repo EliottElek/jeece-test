@@ -22,10 +22,10 @@ import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import OrdersAdmin from "./components/Admin/OrdersAdmin/OrdersAdmin";
 import ClientsAdmin from "./components/Admin/ClientsAdmin/ClientsAdmin";
-import Header from './components/Header/Header'
+import Header from "./components/Header/Header";
 import { Context } from "./components/Context/Context";
 import { useContext } from "react";
-
+import CookieConsent from "react-cookie-consent";
 const styles = {
   root: {
     padding: 0,
@@ -45,7 +45,19 @@ let theme = createTheme({
 });
 
 function App() {
-  const { wishlist, setOpenSnack, response, setResponse, setProducts, setAllProducts, openSnack, cookies, setUser, setWishlist, setCart } = useContext(Context)
+  const {
+    wishlist,
+    setOpenSnack,
+    response,
+    setResponse,
+    setProducts,
+    setAllProducts,
+    openSnack,
+    cookies,
+    setUser,
+    setWishlist,
+    setCart,
+  } = useContext(Context);
   const handleCloseSnack = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -74,7 +86,7 @@ function App() {
         );
         setProducts(prdcts);
         setAllProducts(prdcts);
-        console.log("fetched")
+        console.log("fetched");
       } catch (e) {
         setResponse(e);
         setOpenSnack(true);
@@ -93,64 +105,90 @@ function App() {
         setCart(cookies.cart);
         setWishlist(cookies.wishlist);
       }
-      console.log(cookies)
-    }
+      console.log(cookies);
+    };
     fetchCookies();
-  }, [cookies, setWishlist, setUser, setCart])
+  }, [cookies, setWishlist, setUser, setCart]);
   return (
     <div style={styles.root}>
       <ThemeProvider theme={theme}>
         <Router>
-          <AppBar
-          />
-          <Header />
+          <AppBar />
+          <CookieConsent
+            location="bottom"
+            buttonText="J'accepte"
+            declineButtonText="Je refuse"
+            cookieName="myAwesomeCookieName"
+            style={{ background: "white", color: "#EE2B69", zIndex:55555555, borderTop:"solid 1px #EE2B69"}}
+            declineButtonStyle={{
+              background: "white",
+              borderRadius: "4px",
+              color: "#EE2B69",
+              fontSize: "13px",
+            }}
+            buttonStyle={{
+              background: "#EE2B69",
+              borderRadius: "4px",
+              color: "white",
+              fontSize: "13px",
+            }}
+            expires={150}
+            enableDeclineButton
+          >
+            Nous utilisons des cookies pour optimiser notre site et nos
+            services.
+          </CookieConsent>
           <Switch>
             <Route exact path="/">
-              <Home
-              />
+              <Home />
             </Route>
             <Route exact path="/panier">
-              <CartList
-              />
+              <Header />
+              <CartList />
               <Footer />
             </Route>
             <Route exact path="/register">
-              <SignUp
-              />
+              <Header />
+              <SignUp />
               <Footer />
             </Route>
             <Route exact path="/wishlist">
-              <Wishlist bookList={wishlist}
-              />
+              <Header />
+              <Wishlist bookList={wishlist} />
               <Footer />
             </Route>
             <Route path="/404">
+              <Header />
               <ErrorPage />
               <Footer />
             </Route>
             <Route exact path="/compte">
-              <Profile
-              />
+              <Header />
+              <Profile />
               <Footer />
             </Route>
             <Route exact path="/order">
-              <FinishOrder
-              />
+              <Header />
+              <FinishOrder />
               <Footer />
             </Route>
             <Route exact path="/myorders">
+              <Header />
               <MyOrders />
               <Footer />
             </Route>
             <Route exact path="/admin/orders">
+              <Header />
               <OrdersAdmin />
               <Footer />
             </Route>
             <Route exact path="/admin/clients">
+              <Header />
               <ClientsAdmin />
               <Footer />
             </Route>
             <Route exact path="/admin/products">
+              <Header />
               <BookListAdmin />
               <Footer />
             </Route>
@@ -159,11 +197,12 @@ function App() {
               path="/produit/:id"
               render={(props) => (
                 <>
-                <Product
-                  id={props.match.params.id}
-                  key={props.location.key}
-                />
-                <Footer />
+                  <Header />
+                  <Product
+                    id={props.match.params.id}
+                    key={props.location.key}
+                  />
+                  <Footer />
                 </>
               )}
             />
@@ -172,12 +211,14 @@ function App() {
               path="/produit/:id/admin"
               render={(props) => (
                 <>
+                  <Header />Ò
                   <ProductAdmin
                     id={props.match.params.id}
                     key={props.location.key}
                   />
                   <Footer />
-                </>)}
+                </>
+              )}
             />
           </Switch>
         </Router>

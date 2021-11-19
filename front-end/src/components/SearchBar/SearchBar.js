@@ -6,7 +6,7 @@ import { Context } from "../Context/Context";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 function SearchBar({ placeholder }) {
   const { allProducts } = useContext(Context);
   const [filteredData, setFilteredData] = useState([]);
@@ -56,7 +56,11 @@ function SearchBar({ placeholder }) {
         <div className="dataResult">
           {filteredData.slice(0, 15).map((value, index) => {
             return (
-              <Link to={`/produit/${value._id}`} key={value.id}>
+              <Link
+                onClick={clearInput}
+                to={`/produit/${value._id}`}
+                key={value.id}
+              >
                 <ListItem alignItems="flex-start">
                   <img height="70px" src={value.mediaUrl} alt={index} />
                   <ListItemText

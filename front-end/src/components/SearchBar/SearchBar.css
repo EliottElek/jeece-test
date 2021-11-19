@@ -45,9 +45,6 @@ input:focus {
   overflow-y: auto;
 }
 
-.dataResult::-webkit-scrollbar {
-  display: none;
-}
 
 .dataResult .dataItem {
   width: 100%;

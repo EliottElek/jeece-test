@@ -1,8 +1,15 @@
 import React, { useContext, useState } from "react";
-import { Card, Typography, TextField, Button, CircularProgress } from "@mui/material";
+import {
+  Card,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import AccountPage from "../AccountPage/AccountPage";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { validEmail, validPassword } from "../Regex";
 import { Context } from "../Context/Context";
 const bcrypt = require("bcryptjs");
 
@@ -103,7 +110,16 @@ const styles = {
 };
 
 const SignUp = () => {
-  const { user, setUser, setWishlist, setCart, setHeader, setOpenSnack, setResponse, setCookie } = useContext(Context);
+  const {
+    user,
+    setUser,
+    setWishlist,
+    setCart,
+    setHeader,
+    setOpenSnack,
+    setResponse,
+    setCookie,
+  } = useContext(Context);
   const [submitted, setSubmitted] = useState(false);
   setHeader("Créez votre compte");
   const [emptyFirstnameMessage, setEmptyFirstnameMessage] =
@@ -165,6 +181,18 @@ const SignUp = () => {
       } else {
         setEmptyPassMessage("");
       }
+      if (!validEmail.test(email)) {
+        setEmptyEmailMessage("- Vous devez entrer un email valide.");
+        setSubmitted(false);
+      } else {
+        setEmptyEmailMessage("");
+      }
+      if (!validPassword.test(password)) {
+        setEmptyPassMessage("- Au moins 6 caractères, une majuscule, un chiffre et un caractère spécial.");
+        setSubmitted(false);
+      } else {
+        setEmptyPassMessage("");
+      }
       if (verifPassword === "") {
         setEmptyVerifPassMessage("- Vous devez vérifier votre mot de passe.");
         setSubmitted(false);
@@ -183,11 +211,14 @@ const SignUp = () => {
         firstname !== "" &&
         lastname !== "" &&
         verifPassword !== "" &&
-        verifPassword === password
+        verifPassword === password &&
+        validEmail.test(email) &&
+        validPassword.test(password)
       ) {
         try {
           const usr = {
-            avatarUrl: "https://static-openask-com.s3.amazonaws.com/content/images/tests/large/3784_test.jpg",
+            avatarUrl:
+              "https://static-openask-com.s3.amazonaws.com/content/images/tests/large/3784_test.jpg",
             firstname: firstname,
             lastname: lastname,
             email: email,
@@ -202,7 +233,7 @@ const SignUp = () => {
           );
           console.log(res);
           if (res.success) {
-            const userForCookies = { ...res.user[0], cart: [], wishlist: [] }
+            const userForCookies = { ...res.user[0], cart: [], wishlist: [] };
             setCookie("user", userForCookies);
             setCookie("cart", []);
             setCookie("wishlist", []);
@@ -312,7 +343,13 @@ const SignUp = () => {
               onClick={handleSubmit}
               style={styles.button}
             >
-              {!submitted ? "Créer mon compte" : <CircularProgress style={{ color: "white", height: "30px", width: "30px" }} />}
+              {!submitted ? (
+                "Créer mon compte"
+              ) : (
+                <CircularProgress
+                  style={{ color: "white", height: "30px", width: "30px" }}
+                />
+              )}
             </Button>
             <Typography style={styles.link}>
               Déjà un compte ?
